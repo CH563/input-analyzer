@@ -30,7 +30,8 @@ import {
 
 interface KeyProps {
   label: string | React.ReactNode;
-  keyCode: string;
+  keyCode: string; // This is the 'code' from the KeyboardEvent
+  uniqueKey: string; // This will be the actual React key for list rendering
   activeKey: string | null;
   className?: string;
   isIcon?: boolean;
@@ -42,11 +43,13 @@ const Key: React.FC<KeyProps> = ({ label, keyCode, activeKey, className, isIcon 
   return (
     <div
       className={cn(
-        'flex items-center justify-center h-10 min-w-[2.5rem] p-1.5 border rounded-md shadow-sm transition-all duration-75 ease-in-out',
+        'flex items-center justify-center h-10 min-w-[2.5rem] p-1.5 border rounded-md shadow-sm transition-all duration-100 ease-in-out transform', // Added transform for potential translate, duration changed to 100ms
         'bg-card text-card-foreground border-border',
-        isActive ? 'bg-accent text-accent-foreground scale-105 transform ring-2 ring-accent ring-offset-2 ring-offset-background' : 'hover:bg-muted',
+        isActive 
+          ? 'bg-accent text-accent-foreground scale-105 ring-2 ring-accent ring-offset-2 ring-offset-background -translate-y-0.5' // Active state lifts slightly more
+          : 'hover:bg-muted hover:-translate-y-px', // Hover state lifts slightly
         className,
-        isIcon ? 'text-md' : 'text-xs font-medium' // Adjusted icon text size if needed, text-xs for labels
+        isIcon ? 'text-md' : 'text-xs font-medium'
       )}
       style={{ flexBasis: '2.5rem' }} // For flex items
     >
@@ -58,10 +61,6 @@ const Key: React.FC<KeyProps> = ({ label, keyCode, activeKey, className, isIcon 
 interface KeyboardLayoutProps {
   activeKey: string | null;
 }
-
-// Key widths in 1U (unit) multiples, where 1U = 2.5rem (40px)
-const KEY_WIDTH_UNIT = '2.5rem';
-const calcWidth = (units: number) => `calc(${units} * ${KEY_WIDTH_UNIT} - ((${units} - 1) * 0.375rem))`; // 0.375rem is approx space-x-1.5 / 2
 
 const keyIconMap: Record<string, React.ReactNode> = {
   Backspace: <Delete />,
@@ -77,7 +76,7 @@ const keyIconMap: Record<string, React.ReactNode> = {
   MetaRight: <Command />,
   CapsLock: <Lock />,
   Escape: <span className="text-xs">Esc</span>,
-  Space: <Square className="w-full h-5" />, // Adjusted for flexible width
+  Space: <Square className="w-full h-5" />,
   ArrowUp: <ArrowUp />,
   ArrowDown: <ArrowDown />,
   ArrowLeft: <ArrowLeft />,
@@ -89,7 +88,7 @@ const keyIconMap: Record<string, React.ReactNode> = {
   Insert: <Plus />,
   Home: <Home />,
   PageUp: <ChevronLeft className="transform rotate-90" />,
-  DeleteForward: <Delete />, // Standard event.code for Delete key in navigation block is "Delete"
+  DeleteForward: <Delete />, 
   End: <ExternalLink />,
   PageDown: <ChevronRight className="transform rotate-90" />,
   NumLock: <Table />,
@@ -106,139 +105,116 @@ const getDigitKeyLabel = (key: string) => key.replace('Digit', '');
 
 
 export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => {
-  // 98-key layout typically has 1U for most keys, and standard widths for modifiers.
-  // Adjust className for width based on typical keycap sizes.
-  // 1U = 2.5rem
-  // Backspace = 2U
-  // Tab = 1.5U
-  // CapsLock = 1.75U
-  // Enter = 2.25U
-  // ShiftLeft = 2.25U
-  // ShiftRight = 2.75U (sometimes smaller in compact layouts, for 98-key usually 1.75U or 2.75U. Let's go with 1.75U for compactness)
-  // Ctrl/Alt/Meta = 1.25U or 1U. For 98-key, often 1U.
-  // Space = 6.25U or flexible
   const keyboardLayout = [
-    // Row 1 (Function keys, Escape) - Standard 1U keys
+    // Row 1 (Function keys, Escape)
     [
-      { code: 'Escape', label: keyIconMap.Escape || 'Esc', className: 'w-[calc(1.5*2.5rem)]' }, // Often 1.5U
-      // F1-F4
+      { code: 'Escape', label: keyIconMap.Escape || 'Esc', className: 'min-w-[calc(1.5*2.5rem)]', uniqueSuffix: 'main' },
       ...Array.from({ length: 4 }, (_, i) => ({
         code: `F${i + 1}`,
-        label: getFKeyLabel(`F${i + 1}`)
+        label: getFKeyLabel(`F${i + 1}`),
+        uniqueSuffix: `f${i+1}`
       })),
-      // F5-F8
       ...Array.from({ length: 4 }, (_, i) => ({
         code: `F${i + 5}`,
         label: getFKeyLabel(`F${i + 5}`),
-        className: i === 0 ? 'ml-2' : undefined, // Small gap for grouping
+        className: i === 0 ? 'ml-2' : undefined,
+        uniqueSuffix: `f${i+5}`
       })),
-      // F9-F12
       ...Array.from({ length: 4 }, (_, i) => ({
         code: `F${i + 9}`,
         label: getFKeyLabel(`F${i + 9}`),
-        className: i === 0 ? 'ml-2' : undefined, // Small gap for grouping
+        className: i === 0 ? 'ml-2' : undefined,
+        uniqueSuffix: `f${i+9}`
       })),
     ],
-    // Row 2 (Numbers, Backquote, Backspace) - Standard 1U keys, Backspace is 2U
+    // Row 2 (Numbers, Backquote, Backspace)
     [
-      { code: 'Backquote', label: '`' },
-      ...Array.from({ length: 9 }, (_, i) => ({ code: `Digit${i + 1}`, label: getDigitKeyLabel(`Digit${i + 1}`) })),
-      { code: 'Digit0', label: getDigitKeyLabel('Digit0') },
-      { code: 'Minus', label: '-' },
-      { code: 'Equal', label: '=' },
-      { code: 'Backspace', label: keyIconMap.Backspace, className: 'min-w-[calc(2*2.5rem)] flex-grow' }, // 2U
+      { code: 'Backquote', label: '`', uniqueSuffix: 'main' },
+      ...Array.from({ length: 9 }, (_, i) => ({ code: `Digit${i + 1}`, label: getDigitKeyLabel(`Digit${i + 1}`), uniqueSuffix: `digit${i+1}` })),
+      { code: 'Digit0', label: getDigitKeyLabel('Digit0'), uniqueSuffix: 'digit0' },
+      { code: 'Minus', label: '-', uniqueSuffix: 'main' },
+      { code: 'Equal', label: '=', uniqueSuffix: 'main' },
+      { code: 'Backspace', label: keyIconMap.Backspace, className: 'min-w-[calc(2*2.5rem)] flex-grow', uniqueSuffix: 'main' },
     ],
-    // Row 3 (QWERTY, Tab, Brackets, Backslash) - Tab 1.5U, Backslash 1.5U
+    // Row 3 (QWERTY, Tab, Brackets, Backslash)
     [
-      { code: 'Tab', label: keyIconMap.Tab, className: 'min-w-[calc(1.5*2.5rem)]' }, // 1.5U
-      ...['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map(key => ({ code: `Key${key}`, label: key })),
-      { code: 'BracketLeft', label: '[' },
-      { code: 'BracketRight', label: ']' },
-      { code: 'Backslash', label: '\\', className: 'min-w-[calc(1.5*2.5rem)] flex-grow' }, // 1.5U
+      { code: 'Tab', label: keyIconMap.Tab, className: 'min-w-[calc(1.5*2.5rem)]', uniqueSuffix: 'main' },
+      ...['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map(key => ({ code: `Key${key}`, label: key, uniqueSuffix: `key${key}` })),
+      { code: 'BracketLeft', label: '[', uniqueSuffix: 'main' },
+      { code: 'BracketRight', label: ']', uniqueSuffix: 'main' },
+      { code: 'Backslash', label: '\\', className: 'min-w-[calc(1.5*2.5rem)] flex-grow', uniqueSuffix: 'main' },
     ],
-    // Row 4 (ASDFGHJKL, CapsLock, Enter, Semicolon, Quote) - CapsLock 1.75U, Enter 2.25U
+    // Row 4 (ASDFGHJKL, CapsLock, Enter, Semicolon, Quote)
     [
-      { code: 'CapsLock', label: keyIconMap.CapsLock, className: 'min-w-[calc(1.75*2.5rem)]' }, // 1.75U
-      ...['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map(key => ({ code: `Key${key}`, label: key })),
-      { code: 'Semicolon', label: ';' },
-      { code: 'Quote', label: "'" },
-      { code: 'Enter', label: keyIconMap.Enter, className: 'min-w-[calc(2.25*2.5rem)] flex-grow' }, // 2.25U
+      { code: 'CapsLock', label: keyIconMap.CapsLock, className: 'min-w-[calc(1.75*2.5rem)]', uniqueSuffix: 'main' },
+      ...['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map(key => ({ code: `Key${key}`, label: key, uniqueSuffix: `key${key}` })),
+      { code: 'Semicolon', label: ';', uniqueSuffix: 'main' },
+      { code: 'Quote', label: "'", uniqueSuffix: 'main' },
+      { code: 'Enter', label: keyIconMap.Enter, className: 'min-w-[calc(2.25*2.5rem)] flex-grow', uniqueSuffix: 'main' },
     ],
-    // Row 5 (ZXCVBNM, Shift, Comma, Period, Slash) - ShiftLeft 2.25U, ShiftRight 1.75U (for 98-key compact)
+    // Row 5 (ZXCVBNM, Shift, Comma, Period, Slash)
     [
-      { code: 'ShiftLeft', label: keyIconMap.ShiftLeft, className: 'min-w-[calc(2.25*2.5rem)]' }, // 2.25U
-      ...['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map(key => ({ code: `Key${key}`, label: key })),
-      { code: 'Comma', label: ',' },
-      { code: 'Period', label: '.' },
-      { code: 'Slash', label: '/' },
-      { code: 'ShiftRight', label: keyIconMap.ShiftRight, className: 'min-w-[calc(1.75*2.5rem)] flex-grow' }, // 1.75U for 98 key compactness
+      { code: 'ShiftLeft', label: keyIconMap.ShiftLeft, className: 'min-w-[calc(2.25*2.5rem)]', uniqueSuffix: 'main' },
+      ...['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map(key => ({ code: `Key${key}`, label: key, uniqueSuffix: `key${key}` })),
+      { code: 'Comma', label: ',', uniqueSuffix: 'main' },
+      { code: 'Period', label: '.', uniqueSuffix: 'main' },
+      { code: 'Slash', label: '/', uniqueSuffix: 'main' },
+      { code: 'ShiftRight', label: keyIconMap.ShiftRight, className: 'min-w-[calc(1.75*2.5rem)] flex-grow', uniqueSuffix: 'main' },
     ],
-    // Row 6 (Ctrl, Meta, Alt, Space, Arrows) - Ctrl/Meta/Alt 1U. Space flexible
+    // Row 6 (Ctrl, Meta, Alt, Space) - Arrows moved to right cluster
     [
-      { code: 'ControlLeft', label: keyIconMap.ControlLeft, className: 'min-w-[calc(1.25*2.5rem)]' }, // 1.25U
-      { code: 'MetaLeft', label: keyIconMap.MetaLeft, className: 'min-w-[calc(1.25*2.5rem)]' },    // 1.25U
-      { code: 'AltLeft', label: keyIconMap.AltLeft, className: 'min-w-[calc(1.25*2.5rem)]' },      // 1.25U
-      { code: 'Space', label: keyIconMap.Space, className: 'flex-grow min-w-[calc(5.5*2.5rem)]' }, // Adjusted space, was 16rem
-      { code: 'AltRight', label: keyIconMap.AltRight, className: 'min-w-[calc(1*2.5rem)]' },        // 1U
-      { code: 'MetaRight', label: keyIconMap.MetaRight, className: 'min-w-[calc(1*2.5rem)]' },      // 1U (Often Fn on 98-key)
-      { code: 'ControlRight', label: keyIconMap.ControlRight, className: 'min-w-[calc(1.25*2.5rem)]' }, // 1.25U
+      { code: 'ControlLeft', label: keyIconMap.ControlLeft, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'MetaLeft', label: keyIconMap.MetaLeft, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'AltLeft', label: keyIconMap.AltLeft, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'Space', label: keyIconMap.Space, className: 'flex-grow min-w-[calc(5.5*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'AltRight', label: keyIconMap.AltRight, className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'MetaRight', label: keyIconMap.MetaRight, className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'fnKey_main' }, // Often Fn key, ensure unique
+      { code: 'ControlRight', label: keyIconMap.ControlRight, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
     ],
   ];
 
-  // Right-hand cluster (PrtSc, Nav, Arrows, Numpad) for a 98-key layout
-  // This is often more compact. PrtSc, Del, Home, End, PgUp, PgDn might be in a column or 2x3 grid.
-  // Numpad is slightly condensed. Arrow keys are often integrated below Enter/Shift.
-  // For 98-key, numpad is usually there, and arrow keys are to the right of main block.
-  // Nav keys (Ins, Del, Home, End, PgUp, PgDn) are usually above the numpad or in a vertical strip.
-
   const rightClusterLayout = [
-    // Column 1: PrtSc, ScrollLock (or other fn), Pause (or other fn)
-    { code: 'PrintScreen', label: keyIconMap.PrintScreen, uniqueCode: 'PrintScreen_nav' },
-    { code: 'ScrollLock', label: keyIconMap.ScrollLock, uniqueCode: 'ScrollLock_nav' },
-    { code: 'Pause', label: keyIconMap.Pause, uniqueCode: 'Pause_nav' },
+    // Nav keys part 1 (PrtSc, ScrollLock, Pause)
+    { code: 'PrintScreen', label: keyIconMap.PrintScreen, uniqueSuffix: 'nav' },
+    { code: 'ScrollLock', label: keyIconMap.ScrollLock, uniqueSuffix: 'nav' },
+    { code: 'Pause', label: keyIconMap.Pause, uniqueSuffix: 'nav' },
 
-    // Column 2: Insert, Home, PageUp
-    { code: 'Insert', label: keyIconMap.Insert, uniqueCode: 'Insert_nav' },
-    { code: 'Home', label: keyIconMap.Home, uniqueCode: 'Home_nav' },
-    { code: 'PageUp', label: keyIconMap.PageUp, uniqueCode: 'PageUp_nav' },
+    // Nav keys part 2 (Insert, Home, PageUp)
+    { code: 'Insert', label: keyIconMap.Insert, uniqueSuffix: 'nav' },
+    { code: 'Home', label: keyIconMap.Home, uniqueSuffix: 'nav' },
+    { code: 'PageUp', label: keyIconMap.PageUp, uniqueSuffix: 'nav' },
 
-    // Column 3: Delete, End, PageDown
-    { code: 'Delete', label: keyIconMap.DeleteForward, uniqueCode: 'Delete_nav' }, // Already DeleteForward in map
-    { code: 'End', label: keyIconMap.End, uniqueCode: 'End_nav' },
-    { code: 'PageDown', label: keyIconMap.PageDown, uniqueCode: 'PageDown_nav' },
+    // Nav keys part 3 (Delete, End, PageDown)
+    { code: 'Delete', label: keyIconMap.DeleteForward, uniqueSuffix: 'nav' }, // JS event.code for Del key is "Delete"
+    { code: 'End', label: keyIconMap.End, uniqueSuffix: 'nav' },
+    { code: 'PageDown', label: keyIconMap.PageDown, uniqueSuffix: 'nav' },
 
-    // Column 4: Numpad Top Row
-    { code: 'NumLock', label: keyIconMap.NumLock, uniqueCode: 'NumLock_numpad' },
-    { code: 'NumpadDivide', label: keyIconMap.NumpadDivide, uniqueCode: 'NumpadDivide_numpad' },
-    { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply, uniqueCode: 'NumpadMultiply_numpad' },
-    { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract, uniqueCode: 'NumpadSubtract_numpad' },
+    // Numpad: Top Row
+    { code: 'NumLock', label: keyIconMap.NumLock, uniqueSuffix: 'numpad' },
+    { code: 'NumpadDivide', label: keyIconMap.NumpadDivide, uniqueSuffix: 'numpad' },
+    { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply, uniqueSuffix: 'numpad' },
+    { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract, uniqueSuffix: 'numpad' },
     
-    // Column 5: Numpad 7,8,9 and Add
-    { code: 'Numpad7', label: '7', uniqueCode: 'Numpad7_numpad' },
-    { code: 'Numpad8', label: '8', uniqueCode: 'Numpad8_numpad' },
-    { code: 'Numpad9', label: '9', uniqueCode: 'Numpad9_numpad' },
-    { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto', uniqueCode: 'NumpadAdd_numpad' }, // Spans 2 rows
+    // Numpad: 7,8,9 and Add
+    { code: 'Numpad7', label: '7', uniqueSuffix: 'numpad' },
+    { code: 'Numpad8', label: '8', uniqueSuffix: 'numpad' },
+    { code: 'Numpad9', label: '9', uniqueSuffix: 'numpad' },
+    { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto', uniqueSuffix: 'numpad' },
 
-    // Column 6: Numpad 4,5,6
-    { code: 'Numpad4', label: '4', uniqueCode: 'Numpad4_numpad' },
-    { code: 'Numpad5', label: '5', uniqueCode: 'Numpad5_numpad' },
-    { code: 'Numpad6', label: '6', uniqueCode: 'Numpad6_numpad' },
-    // NumpadAdd placeholder (spanned by previous)
+    // Numpad: 4,5,6 (NumpadAdd spans here)
+    { code: 'Numpad4', label: '4', uniqueSuffix: 'numpad' },
+    { code: 'Numpad5', label: '5', uniqueSuffix: 'numpad' },
+    { code: 'Numpad6', label: '6', uniqueSuffix: 'numpad' },
     
-    // Column 7: Numpad 1,2,3 and Enter
-    { code: 'Numpad1', label: '1', uniqueCode: 'Numpad1_numpad' },
-    { code: 'Numpad2', label: '2', uniqueCode: 'Numpad2_numpad' },
-    { code: 'Numpad3', label: '3', uniqueCode: 'Numpad3_numpad' },
-    { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto', uniqueCode: 'NumpadEnter_numpad' }, // Spans 2 rows
+    // Numpad: 1,2,3 and Enter
+    { code: 'Numpad1', label: '1', uniqueSuffix: 'numpad' },
+    { code: 'Numpad2', label: '2', uniqueSuffix: 'numpad' },
+    { code: 'Numpad3', label: '3', uniqueSuffix: 'numpad' },
+    { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto', uniqueSuffix: 'numpad' },
 
-    // Column 8: Numpad 0 and Decimal
-    { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto min-w-[calc(2*2.5rem)]', uniqueCode: 'Numpad0_numpad' }, // Spans 2 columns
-    { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal, uniqueCode: 'NumpadDecimal_numpad' },
-    // NumpadEnter placeholder (spanned by previous)
-
-    // Arrow keys are separate from this grid, usually.
-    // For 98-key, arrows are often in a cluster, right of CtrlRight or integrated under ShiftRight.
-    // Let's place them as a distinct block.
+    // Numpad: 0 and Decimal (NumpadEnter spans here)
+    { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto min-w-[calc(2*2.5rem)]', uniqueSuffix: 'numpad' },
+    { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal, uniqueSuffix: 'numpad' },
   ];
 
 
@@ -247,91 +223,92 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
       {/* Main keyboard section */}
       <div className="space-y-1.5">
         {keyboardLayout.map((row, rowIndex) => (
-          <div key={`main-row-${rowIndex}`} className="flex space-x-1.5 justify-start"> {/* Changed to justify-start */}
-            {row.map((keyConfig, keyIndex) => {
+          <div key={`main-row-${rowIndex}`} className="flex space-x-1.5 justify-start">
+            {row.map((keyConfig) => {
               const isIcon = typeof keyConfig.label !== 'string' && React.isValidElement(keyConfig.label);
-              return <Key key={`${keyConfig.code}-${rowIndex}-${keyIndex}`} label={keyConfig.label} keyCode={keyConfig.code} activeKey={activeKey} className={keyConfig.className} isIcon={isIcon} />;
+              const uniqueKey = `${keyConfig.code}-${keyConfig.uniqueSuffix}-${rowIndex}`;
+              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={keyConfig.label} keyCode={keyConfig.code} activeKey={activeKey} className={keyConfig.className} isIcon={isIcon} />;
             })}
           </div>
         ))}
       </div>
 
-      {/* Combined Right Cluster: Nav, Arrows, Numpad for 98-key style */}
-      {/* This will be a grid: 4 columns for numpad, 1 column for nav keys or a 3x3 block for nav */}
-      {/* Arrows are typically a cluster. In 98-key, they are often right of RCtrl. */}
-      <div className="flex pt-1.5 space-x-1.5">
-        {/* Left part of the right cluster (PrtScn block, Nav block) */}
+      {/* Combined Right Cluster */}
+      <div className="flex pt-1.5 space-x-1.5"> {/* Apply pt-1.5 to align with main keyboard's first row effectively */}
+        {/* Nav Keys (3x3 block) & Arrow Keys */}
         <div className="flex flex-col space-y-1.5">
+          {/* Nav keys in 3 columns */}
           <div className="flex space-x-1.5">
-             {/* PrtSc, ScrollLock, Pause in a column */}
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(0, 3).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol1`;
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
             </div>
-             {/* Ins, Home, PgUp in a column */}
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(3, 6).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol2`;
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
             </div>
-             {/* Del, End, PgDn in a column */}
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(6, 9).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol3`;
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
             </div>
           </div>
-           {/* Arrow Keys Cluster */}
-          <div className="flex flex-col items-center space-y-1.5 pt-1.5">
-            {/* Up Arrow */}
-            <Key key="ArrowUp" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isIcon={true} />
-            {/* Left, Down, Right Arrows */}
+          {/* Arrow Keys Cluster (below nav keys) */}
+          <div className="flex flex-col items-center space-y-1.5 pt-1.5"> {/* Added pt-1.5 for spacing */}
+            <Key key="ArrowUp-arrow" uniqueKey="ArrowUp-arrow" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isIcon={true} />
             <div className="flex space-x-1.5">
-              <Key key="ArrowLeft" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isIcon={true} />
-              <Key key="ArrowDown" label={keyIconMap.ArrowDown} keyCode="ArrowDown" activeKey={activeKey} isIcon={true} />
-              <Key key="ArrowRight" label={keyIconMap.ArrowRight} keyCode="ArrowRight" activeKey={activeKey} isIcon={true} />
+              <Key key="ArrowLeft-arrow" uniqueKey="ArrowLeft-arrow" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isIcon={true} />
+              <Key key="ArrowDown-arrow" uniqueKey="ArrowDown-arrow" label={keyIconMap.ArrowDown} keyCode="ArrowDown" activeKey={activeKey} isIcon={true} />
+              <Key key="ArrowRight-arrow" uniqueKey="ArrowRight-arrow" label={keyIconMap.ArrowRight} keyCode="ArrowRight" activeKey={activeKey} isIcon={true} />
             </div>
           </div>
         </div>
         
         {/* Numpad (4 columns wide, 5 rows tall including multi-row keys) */}
-        <div className="grid grid-cols-4 grid-rows-5 gap-1.5"> {/* Removed ml-1.5, parent flex container handles spacing */}
+        <div className="grid grid-cols-4 grid-rows-5 gap-1.5">
           {/* Row 1: NumLock, NumpadDivide, NumpadMultiply, NumpadSubtract */}
           {rightClusterLayout.slice(9, 13).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad1`;
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
 
           {/* Row 2: Numpad7, Numpad8, Numpad9 */}
           {rightClusterLayout.slice(13, 16).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad2`;
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
           {/* NumpadAdd (spans 2 rows, placed in grid) */}
-          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-add`; return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
 
           {/* Row 3: Numpad4, Numpad5, Numpad6 */}
           {rightClusterLayout.slice(17, 20).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad3`;
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
           
           {/* Row 4: Numpad1, Numpad2, Numpad3 */}
           {rightClusterLayout.slice(20, 23).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad4`;
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
           {/* NumpadEnter (spans 2 rows, placed in grid) */}
-           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
-
+           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-enter`; return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
 
           {/* Row 5: Numpad0 (spans 2 cols), NumpadDecimal */}
-          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
-          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad0`; return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-dec`; return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />; })()}
         </div>
       </div>
     </div>
