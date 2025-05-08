@@ -279,9 +279,9 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
       </div>
 
       {/* Combined Right Cluster */}
-      <div className="flex pt-1.5 space-x-1.5"> {/* Apply pt-1.5 to align with main keyboard's first row effectively */}
+      <div className="flex space-x-1.5"> {/* Apply pt-1.5 to align with main keyboard's first row effectively */}
         {/* Nav Keys (3x3 block) & Arrow Keys */}
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex flex-col space-y-1.5 mx-2">
           {/* Nav keys in 3 columns */}
           <div className="flex space-x-1.5">
             <div className="flex flex-col space-y-1.5">
@@ -304,10 +304,11 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
                 const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol3`;
                 return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
+              <div className="col-span-3 h-10"></div>
             </div>
           </div>
           {/* Arrow Keys Cluster (below nav keys) */}
-          <div className="flex flex-col items-center space-y-1.5 pt-1.5"> {/* Added pt-1.5 for spacing */}
+          <div className="flex flex-col items-center space-y-1.5"> {/* Added for spacing */}
             <Key key="ArrowUp-arrow" uniqueKey="ArrowUp-arrow" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isIcon={true} />
             <div className="flex space-x-1.5">
               <Key key="ArrowLeft-arrow" uniqueKey="ArrowLeft-arrow" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isIcon={true} />
@@ -319,6 +320,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
         
         {/* Numpad (4 columns wide, 5 rows tall including multi-row keys) */}
         <div className="grid grid-cols-4 grid-rows-5 gap-1.5">
+          <div className="col-span-4 h-10"></div>
           {/* Row 1: NumLock, NumpadDivide, NumpadMultiply, NumpadSubtract */}
           {rightClusterLayout.slice(9, 13).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);

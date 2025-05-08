@@ -9,6 +9,7 @@ import { MouseTester } from '@/components/input-analyzer/mouse-tester';
 import { Separator } from '@/components/ui/separator';
 import { HelpCircle, MonitorPlay, Timer } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 
 export default function InputAnalyzerPage() {
   const [lastKeyPressed, setLastKeyPressed] = useState<string>('N/A');
@@ -35,27 +36,21 @@ export default function InputAnalyzerPage() {
         if (event.metaKey) prefix += 'Meta+';
         if (event.altKey) prefix += 'Alt+';
         if (event.shiftKey && !['Control', 'Alt', 'Meta', 'Shift'].includes(event.key)) {
-             // Add Shift only if it's not the Shift key itself being displayed, 
-             // or if it's a combo that typically shows Shift (e.g. Shift+Tab)
-             // For simple letter keys, event.key already reflects shifted state (e.g. 'A' vs 'a')
-             // So, only add Shift for functional keys or when it's the primary modifier being tested
              if (event.key.length > 1 && event.key !== 'Shift') prefix += 'Shift+';
         }
         
         let baseKey = event.key;
         if (event.code === 'Space') baseKey = 'Space';
-        // Avoid double-printing modifiers if event.key is a modifier itself
         if (['Control', 'Alt', 'Meta', 'Shift'].includes(event.key)) {
-            keyDisplayValue = event.key; // Show the modifier itself
+            keyDisplayValue = event.key; 
         } else {
             keyDisplayValue = `${prefix}${baseKey}`;
         }
     }
 
-
     const codesToAlwaysPrevent = [
       'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-      'Tab', // Always prevent tabbing out of the page elements
+      'Tab', 
       'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
     ];
     
@@ -67,33 +62,29 @@ export default function InputAnalyzerPage() {
         event.preventDefault();
     }
 
-    // More specific prevention for Ctrl/Meta combos
     if ((event.ctrlKey || event.metaKey)) {
-        // Prevent common browser shortcuts. Check if the target is not an input/textarea.
         if (!isEditable) {
              const commonShortcutKeys = ['r', 's', 'p', 'f', 'g', 'h', 'j', 'k', 'l', 'a', 'w', 'q', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 't', 'y', 'u', 'i', 'o', 'd', 'e', '+', '-', '='];
              if (commonShortcutKeys.includes(event.key.toLowerCase()) || event.code.startsWith("Digit")) {
                  event.preventDefault();
-                 keyDisplayValue = `${event.ctrlKey ? 'Ctrl' : 'Meta'}+${event.key.toUpperCase()}`;
+                 // Update display value for Ctrl/Meta + letter/digit
+                 const modifier = event.ctrlKey ? 'Ctrl' : 'Meta';
+                 const displayKey = event.key.length === 1 ? event.key.toUpperCase() : event.key;
+                 keyDisplayValue = `${modifier}+${displayKey}`;
              }
         }
     }
-     // Prevent Backspace from navigating back if not in an editable field
     if (event.key === 'Backspace' && !isEditable) {
         event.preventDefault();
     }
-
 
     setLastKeyPressed(keyDisplayValue);
     setActiveKey(event.code);
     setTimeout(() => setActiveKey(null), 200);
 
-    // Key press duration
     setKeyDownTimestamp(performance.now());
     setKeyPressDelay(null);
-
-
-  }, []); // Removed isEditable from dependencies as it's derived inside
+  }, []);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     if (keyDownTimestamp) {
@@ -128,18 +119,16 @@ export default function InputAnalyzerPage() {
     setLastMouseButton(buttonName);
     setActiveMouseButton(buttonName);
 
-    if (event.button === 2) { // Prevent context menu on right click
+    if (event.button === 2) { 
         const target = event.target as HTMLElement;
-        // Allow context menu in input/textarea fields
         if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
-            event.preventDefault();
+            // event.preventDefault(); // This was moved to global contextmenu listener
         }
     }
     setTimeout(() => setActiveMouseButton(null), 200);
   }, []);
   
   const handleMouseUp = useCallback((_event: MouseEvent) => {
-     // Can be used to remove active state if button is held
   }, []);
 
   useEffect(() => {
@@ -150,7 +139,6 @@ export default function InputAnalyzerPage() {
     
     const preventContextMenuGlobal = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
-        // Allow context menu in input/textarea fields
         if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
             event.preventDefault();
         }
@@ -158,9 +146,9 @@ export default function InputAnalyzerPage() {
 
     document.addEventListener('keydown', handleGlobalKeyDown);
     document.addEventListener('keyup', handleGlobalKeyUp);
-    document.addEventListener('mousedown', handleGlobalMouseDown); // Listen on document
-    document.addEventListener('mouseup', handleGlobalMouseUp); // Listen on document
-    document.addEventListener('contextmenu', preventContextMenuGlobal); // Listen on document
+    document.addEventListener('mousedown', handleGlobalMouseDown); 
+    document.addEventListener('mouseup', handleGlobalMouseUp); 
+    document.addEventListener('contextmenu', preventContextMenuGlobal); 
 
     return () => {
       document.removeEventListener('keydown', handleGlobalKeyDown);
@@ -173,18 +161,21 @@ export default function InputAnalyzerPage() {
 
   return (
     <TooltipProvider>
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 md:p-8 selection:bg-accent selection:text-accent-foreground">
-      <header className="mb-4 text-center"> {/* Reduced mb */}
-        <div className="flex items-center justify-center space-x-3">
-          <MonitorPlay className="h-10 w-10 text-primary" /> {/* Reduced size */}
-          <h1 className="text-3xl font-bold text-foreground">Input Analyzer</h1> {/* Reduced size */}
+    <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4 md:p-8 selection:bg-accent selection:text-accent-foreground">
+      <header className="mb-4 text-center w-full max-w-6xl flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <MonitorPlay className="h-10 w-10 text-primary" />
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Input Analyzer</h1>
+            <p className="text-muted-foreground mt-1 text-sm text-left">
+              Test your keyboard and mouse inputs.
+            </p>
+          </div>
         </div>
-        <p className="text-muted-foreground mt-1 text-sm"> {/* Reduced margin and size */}
-          Test your keyboard and mouse inputs with visual feedback.
-        </p>
+        <ThemeSwitcher />
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl mb-4"> {/* Changed to 3 cols, reduced gap & mb */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mb-4">
         <Card className="shadow-lg">
           <CardHeader className="p-3">
             <CardTitle className="text-lg text-foreground">Last Key Pressed</CardTitle>
@@ -219,12 +210,12 @@ export default function InputAnalyzerPage() {
         </Card>
       </div>
 
-      <Separator className="my-4 w-full max-w-4xl" /> {/* Reduced my */}
+      <Separator className="my-4 w-full max-w-6xl" />
       
-      <div className="w-full max-w-5xl space-y-6"> {/* Reduced space-y */}
+      <div className="w-full max-w-6xl space-y-6">
         <Card className="shadow-lg">
-          <CardHeader className="flex flex-row items-center justify-between p-4"> {/* Reduced p */}
-            <CardTitle className="text-xl text-foreground">Keyboard Visualizer</CardTitle> {/* Reduced size */}
+          <CardHeader className="flex flex-row items-center justify-between p-4">
+            <CardTitle className="text-xl text-foreground">Keyboard Visualizer</CardTitle>
             <Tooltip>
               <TooltipTrigger>
                 <HelpCircle className="h-5 w-5 text-muted-foreground" />
@@ -234,14 +225,14 @@ export default function InputAnalyzerPage() {
               </TooltipContent>
             </Tooltip>
           </CardHeader>
-          <CardContent className="p-4 pt-0"> {/* Reduced p */}
+          <CardContent className="p-4 pt-0">
             <KeyboardTester activeKey={activeKey} />
           </CardContent>
         </Card>
 
         <Card className="shadow-lg">
-          <CardHeader className="flex flex-row items-center justify-between p-4"> {/* Reduced p */}
-            <CardTitle className="text-xl text-foreground">Mouse Visualizer</CardTitle> {/* Reduced size */}
+          <CardHeader className="flex flex-row items-center justify-between p-4">
+            <CardTitle className="text-xl text-foreground">Mouse Visualizer</CardTitle>
              <Tooltip>
               <TooltipTrigger>
                 <HelpCircle className="h-5 w-5 text-muted-foreground" />
@@ -251,17 +242,16 @@ export default function InputAnalyzerPage() {
               </TooltipContent>
             </Tooltip>
           </CardHeader>
-          <CardContent className="flex justify-center p-4 pt-0"> {/* Reduced p */}
+          <CardContent className="flex justify-center p-4 pt-0">
             <MouseTester activeMouseButton={activeMouseButton} />
           </CardContent>
         </Card>
       </div>
 
-      <footer className="mt-8 text-center text-xs text-muted-foreground"> {/* Reduced mt and size */}
+      <footer className="mt-8 text-center text-xs text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} Input Analyzer. All rights reserved.</p>
       </footer>
     </div>
     </TooltipProvider>
   );
 }
-
