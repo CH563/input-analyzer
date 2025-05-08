@@ -166,7 +166,7 @@ export default function InputAnalyzerPage() {
         <div className="flex items-center space-x-3">
           <MonitorPlay className="h-10 w-10 text-primary" />
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Input Analyzer</h1>
+            <h1 className="text-3xl font-bold text-foreground text-left">Input Analyzer</h1>
             <p className="text-muted-foreground mt-1 text-sm text-left">
               Test your keyboard and mouse inputs.
             </p>
