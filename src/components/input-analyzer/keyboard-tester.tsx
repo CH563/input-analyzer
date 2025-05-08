@@ -1,19 +1,19 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import {
   ArrowDown,
   ArrowLeft,
   ArrowRight,
   ArrowUp,
-  Command,
+  Command, // Icon for macOS Command key / Windows "Win" key fallback
   CornerDownLeft,
   Delete,
   Minus,
-  Option,
-  Square,
+  Option, // Icon for macOS Option key
+  Square, // Used for Space bar
   Plus,
   ChevronLeft,
   ChevronRight,
@@ -21,7 +21,7 @@ import {
   Columns,
   Printer,
   Info, // ScrollLock icon
-  HelpCircle, // Pause icon
+  HelpCircle, // Pause icon / Fallback for unknown Meta
   Home,
   ExternalLink, // End icon
   Lock,
@@ -38,16 +38,17 @@ interface KeyProps {
 }
 
 // Adjusted key size to h-10 (40px) and min-w-[2.5rem] (40px) for 1U
-const Key: React.FC<KeyProps> = ({ label, keyCode, activeKey, className, isIcon }) => {
+const Key: React.FC<KeyProps> = ({ label, keyCode, uniqueKey, activeKey, className, isIcon }) => {
   const isActive = activeKey === keyCode;
   return (
     <div
+      data-key-code={keyCode} // Added for easier debugging / selection
       className={cn(
-        'flex items-center justify-center h-10 min-w-[2.5rem] p-1.5 border rounded-md shadow-sm transition-all duration-100 ease-in-out transform', // Added transform for potential translate, duration changed to 100ms
+        'flex items-center justify-center h-10 min-w-[2.5rem] p-1.5 border rounded-md shadow-sm transition-all duration-100 ease-in-out transform',
         'bg-card text-card-foreground border-border',
         isActive 
-          ? 'bg-accent text-accent-foreground scale-105 ring-2 ring-accent ring-offset-2 ring-offset-background -translate-y-0.5' // Active state lifts slightly more
-          : 'hover:bg-muted hover:-translate-y-px', // Hover state lifts slightly
+          ? 'bg-accent text-accent-foreground scale-105 ring-2 ring-accent ring-offset-2 ring-offset-background -translate-y-0.5' 
+          : 'hover:bg-muted hover:-translate-y-px', 
         className,
         isIcon ? 'text-md' : 'text-xs font-medium'
       )}
@@ -66,14 +67,14 @@ const keyIconMap: Record<string, React.ReactNode> = {
   Backspace: <Delete />,
   Tab: <Columns />,
   Enter: <CornerDownLeft />,
-  ShiftLeft: <ArrowUp className="transform rotate-[-0deg]" />,
-  ShiftRight: <ArrowUp className="transform rotate-[-0deg]" />,
-  ControlLeft: <span className="text-xs">Ctrl</span>,
-  ControlRight: <span className="text-xs">Ctrl</span>,
-  AltLeft: <Option />,
-  AltRight: <Option />,
-  MetaLeft: <Command />,
-  MetaRight: <Command />,
+  ShiftLeft: <ArrowUp className="transform rotate-[-0deg]" />, // Generic shift icon
+  ShiftRight: <ArrowUp className="transform rotate-[-0deg]" />, // Generic shift icon
+  ControlLeft: <span className="text-xs">Ctrl</span>, // Text label for Ctrl
+  ControlRight: <span className="text-xs">Ctrl</span>, // Text label for Ctrl
+  AltLeftMac: <Option />, // macOS Option key
+  AltRightMac: <Option />, // macOS Option key
+  MetaLeftMac: <Command />, // macOS Command key
+  MetaRightMac: <Command />, // macOS Command key
   CapsLock: <Lock />,
   Escape: <span className="text-xs">Esc</span>,
   Space: <Square className="w-full h-5" />,
@@ -105,6 +106,50 @@ const getDigitKeyLabel = (key: string) => key.replace('Digit', '');
 
 
 export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => {
+  const [currentOs, setCurrentOs] = useState<'mac' | 'win' | 'linux' | 'unknown'>('unknown');
+
+  useEffect(() => {
+    const getOS = (): 'mac' | 'win' | 'linux' | 'unknown' => {
+      if (typeof window === 'undefined' || typeof navigator === 'undefined') return 'unknown';
+      // navigator.userAgentData is more modern but not universally supported, fallback to userAgent and platform
+      const platformFromUAData = (window.navigator as any).userAgentData?.platform?.toLowerCase();
+      const platformFromNavigator = window.navigator.platform.toLowerCase();
+      const userAgent = window.navigator.userAgent.toLowerCase();
+
+      const platform = platformFromUAData || platformFromNavigator;
+
+      if (platform.startsWith('mac') || userAgent.includes('mac os') || userAgent.includes('macintosh')) {
+        return 'mac';
+      }
+      if (platform.startsWith('win') || userAgent.includes('windows')) {
+        return 'win';
+      }
+      if (platform.startsWith('linux') || userAgent.includes('linux')) {
+        return 'linux';
+      }
+      return 'unknown';
+    };
+    setCurrentOs(getOS());
+  }, []);
+
+  const getModifierLabel = (baseCode: 'Alt' | 'Meta' | 'Control', side: 'Left' | 'Right'): React.ReactNode => {
+    const keyCode = `${baseCode}${side}`;
+    if (baseCode === 'Control') {
+      return keyIconMap[`Control${side}`] || <span className="text-xs">Ctrl</span>;
+    }
+    if (baseCode === 'Alt') {
+      if (currentOs === 'mac') return keyIconMap[`Alt${side}Mac`] || <Option />;
+      return <span className="text-xs">Alt</span>;
+    }
+    if (baseCode === 'Meta') {
+      if (currentOs === 'mac') return keyIconMap[`Meta${side}Mac`] || <Command />;
+      if (currentOs === 'win') return <span className="text-xs">Win</span>;
+      return keyIconMap[`Meta${side}Mac`] || <Command />; // Fallback for Linux/Unknown (Super key often uses similar icon or Command icon)
+    }
+    return keyCode; // Should not happen
+  };
+
+
   const keyboardLayout = [
     // Row 1 (Function keys, Escape)
     [
@@ -163,13 +208,13 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
     ],
     // Row 6 (Ctrl, Meta, Alt, Space) - Arrows moved to right cluster
     [
-      { code: 'ControlLeft', label: keyIconMap.ControlLeft, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
-      { code: 'MetaLeft', label: keyIconMap.MetaLeft, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
-      { code: 'AltLeft', label: keyIconMap.AltLeft, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'ControlLeft', label: getModifierLabel('Control', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'MetaLeft', label: getModifierLabel('Meta', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'AltLeft', label: getModifierLabel('Alt', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
       { code: 'Space', label: keyIconMap.Space, className: 'flex-grow min-w-[calc(5.5*2.5rem)]', uniqueSuffix: 'main' },
-      { code: 'AltRight', label: keyIconMap.AltRight, className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'main' },
-      { code: 'MetaRight', label: keyIconMap.MetaRight, className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'fnKey_main' }, // Often Fn key, ensure unique
-      { code: 'ControlRight', label: keyIconMap.ControlRight, className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'AltRight', label: getModifierLabel('Alt', 'Right'), className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'MetaRight', label: getModifierLabel('Meta', 'Right'), className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'fnKey_main' }, // Often Fn key or Right Meta
+      { code: 'ControlRight', label: getModifierLabel('Control', 'Right'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
     ],
   ];
 
