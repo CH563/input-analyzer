@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -192,47 +193,47 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
 
   const rightClusterLayout = [
     // Column 1: PrtSc, ScrollLock (or other fn), Pause (or other fn)
-    { code: 'PrintScreen', label: keyIconMap.PrintScreen },
-    { code: 'ScrollLock', label: keyIconMap.ScrollLock },
-    { code: 'Pause', label: keyIconMap.Pause },
+    { code: 'PrintScreen', label: keyIconMap.PrintScreen, uniqueCode: 'PrintScreen_nav' },
+    { code: 'ScrollLock', label: keyIconMap.ScrollLock, uniqueCode: 'ScrollLock_nav' },
+    { code: 'Pause', label: keyIconMap.Pause, uniqueCode: 'Pause_nav' },
 
     // Column 2: Insert, Home, PageUp
-    { code: 'Insert', label: keyIconMap.Insert },
-    { code: 'Home', label: keyIconMap.Home },
-    { code: 'PageUp', label: keyIconMap.PageUp },
+    { code: 'Insert', label: keyIconMap.Insert, uniqueCode: 'Insert_nav' },
+    { code: 'Home', label: keyIconMap.Home, uniqueCode: 'Home_nav' },
+    { code: 'PageUp', label: keyIconMap.PageUp, uniqueCode: 'PageUp_nav' },
 
     // Column 3: Delete, End, PageDown
-    { code: 'Delete', label: keyIconMap.DeleteForward }, // Already DeleteForward in map
-    { code: 'End', label: keyIconMap.End },
-    { code: 'PageDown', label: keyIconMap.PageDown },
+    { code: 'Delete', label: keyIconMap.DeleteForward, uniqueCode: 'Delete_nav' }, // Already DeleteForward in map
+    { code: 'End', label: keyIconMap.End, uniqueCode: 'End_nav' },
+    { code: 'PageDown', label: keyIconMap.PageDown, uniqueCode: 'PageDown_nav' },
 
     // Column 4: Numpad Top Row
-    { code: 'NumLock', label: keyIconMap.NumLock },
-    { code: 'NumpadDivide', label: keyIconMap.NumpadDivide },
-    { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply },
-    { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract },
+    { code: 'NumLock', label: keyIconMap.NumLock, uniqueCode: 'NumLock_numpad' },
+    { code: 'NumpadDivide', label: keyIconMap.NumpadDivide, uniqueCode: 'NumpadDivide_numpad' },
+    { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply, uniqueCode: 'NumpadMultiply_numpad' },
+    { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract, uniqueCode: 'NumpadSubtract_numpad' },
     
     // Column 5: Numpad 7,8,9 and Add
-    { code: 'Numpad7', label: '7' },
-    { code: 'Numpad8', label: '8' },
-    { code: 'Numpad9', label: '9' },
-    { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto' }, // Spans 2 rows
+    { code: 'Numpad7', label: '7', uniqueCode: 'Numpad7_numpad' },
+    { code: 'Numpad8', label: '8', uniqueCode: 'Numpad8_numpad' },
+    { code: 'Numpad9', label: '9', uniqueCode: 'Numpad9_numpad' },
+    { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto', uniqueCode: 'NumpadAdd_numpad' }, // Spans 2 rows
 
     // Column 6: Numpad 4,5,6
-    { code: 'Numpad4', label: '4' },
-    { code: 'Numpad5', label: '5' },
-    { code: 'Numpad6', label: '6' },
+    { code: 'Numpad4', label: '4', uniqueCode: 'Numpad4_numpad' },
+    { code: 'Numpad5', label: '5', uniqueCode: 'Numpad5_numpad' },
+    { code: 'Numpad6', label: '6', uniqueCode: 'Numpad6_numpad' },
     // NumpadAdd placeholder (spanned by previous)
     
     // Column 7: Numpad 1,2,3 and Enter
-    { code: 'Numpad1', label: '1' },
-    { code: 'Numpad2', label: '2' },
-    { code: 'Numpad3', label: '3' },
-    { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto' }, // Spans 2 rows
+    { code: 'Numpad1', label: '1', uniqueCode: 'Numpad1_numpad' },
+    { code: 'Numpad2', label: '2', uniqueCode: 'Numpad2_numpad' },
+    { code: 'Numpad3', label: '3', uniqueCode: 'Numpad3_numpad' },
+    { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto', uniqueCode: 'NumpadEnter_numpad' }, // Spans 2 rows
 
     // Column 8: Numpad 0 and Decimal
-    { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto min-w-[calc(2*2.5rem)]' }, // Spans 2 columns
-    { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal },
+    { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto min-w-[calc(2*2.5rem)]', uniqueCode: 'Numpad0_numpad' }, // Spans 2 columns
+    { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal, uniqueCode: 'NumpadDecimal_numpad' },
     // NumpadEnter placeholder (spanned by previous)
 
     // Arrow keys are separate from this grid, usually.
@@ -242,7 +243,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
 
 
   return (
-    <div className="p-2 bg-background rounded-lg shadow-inner space-y-1.5 flex flex-col items-center max-w-fit mx-auto">
+    <div className="p-2 bg-background rounded-lg shadow-inner space-x-1.5 flex flex-row items-start max-w-fit mx-auto">
       {/* Main keyboard section */}
       <div className="space-y-1.5">
         {keyboardLayout.map((row, rowIndex) => (
@@ -266,21 +267,21 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(0, 3).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
             </div>
              {/* Ins, Home, PgUp in a column */}
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(3, 6).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
             </div>
              {/* Del, End, PgDn in a column */}
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(6, 9).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
               })}
             </div>
           </div>
@@ -298,41 +299,42 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
         </div>
         
         {/* Numpad (4 columns wide, 5 rows tall including multi-row keys) */}
-        <div className="grid grid-cols-4 grid-rows-5 gap-1.5 ml-1.5"> {/* Added ml-1.5 for spacing */}
+        <div className="grid grid-cols-4 grid-rows-5 gap-1.5"> {/* Removed ml-1.5, parent flex container handles spacing */}
           {/* Row 1: NumLock, NumpadDivide, NumpadMultiply, NumpadSubtract */}
           {rightClusterLayout.slice(9, 13).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
 
           {/* Row 2: Numpad7, Numpad8, Numpad9 */}
           {rightClusterLayout.slice(13, 16).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
           {/* NumpadAdd (spans 2 rows, placed in grid) */}
-          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.code} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
 
           {/* Row 3: Numpad4, Numpad5, Numpad6 */}
           {rightClusterLayout.slice(17, 20).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
           
           {/* Row 4: Numpad1, Numpad2, Numpad3 */}
           {rightClusterLayout.slice(20, 23).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
+            return <Key key={k.uniqueCode} label={k.label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />;
           })}
           {/* NumpadEnter (spans 2 rows, placed in grid) */}
-           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.code} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
+           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
 
 
           {/* Row 5: Numpad0 (spans 2 cols), NumpadDecimal */}
-          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.code} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
-          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.code} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key key={k.uniqueCode} label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className)} isIcon={isIcon} />; })()}
         </div>
       </div>
     </div>
   );
 };
+
