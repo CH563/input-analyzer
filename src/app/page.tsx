@@ -1,5 +1,7 @@
+
 'use client';
 
+import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { KeyboardTester } from '@/components/input-analyzer/keyboard-tester';
@@ -15,41 +17,59 @@ export default function InputAnalyzerPage() {
   const [activeMouseButton, setActiveMouseButton] = useState<string | null>(null);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    let keyDisplay = event.key;
-    if (keyDisplay === ' ') keyDisplay = 'Space';
-    if (event.code.startsWith('Digit')) keyDisplay = event.key;
-    if (event.code.startsWith('Key')) keyDisplay = event.key.toUpperCase();
-    
-    // Prevent default browser actions for specific keys
-    const keysToPreventDefault = [
-      'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 
-      'Tab', 'Enter', 
-      'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
-      'Backspace' 
-    ];
+    let keyDisplayValue = event.key;
 
-    if (keysToPreventDefault.includes(event.key) || event.key.startsWith('F')) {
-       // Check if the event target is an input, textarea, or contenteditable element
-      const target = event.target as HTMLElement;
-      const isEditable = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
-      
-      // Only prevent default if not in an editable context for keys like Backspace or Enter
-      if (event.key === 'Backspace' || event.key === 'Enter' || event.key === 'Tab') {
-        if (!isEditable) {
-          event.preventDefault();
-        }
-      } else {
+    // Normalize keyDisplayValue for the "Last Key Pressed" field
+    if (event.code === 'Space') {
+      keyDisplayValue = 'Space';
+    } else if (event.code.startsWith('Key')) { // e.g., KeyA, KeyB
+      keyDisplayValue = event.key.toUpperCase();
+    } else if (event.code.startsWith('Digit')) { // e.g., Digit1, Digit2
+      keyDisplayValue = event.key; // This will be '1' or '!' etc. based on Shift
+    }
+    // For other keys like 'Enter', 'Tab', 'ArrowUp', event.key is usually fine as is.
+
+    const target = event.target as HTMLElement;
+    const isEditable = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+
+    // --- Prevent default for Ctrl/Meta combinations ---
+    if (event.ctrlKey || event.metaKey) {
+      const keyForCombo = event.key.toLowerCase();
+      if (keyForCombo === 'r' || keyForCombo === 's' || keyForCombo === 'p') {
+        event.preventDefault();
+        
+        let comboKeyDisplay = event.key.toUpperCase();
+        if (event.code === 'Space') comboKeyDisplay = 'Space'; // Should not happen with r,s,p but good practice
+
+        setLastKeyPressed(`Ctrl+${comboKeyDisplay}`);
+        setActiveKey(event.code); // Highlight the 'R', 'S', or 'P' key
+        setTimeout(() => setActiveKey(null), 200);
+        return; // Combo handled, exit
+      }
+    }
+
+    // --- Prevent default for specific single keys ---
+    // Using event.code for reliable identification
+    const codesToAlwaysPrevent = [
+      'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+      'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
+    ];
+    
+    const codesToPreventContextually = ['Tab', 'Enter', 'Backspace'];
+
+    if (codesToAlwaysPrevent.includes(event.code)) {
+      event.preventDefault();
+    } else if (codesToPreventContextually.includes(event.code)) {
+      if (!isEditable) {
         event.preventDefault();
       }
     }
-    if (keyDisplay === ' ') { // Special handling for space to always prevent scroll
-        event.preventDefault();
-    }
-
-
-    setLastKeyPressed(keyDisplay);
+    
+    // --- Update UI state for the key press ---
+    setLastKeyPressed(keyDisplayValue);
     setActiveKey(event.code);
     setTimeout(() => setActiveKey(null), 200);
+
   }, []);
 
   const handleKeyUp = useCallback((_event: KeyboardEvent) => {
@@ -79,6 +99,15 @@ export default function InputAnalyzerPage() {
     }
     setLastMouseButton(buttonName);
     setActiveMouseButton(buttonName);
+    // Prevent context menu on right click only if it's the specific mouse visualizer target or related area
+    // For a general test page, preventing it globally (as done in useEffect) is okay.
+    if (event.button === 2) {
+        // Example: Check if the click is on the mouse visualizer itself
+        // const targetElement = event.target as HTMLElement;
+        // if (targetElement.closest('.mouse-visualizer-area')) { // Add a class to your MouseTester component's container
+        // event.preventDefault(); 
+        // }
+    }
     setTimeout(() => setActiveMouseButton(null), 200);
   }, []);
   
@@ -91,9 +120,13 @@ export default function InputAnalyzerPage() {
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
-    // Prevent context menu on right click for the whole window
-    // to allow testing right mouse button without triggering context menu.
-    const preventContextMenu = (event: MouseEvent) => event.preventDefault();
+    
+    const preventContextMenu = (event: MouseEvent) => {
+        // Only prevent context menu if the target is not an input/textarea
+        // or if you want to disable it everywhere for testing.
+        // For this app, disabling everywhere to test right-click is intended.
+        event.preventDefault();
+    };
     window.addEventListener('contextmenu', preventContextMenu);
 
 
@@ -153,7 +186,7 @@ export default function InputAnalyzerPage() {
                 <HelpCircle className="h-5 w-5 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Press keys to see them light up. Some browser default actions (e.g., F5 for refresh) are prevented.</p>
+                <p>Press keys to see them light up. Common browser shortcuts (e.g., Ctrl+R, F5) are prevented on this page.</p>
               </TooltipContent>
             </Tooltip>
           </CardHeader>
@@ -187,3 +220,4 @@ export default function InputAnalyzerPage() {
     </TooltipProvider>
   );
 }
+
