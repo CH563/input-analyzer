@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -80,7 +81,7 @@ const keyIconMap: Record<string, React.ReactNode> = {
   Backspace: <Delete />,
   Tab: <Columns />,
   Enter: <CornerDownLeft />,
-  ShiftLeft: <ArrowUp className="transform rotate-[-0deg]" />, // Lucide doesn't have a dedicated shift icon
+  ShiftLeft: <ArrowUp className="transform rotate-[-0deg]" />, 
   ShiftRight: <ArrowUp className="transform rotate-[-0deg]" />,
   ControlLeft: <span className="text-xs">Ctrl</span>,
   ControlRight: <span className="text-xs">Ctrl</span>,
@@ -90,22 +91,22 @@ const keyIconMap: Record<string, React.ReactNode> = {
   MetaRight: <Command />,
   CapsLock: <Lock />,
   Escape: <span className="text-xs">Esc</span>,
-  Space: <Square className="w-24 h-6" />, // Represents space bar
+  Space: <Square className="w-24 h-6" />, 
   ArrowUp: <ArrowUp />,
   ArrowDown: <ArrowDown />,
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ContextMenu: <AlignLeft />,
   PrintScreen: <Printer />,
-  ScrollLock: <Info />, // No direct icon, using Info
-  Pause: <HelpCircle />, // No direct icon, using HelpCircle
+  ScrollLock: <Info />, 
+  Pause: <HelpCircle />, 
   Insert: <Plus />,
   Home: <Home />,
   PageUp: <ChevronLeft className="transform rotate-90" />,
   DeleteForward: <Delete />,
-  End: <ExternalLink />, // Using a generic icon
+  End: <ExternalLink />, 
   PageDown: <ChevronRight className="transform rotate-90" />,
-  NumLock: <Table />, // using table icon for numlock
+  NumLock: <Table />, 
   NumpadDivide: <span className="text-xl">/</span>,
   NumpadMultiply: <span className="text-xl">*</span>,
   NumpadSubtract: <Minus />,
@@ -119,11 +120,6 @@ const getDigitKeyLabel = (key: string) => key.replace('Digit', '');
 
 
 export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => {
-  const renderKey = (label: string | React.ReactNode, keyCode: string, className?: string) => {
-    const isIcon = typeof label !== 'string' && React.isValidElement(label);
-    return <Key label={label} keyCode={keyCode} activeKey={activeKey} className={className} isIcon={isIcon} />;
-  };
-  
   const keyboardLayout = [
     // Row 1 (Function keys, Escape)
     [
@@ -207,31 +203,31 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
         { code: 'ArrowRight', label: keyIconMap.ArrowRight },
       ],
       // Numpad
-      [
+      [ // Numpad Row 1
         { code: 'NumLock', label: keyIconMap.NumLock },
         { code: 'NumpadDivide', label: keyIconMap.NumpadDivide },
         { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply },
         { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract },
       ],
-      [
+      [ // Numpad Row 2
         { code: 'Numpad7', label: '7' },
         { code: 'Numpad8', label: '8' },
         { code: 'Numpad9', label: '9' },
-        { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto' }, // Spans 2 rows
+        { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto' }, 
       ],
-      [
+      [ // Numpad Row 3
         { code: 'Numpad4', label: '4' },
         { code: 'Numpad5', label: '5' },
         { code: 'Numpad6', label: '6' },
       ],
-      [
+      [ // Numpad Row 4
         { code: 'Numpad1', label: '1' },
         { code: 'Numpad2', label: '2' },
         { code: 'Numpad3', label: '3' },
-        { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto' }, // Spans 2 rows
+        { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto' }, 
       ],
-      [
-        { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto' }, // Spans 2 columns
+      [ // Numpad Row 5
+        { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto' }, 
         { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal },
       ],
     ],
@@ -242,16 +238,19 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
     <div className="p-4 bg-background rounded-lg shadow-inner space-y-1.5">
       {keyboardLayout.map((row, rowIndex) => (
         <div key={rowIndex} className="flex space-x-1.5 justify-center">
-          {row.map((keyConfig) => renderKey(keyConfig.label, keyConfig.code, keyConfig.className))}
+          {row.map((keyConfig) => {
+            const isIcon = typeof keyConfig.label !== 'string' && React.isValidElement(keyConfig.label);
+            return <Key key={keyConfig.code} label={keyConfig.label} keyCode={keyConfig.code} activeKey={activeKey} className={keyConfig.className} isIcon={isIcon} />;
+          })}
         </div>
       ))}
       <div className="flex justify-between pt-1.5 space-x-1.5">
         {/* Left side (PrintScreen, ScrollLock, Pause) */}
         <div className="space-y-1.5">
           <div className="flex space-x-1.5">
-             {renderKey(keyIconMap.PrintScreen || 'PrtSc', 'PrintScreen')}
-             {renderKey(keyIconMap.ScrollLock || 'ScrLk', 'ScrollLock')}
-             {renderKey(keyIconMap.Pause || 'Pause', 'Pause')}
+            {(() => { const label = keyIconMap.PrintScreen || 'PrtSc'; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode="PrintScreen" activeKey={activeKey} isIcon={isIcon} />; })()}
+            {(() => { const label = keyIconMap.ScrollLock || 'ScrLk'; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode="ScrollLock" activeKey={activeKey} isIcon={isIcon} />; })()}
+            {(() => { const label = keyIconMap.Pause || 'Pause'; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode="Pause" activeKey={activeKey} isIcon={isIcon} />; })()}
           </div>
         </div>
         {/* Right side (Navigation, Arrows, Numpad) */}
@@ -261,49 +260,56 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey }) => 
             <div className="flex space-x-1.5">
                 {/* Insert, Home, PageUp Column */}
                 <div className="flex flex-col space-y-1.5">
-                    {navigationAndNumpadLayout[0][0].map(k => renderKey(k.label, k.code, k.className))}
+                    {navigationAndNumpadLayout[0][0].map(k => {
+                        const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+                        return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                    })}
                 </div>
                 {/* Delete, End, PageDown Column */}
                 <div className="flex flex-col space-y-1.5">
-                    {navigationAndNumpadLayout[0][1].map(k => renderKey(k.label, k.code, k.className))}
+                     {navigationAndNumpadLayout[0][1].map(k => {
+                        const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+                        return <Key key={k.code} label={k.label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />;
+                    })}
                 </div>
             </div>
             {/* Arrow Keys */}
             <div className="flex justify-center space-x-1.5">
-                {renderKey(navigationAndNumpadLayout[0][3][0].label, navigationAndNumpadLayout[0][3][0].code)}
+                {(() => { const k = navigationAndNumpadLayout[0][3][0]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />; })()}
                 <div className="flex flex-col space-y-1.5 items-center">
-                     {renderKey(navigationAndNumpadLayout[0][2][1].label, navigationAndNumpadLayout[0][2][1].code)}
-                     {renderKey(navigationAndNumpadLayout[0][3][1].label, navigationAndNumpadLayout[0][3][1].code)}
+                     {(() => { const k = navigationAndNumpadLayout[0][2][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />; })()}
+                     {(() => { const k = navigationAndNumpadLayout[0][3][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />; })()}
                 </div>
-                {renderKey(navigationAndNumpadLayout[0][3][2].label, navigationAndNumpadLayout[0][3][2].code)}
+                {(() => { const k = navigationAndNumpadLayout[0][3][2]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={k.className} isIcon={isIcon} />; })()}
             </div>
           </div>
           {/* Numpad Column Group */}
           <div className="grid grid-cols-4 grid-rows-5 gap-1.5">
-            {renderKey(navigationAndNumpadLayout[0][4][0].label, navigationAndNumpadLayout[0][4][0].code, 'col-start-1')}
-            {renderKey(navigationAndNumpadLayout[0][4][1].label, navigationAndNumpadLayout[0][4][1].code, 'col-start-2')}
-            {renderKey(navigationAndNumpadLayout[0][4][2].label, navigationAndNumpadLayout[0][4][2].code, 'col-start-3')}
-            {renderKey(navigationAndNumpadLayout[0][4][3].label, navigationAndNumpadLayout[0][4][3].code, 'col-start-4')}
+            {(() => { const k = navigationAndNumpadLayout[0][4][0]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-1')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][4][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-2')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][4][2]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-3')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][4][3]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-4')} isIcon={isIcon} />; })()}
 
-            {renderKey(navigationAndNumpadLayout[0][5][0].label, navigationAndNumpadLayout[0][5][0].code, 'col-start-1 row-start-2')}
-            {renderKey(navigationAndNumpadLayout[0][5][1].label, navigationAndNumpadLayout[0][5][1].code, 'col-start-2 row-start-2')}
-            {renderKey(navigationAndNumpadLayout[0][5][2].label, navigationAndNumpadLayout[0][5][2].code, 'col-start-3 row-start-2')}
-            {renderKey(navigationAndNumpadLayout[0][5][3].label, navigationAndNumpadLayout[0][5][3].code, 'col-start-4 row-start-2 row-span-2 h-auto')}
+            {(() => { const k = navigationAndNumpadLayout[0][5][0]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-1 row-start-2')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][5][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-2 row-start-2')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][5][2]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-3 row-start-2')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][5][3]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-4 row-start-2 row-span-2 h-auto')} isIcon={isIcon} />; })()}
             
-            {renderKey(navigationAndNumpadLayout[0][6][0].label, navigationAndNumpadLayout[0][6][0].code, 'col-start-1 row-start-3')}
-            {renderKey(navigationAndNumpadLayout[0][6][1].label, navigationAndNumpadLayout[0][6][1].code, 'col-start-2 row-start-3')}
-            {renderKey(navigationAndNumpadLayout[0][6][2].label, navigationAndNumpadLayout[0][6][2].code, 'col-start-3 row-start-3')}
+            {(() => { const k = navigationAndNumpadLayout[0][6][0]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-1 row-start-3')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][6][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-2 row-start-3')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][6][2]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-3 row-start-3')} isIcon={isIcon} />; })()}
 
-            {renderKey(navigationAndNumpadLayout[0][7][0].label, navigationAndNumpadLayout[0][7][0].code, 'col-start-1 row-start-4')}
-            {renderKey(navigationAndNumpadLayout[0][7][1].label, navigationAndNumpadLayout[0][7][1].code, 'col-start-2 row-start-4')}
-            {renderKey(navigationAndNumpadLayout[0][7][2].label, navigationAndNumpadLayout[0][7][2].code, 'col-start-3 row-start-4')}
-            {renderKey(navigationAndNumpadLayout[0][7][3].label, navigationAndNumpadLayout[0][7][3].code, 'col-start-4 row-start-4 row-span-2 h-auto')}
+            {(() => { const k = navigationAndNumpadLayout[0][7][0]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-1 row-start-4')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][7][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-2 row-start-4')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][7][2]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-3 row-start-4')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][7][3]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-4 row-start-4 row-span-2 h-auto')} isIcon={isIcon} />; })()}
 
-            {renderKey(navigationAndNumpadLayout[0][8][0].label, navigationAndNumpadLayout[0][8][0].code, 'col-start-1 row-start-5 col-span-2 w-auto')}
-            {renderKey(navigationAndNumpadLayout[0][8][1].label, navigationAndNumpadLayout[0][8][1].code, 'col-start-3 row-start-5')}
+            {(() => { const k = navigationAndNumpadLayout[0][8][0]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-1 row-start-5 col-span-2 w-auto')} isIcon={isIcon} />; })()}
+            {(() => { const k = navigationAndNumpadLayout[0][8][1]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); return <Key label={label} keyCode={k.code} activeKey={activeKey} className={cn(k.className, 'col-start-3 row-start-5')} isIcon={isIcon} />; })()}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
