@@ -20,6 +20,33 @@ export default function InputAnalyzerPage() {
     if (event.code.startsWith('Digit')) keyDisplay = event.key;
     if (event.code.startsWith('Key')) keyDisplay = event.key.toUpperCase();
     
+    // Prevent default browser actions for specific keys
+    const keysToPreventDefault = [
+      'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 
+      'Tab', 'Enter', 
+      'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
+      'Backspace' 
+    ];
+
+    if (keysToPreventDefault.includes(event.key) || event.key.startsWith('F')) {
+       // Check if the event target is an input, textarea, or contenteditable element
+      const target = event.target as HTMLElement;
+      const isEditable = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+      
+      // Only prevent default if not in an editable context for keys like Backspace or Enter
+      if (event.key === 'Backspace' || event.key === 'Enter' || event.key === 'Tab') {
+        if (!isEditable) {
+          event.preventDefault();
+        }
+      } else {
+        event.preventDefault();
+      }
+    }
+    if (keyDisplay === ' ') { // Special handling for space to always prevent scroll
+        event.preventDefault();
+    }
+
+
     setLastKeyPressed(keyDisplay);
     setActiveKey(event.code);
     setTimeout(() => setActiveKey(null), 200);
@@ -64,12 +91,18 @@ export default function InputAnalyzerPage() {
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
+    // Prevent context menu on right click for the whole window
+    // to allow testing right mouse button without triggering context menu.
+    const preventContextMenu = (event: MouseEvent) => event.preventDefault();
+    window.addEventListener('contextmenu', preventContextMenu);
+
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('contextmenu', preventContextMenu);
     };
   }, [handleKeyDown, handleKeyUp, handleMouseDown, handleMouseUp]);
 
@@ -120,7 +153,7 @@ export default function InputAnalyzerPage() {
                 <HelpCircle className="h-5 w-5 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Press keys to see them light up.</p>
+                <p>Press keys to see them light up. Some browser default actions (e.g., F5 for refresh) are prevented.</p>
               </TooltipContent>
             </Tooltip>
           </CardHeader>
@@ -137,7 +170,7 @@ export default function InputAnalyzerPage() {
                 <HelpCircle className="h-5 w-5 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Click mouse buttons to see them light up.</p>
+                <p>Click mouse buttons to see them light up. Right-click context menu is disabled on this page.</p>
               </TooltipContent>
             </Tooltip>
           </CardHeader>
