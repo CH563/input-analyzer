@@ -47,7 +47,7 @@ export default function InputAnalyzerPage() {
         if (['Control', 'Alt', 'Meta', 'Shift'].includes(event.key)) {
             keyDisplayValue = event.key; 
         } else {
-            keyDisplayValue = `${prefix}${baseKey}`;
+            keyDisplayValue = `${prefix}${baseKey.length === 1 ? baseKey.toUpperCase() : baseKey }`;
         }
     }
 
@@ -87,20 +87,30 @@ export default function InputAnalyzerPage() {
       newSet.add(event.code);
       return newSet;
     });
-    setTimeout(() => setActiveKey(null), 200);
+    setTimeout(() => setActiveKey(null), 200); // Visual flash duration for active key
 
-    setKeyDownTimestamp(performance.now());
-    setKeyPressDelay(null);
-  }, []);
+    if (!pressedKeys.has(event.code)) { // Only set timestamp if it's a new key press in the current combo
+        setKeyDownTimestamp(performance.now());
+        setKeyPressDelay(null); // Reset delay for new key press
+    }
+  }, [pressedKeys]); // Added pressedKeys to dependency array
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
-    if (keyDownTimestamp) {
+    setPressedKeys(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(event.code);
+      return newSet;
+    });
+
+    if (keyDownTimestamp && pressedKeys.size === 1 && pressedKeys.has(event.code)) { // Check if it was the only key being tracked for delay
       const upTime = performance.now();
       const delay = Math.round(upTime - keyDownTimestamp);
       setKeyPressDelay(delay);
       setKeyDownTimestamp(null);
+    } else if (pressedKeys.size === 0) { // If all keys are released, clear timestamp
+        setKeyDownTimestamp(null);
     }
-  }, [keyDownTimestamp]);
+  }, [keyDownTimestamp, pressedKeys]); // Added pressedKeys to dependency array
 
   const handleMouseDown = useCallback((event: MouseEvent) => {
     let buttonName = 'N/A';
@@ -136,12 +146,14 @@ export default function InputAnalyzerPage() {
   }, []);
   
   const handleMouseUp = useCallback((_event: MouseEvent) => {
+    // Potentially clear activeMouseButton if needed, or handle button release states
   }, []);
 
   const handleResetPressedKeys = useCallback(() => {
     setPressedKeys(new Set());
     setLastKeyPressed('N/A');
     setKeyPressDelay(null);
+    setKeyDownTimestamp(null);
   }, []);
 
   useEffect(() => {
@@ -152,6 +164,7 @@ export default function InputAnalyzerPage() {
     
     const preventContextMenuGlobal = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
+        // Allow context menu in editable fields
         if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
             event.preventDefault();
         }
@@ -203,33 +216,33 @@ export default function InputAnalyzerPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mb-4">
         <Card className="shadow-lg">
-          <CardHeader className="p-3">
-            <CardTitle className="text-lg text-foreground">Last Key Pressed</CardTitle>
+          <CardHeader className="p-3 pb-1">
+            <CardTitle className="text-base text-foreground">Last Key Pressed</CardTitle>
           </CardHeader>
-          <CardContent className="p-3 pt-0">
-            <p className="text-xl font-mono text-accent min-h-[2.25rem] flex items-center justify-center p-2 bg-muted rounded-md break-all">
+          <CardContent className="p-3 pt-1">
+            <p className="text-lg font-mono text-accent min-h-[2rem] flex items-center justify-center p-1.5 bg-muted rounded-md break-all">
               {lastKeyPressed}
             </p>
           </CardContent>
         </Card>
         <Card className="shadow-lg">
-          <CardHeader className="p-3">
-            <CardTitle className="text-lg text-foreground">Last Mouse Button</CardTitle>
+          <CardHeader className="p-3 pb-1">
+            <CardTitle className="text-base text-foreground">Last Mouse Button</CardTitle>
           </CardHeader>
-          <CardContent className="p-3 pt-0">
-            <p className="text-xl font-mono text-accent min-h-[2.25rem] flex items-center justify-center p-2 bg-muted rounded-md">
+          <CardContent className="p-3 pt-1">
+            <p className="text-lg font-mono text-accent min-h-[2rem] flex items-center justify-center p-1.5 bg-muted rounded-md">
               {lastMouseButton}
             </p>
           </CardContent>
         </Card>
         <Card className="shadow-lg">
-          <CardHeader className="p-3">
-            <CardTitle className="text-lg text-foreground flex items-center">
-              <Timer className="h-4 w-4 mr-2" /> Key Press Duration
+          <CardHeader className="p-3 pb-1">
+            <CardTitle className="text-base text-foreground flex items-center">
+              <Timer className="h-3.5 w-3.5 mr-1.5" /> Key Press Duration
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-3 pt-0">
-            <p className="text-xl font-mono text-accent min-h-[2.25rem] flex items-center justify-center p-2 bg-muted rounded-md">
+          <CardContent className="p-3 pt-1">
+            <p className="text-lg font-mono text-accent min-h-[2rem] flex items-center justify-center p-1.5 bg-muted rounded-md">
               {keyPressDelay === null ? 'N/A' : `${keyPressDelay} ms`}
             </p>
           </CardContent>
@@ -246,8 +259,22 @@ export default function InputAnalyzerPage() {
               <TooltipTrigger>
                 <HelpCircle className="h-5 w-5 text-muted-foreground" />
               </TooltipTrigger>
-              <TooltipContent>
-                <p>Press keys to see them light up. Common browser shortcuts (e.g., Ctrl+R, F5) are prevented on this page.</p>
+              <TooltipContent className="max-w-sm md:max-w-md text-xs p-3">
+                <p className="font-semibold mb-1.5 text-sm text-foreground">Keyboard Testing Guide:</p>
+                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                  <li>Shows all keys currently held down.</li>
+                  <li>The last key pressed will flash with the accent color.</li>
+                  <li>
+                    <strong>Rollover Test:</strong> Press multiple keys simultaneously. The number of keys that light up indicates your keyboard's N-Key Rollover (NKRO) capability.
+                  </li>
+                  <li>
+                    <strong>Ghosting Test:</strong> If an unpressed key lights up while you're holding down a combination of other keys, your keyboard may be experiencing ghosting.
+                  </li>
+                  <li>
+                    <strong>Jamming/Masking Test:</strong> If you press a key while holding others and it doesn't light up, your keyboard might be jamming or has reached its rollover limit.
+                  </li>
+                  <li>Common browser shortcuts (e.g., Ctrl+R, F5) are generally disabled on this page to allow for more accurate testing of these keys.</li>
+                </ul>
               </TooltipContent>
             </Tooltip>
           </CardHeader>
