@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react';
@@ -18,6 +17,7 @@ export default function InputAnalyzerPage() {
   const [lastMouseButton, setLastMouseButton] = useState<string>('N/A');
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
+  const [everPressedKeys, setEverPressedKeys] = useState<Set<string>>(new Set());
   const [activeMouseButton, setActiveMouseButton] = useState<string | null>(null);
   const [keyDownTimestamp, setKeyDownTimestamp] = useState<number | null>(null);
   const [keyPressDelay, setKeyPressDelay] = useState<number | null>(null);
@@ -87,13 +87,18 @@ export default function InputAnalyzerPage() {
       newSet.add(event.code);
       return newSet;
     });
+    setEverPressedKeys(prev => {
+        const newSet = new Set(prev);
+        newSet.add(event.code);
+        return newSet;
+    });
     setTimeout(() => setActiveKey(null), 200); // Visual flash duration for active key
 
     if (!pressedKeys.has(event.code)) { // Only set timestamp if it's a new key press in the current combo
         setKeyDownTimestamp(performance.now());
         setKeyPressDelay(null); // Reset delay for new key press
     }
-  }, [pressedKeys]); // Added pressedKeys to dependency array
+  }, [pressedKeys]);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     setPressedKeys(prev => {
@@ -102,15 +107,15 @@ export default function InputAnalyzerPage() {
       return newSet;
     });
 
-    if (keyDownTimestamp && pressedKeys.size === 1 && pressedKeys.has(event.code)) { // Check if it was the only key being tracked for delay
+    if (keyDownTimestamp && pressedKeys.size === 1 && pressedKeys.has(event.code)) { 
       const upTime = performance.now();
       const delay = Math.round(upTime - keyDownTimestamp);
       setKeyPressDelay(delay);
       setKeyDownTimestamp(null);
-    } else if (pressedKeys.size === 0) { // If all keys are released, clear timestamp
+    } else if (pressedKeys.size === 0) { 
         setKeyDownTimestamp(null);
     }
-  }, [keyDownTimestamp, pressedKeys]); // Added pressedKeys to dependency array
+  }, [keyDownTimestamp, pressedKeys]);
 
   const handleMouseDown = useCallback((event: MouseEvent) => {
     let buttonName = 'N/A';
@@ -136,12 +141,6 @@ export default function InputAnalyzerPage() {
     setLastMouseButton(buttonName);
     setActiveMouseButton(buttonName);
 
-    if (event.button === 2) { 
-        const target = event.target as HTMLElement;
-        if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
-            // event.preventDefault(); // This was moved to global contextmenu listener
-        }
-    }
     setTimeout(() => setActiveMouseButton(null), 200);
   }, []);
   
@@ -151,6 +150,7 @@ export default function InputAnalyzerPage() {
 
   const handleResetPressedKeys = useCallback(() => {
     setPressedKeys(new Set());
+    setEverPressedKeys(new Set());
     setLastKeyPressed('N/A');
     setKeyPressDelay(null);
     setKeyDownTimestamp(null);
@@ -164,7 +164,6 @@ export default function InputAnalyzerPage() {
     
     const preventContextMenuGlobal = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
-        // Allow context menu in editable fields
         if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
             event.preventDefault();
         }
@@ -262,8 +261,9 @@ export default function InputAnalyzerPage() {
               <TooltipContent className="max-w-sm md:max-w-md text-xs p-3">
                 <p className="font-semibold mb-1.5 text-sm text-foreground">Keyboard Testing Guide:</p>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Shows all keys currently held down.</li>
-                  <li>The last key pressed will flash with the accent color.</li>
+                  <li>Shows all keys currently held down (styled as 'Pressed').</li>
+                  <li>Keys that have been pressed and released will also show as 'Pressed'.</li>
+                  <li>The last key actively pressed will flash with the 'Active' style.</li>
                   <li>
                     <strong>Rollover Test:</strong> Press multiple keys simultaneously. The number of keys that light up indicates your keyboard's N-Key Rollover (NKRO) capability.
                   </li>
@@ -279,7 +279,7 @@ export default function InputAnalyzerPage() {
             </Tooltip>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <KeyboardTester activeKey={activeKey} pressedKeys={pressedKeys} />
+            <KeyboardTester activeKey={activeKey} pressedKeys={pressedKeys} everPressedKeys={everPressedKeys} />
           </CardContent>
         </Card>
 
@@ -308,3 +308,4 @@ export default function InputAnalyzerPage() {
     </TooltipProvider>
   );
 }
+

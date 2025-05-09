@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -33,7 +32,7 @@ interface KeyProps {
   keyCode: string; 
   uniqueKey: string; 
   activeKey: string | null;
-  isPressed: boolean; // Added to track if the key has been pressed at least once
+  isPressed: boolean; // This prop now means "has been pressed at least once"
   className?: string;
   isIcon?: boolean;
 }
@@ -47,9 +46,9 @@ const Key: React.FC<KeyProps> = ({ label, keyCode, uniqueKey, activeKey, isPress
         'flex items-center justify-center h-10 min-w-[2.5rem] p-1.5 border rounded-md shadow-sm transition-all duration-100 ease-in-out transform',
         isActive 
           ? 'bg-accent text-accent-foreground scale-105 ring-2 ring-accent ring-offset-2 ring-offset-background -translate-y-0.5' 
-          : isPressed
-            ? 'bg-secondary text-secondary-foreground' // Style for pressed but not currently active
-            : 'bg-card text-card-foreground border-border hover:bg-muted hover:-translate-y-px', // Style for never pressed
+          : isPressed // If ever pressed (and not currently active)
+            ? 'bg-secondary text-secondary-foreground' 
+            : 'bg-card text-card-foreground border-border hover:bg-muted hover:-translate-y-px', 
         className,
         isIcon ? 'text-md' : 'text-xs font-medium'
       )}
@@ -62,7 +61,8 @@ const Key: React.FC<KeyProps> = ({ label, keyCode, uniqueKey, activeKey, isPress
 
 interface KeyboardLayoutProps {
   activeKey: string | null;
-  pressedKeys: Set<string>; // Pass the set of all pressed keys
+  pressedKeys: Set<string>; // Currently held down keys
+  everPressedKeys: Set<string>; // Keys that have been pressed at least once
 }
 
 const keyIconMap: Record<string, React.ReactNode> = {
@@ -107,7 +107,7 @@ const getFKeyLabel = (key: string) => key.replace('F', '');
 const getDigitKeyLabel = (key: string) => key.replace('Digit', '');
 
 
-export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, pressedKeys }) => {
+export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, pressedKeys, everPressedKeys }) => {
   const [currentOs, setCurrentOs] = useState<'mac' | 'win' | 'linux' | 'unknown'>('unknown');
 
   useEffect(() => {
@@ -258,8 +258,8 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
             {row.map((keyConfig) => {
               const isIcon = typeof keyConfig.label !== 'string' && React.isValidElement(keyConfig.label);
               const uniqueKey = `${keyConfig.code}-${keyConfig.uniqueSuffix}-${rowIndex}`;
-              const isPressed = pressedKeys.has(keyConfig.code);
-              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={keyConfig.label} keyCode={keyConfig.code} activeKey={activeKey} isPressed={isPressed} className={keyConfig.className} isIcon={isIcon} />;
+              const hasBeenEverPressed = everPressedKeys.has(keyConfig.code);
+              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={keyConfig.label} keyCode={keyConfig.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={keyConfig.className} isIcon={isIcon} />;
             })}
           </div>
         ))}
@@ -272,34 +272,34 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
               {rightClusterLayout.slice(0, 3).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
                 const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol1`;
-                const isPressed = pressedKeys.has(k.code);
-                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={k.className} isIcon={isIcon} />;
+                const hasBeenEverPressed = everPressedKeys.has(k.code);
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
               })}
             </div>
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(3, 6).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
                 const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol2`;
-                const isPressed = pressedKeys.has(k.code);
-                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={k.className} isIcon={isIcon} />;
+                const hasBeenEverPressed = everPressedKeys.has(k.code);
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
               })}
             </div>
             <div className="flex flex-col space-y-1.5">
               {rightClusterLayout.slice(6, 9).map(k => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
                 const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol3`;
-                const isPressed = pressedKeys.has(k.code);
-                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={k.className} isIcon={isIcon} />;
+                const hasBeenEverPressed = everPressedKeys.has(k.code);
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
               })}
               <div className="col-span-3 h-10"></div>
             </div>
           </div>
           <div className="flex flex-col items-center space-y-1.5"> 
-            <Key key="ArrowUp-arrow" uniqueKey="ArrowUp-arrow" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isPressed={pressedKeys.has("ArrowUp")} isIcon={true} />
+            <Key key="ArrowUp-arrow" uniqueKey="ArrowUp-arrow" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowUp")} isIcon={true} />
             <div className="flex space-x-1.5">
-              <Key key="ArrowLeft-arrow" uniqueKey="ArrowLeft-arrow" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isPressed={pressedKeys.has("ArrowLeft")} isIcon={true} />
-              <Key key="ArrowDown-arrow" uniqueKey="ArrowDown-arrow" label={keyIconMap.ArrowDown} keyCode="ArrowDown" activeKey={activeKey} isPressed={pressedKeys.has("ArrowDown")} isIcon={true} />
-              <Key key="ArrowRight-arrow" uniqueKey="ArrowRight-arrow" label={keyIconMap.ArrowRight} keyCode="ArrowRight" activeKey={activeKey} isPressed={pressedKeys.has("ArrowRight")} isIcon={true} />
+              <Key key="ArrowLeft-arrow" uniqueKey="ArrowLeft-arrow" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowLeft")} isIcon={true} />
+              <Key key="ArrowDown-arrow" uniqueKey="ArrowDown-arrow" label={keyIconMap.ArrowDown} keyCode="ArrowDown" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowDown")} isIcon={true} />
+              <Key key="ArrowRight-arrow" uniqueKey="ArrowRight-arrow" label={keyIconMap.ArrowRight} keyCode="ArrowRight" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowRight")} isIcon={true} />
             </div>
           </div>
         </div>
@@ -309,35 +309,35 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
           {rightClusterLayout.slice(9, 13).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
             const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad1`;
-            const isPressed = pressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className)} isIcon={isIcon} />;
+            const hasBeenEverPressed = everPressedKeys.has(k.code);
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
 
           {rightClusterLayout.slice(13, 16).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
             const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad2`;
-            const isPressed = pressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className)} isIcon={isIcon} />;
+            const hasBeenEverPressed = everPressedKeys.has(k.code);
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
-          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-add`; const isPressed = pressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-add`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
 
           {rightClusterLayout.slice(17, 20).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
             const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad3`;
-            const isPressed = pressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className)} isIcon={isIcon} />;
+            const hasBeenEverPressed = everPressedKeys.has(k.code);
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
           
           {rightClusterLayout.slice(20, 23).map(k => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
             const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad4`;
-            const isPressed = pressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className)} isIcon={isIcon} />;
+            const hasBeenEverPressed = everPressedKeys.has(k.code);
+            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
-           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-enter`; const isPressed = pressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
+           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-enter`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
 
-          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad0`; const isPressed = pressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
-          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-dec`; const isPressed = pressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={isPressed} className={cn(k.className)} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad0`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
+          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-dec`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />; })()}
         </div>
       </div>
     </div>
