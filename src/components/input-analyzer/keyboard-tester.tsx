@@ -100,7 +100,7 @@ const keyIconMap: Record<string, React.ReactNode> = {
   NumpadDecimal: <span className="text-lg">.</span>,
 };
 
-const getFKeyLabel = (key: string) => key.replace('F', '');
+const getFKeyLabel = (key: string) => key.replace('F', 'F');
 const getDigitKeyLabel = (key: string) => key.replace('Digit', '');
 
 
@@ -154,18 +154,19 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
       ...Array.from({ length: 4 }, (_, i) => ({
         code: `F${i + 1}`,
         label: getFKeyLabel(`F${i + 1}`),
+        className: i === 0 ? 'ml-6' : undefined,
         uniqueSuffix: `f${i+1}`
       })),
       ...Array.from({ length: 4 }, (_, i) => ({
         code: `F${i + 5}`,
         label: getFKeyLabel(`F${i + 5}`),
-        className: i === 0 ? 'ml-2' : undefined,
+        className: i === 0 ? 'ml-6' : undefined,
         uniqueSuffix: `f${i+5}`
       })),
       ...Array.from({ length: 4 }, (_, i) => ({
         code: `F${i + 9}`,
         label: getFKeyLabel(`F${i + 9}`),
-        className: i === 0 ? 'ml-2' : undefined,
+        className: i === 0 ? 'ml-6' : undefined,
         uniqueSuffix: `f${i+9}`
       })),
     ],
@@ -201,11 +202,11 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
     ],
     [
       { code: 'ControlLeft', label: getModifierLabel('Control', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
-      { code: 'MetaLeft', label: getModifierLabel('Meta', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
       { code: 'AltLeft', label: getModifierLabel('Alt', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
+      { code: 'MetaLeft', label: getModifierLabel('Meta', 'Left'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
       { code: 'Space', label: keyIconMap.Space, className: 'flex-grow min-w-[calc(5.5*2.5rem)]', uniqueSuffix: 'main' },
-      { code: 'AltRight', label: getModifierLabel('Alt', 'Right'), className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'main' },
       { code: 'MetaRight', label: getModifierLabel('Meta', 'Right'), className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'fnKey_main' }, 
+      { code: 'AltRight', label: getModifierLabel('Alt', 'Right'), className: 'min-w-[calc(1*2.5rem)]', uniqueSuffix: 'main' },
       { code: 'ControlRight', label: getModifierLabel('Control', 'Right'), className: 'min-w-[calc(1.25*2.5rem)]', uniqueSuffix: 'main' },
     ],
   ];
@@ -260,7 +261,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
     <div className="p-2 bg-background rounded-lg shadow-inner space-x-1.5 flex flex-row items-start max-w-fit mx-auto">
       <div className="space-y-1.5">
         {keyboardLayout.map((row, rowIndex) => (
-          <div key={`main-row-${rowIndex}`} className="flex space-x-1.5 justify-start">
+          <div key={`main-row-${rowIndex}`} className="flex gap-x-1.5 justify-start">
             {row.map((keyConfig, keyIndex) => {
               const isIcon = typeof keyConfig.label !== 'string' && React.isValidElement(keyConfig.label);
               const uniqueKey = `${keyConfig.code}-${keyConfig.uniqueSuffix}-${rowIndex}-${keyIndex}`;
