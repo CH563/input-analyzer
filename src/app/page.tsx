@@ -8,9 +8,10 @@ import { KeyboardTester } from '@/components/input-analyzer/keyboard-tester';
 import { MouseTester } from '@/components/input-analyzer/mouse-tester';
 import { KeyStatusLegend } from '@/components/input-analyzer/key-status-legend';
 import { Separator } from '@/components/ui/separator';
-import { HelpCircle, MonitorPlay, Timer } from 'lucide-react';
+import { HelpCircle, MonitorPlay, Timer, RotateCcw } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ThemeSwitcher } from '@/components/theme-switcher';
+import { Button } from '@/components/ui/button';
 
 export default function InputAnalyzerPage() {
   const [lastKeyPressed, setLastKeyPressed] = useState<string>('N/A');
@@ -137,6 +138,12 @@ export default function InputAnalyzerPage() {
   const handleMouseUp = useCallback((_event: MouseEvent) => {
   }, []);
 
+  const handleResetPressedKeys = useCallback(() => {
+    setPressedKeys(new Set());
+    setLastKeyPressed('N/A');
+    setKeyPressDelay(null);
+  }, []);
+
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => handleKeyDown(e);
     const handleGlobalKeyUp = (e: KeyboardEvent) => handleKeyUp(e);
@@ -179,6 +186,16 @@ export default function InputAnalyzerPage() {
           </div>
         </div>
         <div className="flex items-center space-x-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" size="icon" onClick={handleResetPressedKeys} className="h-9 w-9">
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Reset Key States</p>
+            </TooltipContent>
+          </Tooltip>
           <KeyStatusLegend />
           <ThemeSwitcher />
         </div>
