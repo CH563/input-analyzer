@@ -3,36 +3,36 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  Command, 
-  CornerDownLeft,
-  Delete,
-  Minus,
-  Option, 
-  Square, 
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-  AlignLeft,
-  Columns,
-  Printer,
-  Info, 
-  HelpCircle, 
-  Home,
-  ExternalLink, 
-  Lock,
-  Table, 
-} from 'lucide-react';
+  MdArrowDownward,
+  MdArrowBack,
+  MdArrowForward,
+  MdArrowUpward,
+  MdKeyboardReturn,
+  MdBackspace,
+  MdRemove,
+  MdSpaceBar,
+  MdAdd,
+  MdKeyboardArrowUp,
+  MdKeyboardArrowDown,
+  MdMenu,
+  MdKeyboardTab,
+  MdPrint,
+  MdLockOutline,
+  MdPause,
+  MdHome,
+  MdVerticalAlignBottom,
+  MdKeyboardCapslock,
+  MdDialpad,
+  MdWindow // For Windows Key
+} from 'react-icons/md';
+
 
 interface KeyProps {
   label: string | React.ReactNode;
   keyCode: string; 
   uniqueKey: string; 
   activeKey: string | null;
-  isPressed: boolean; // This prop now means "has been pressed at least once"
+  isPressed: boolean; 
   className?: string;
   isIcon?: boolean;
 }
@@ -46,7 +46,7 @@ const Key: React.FC<KeyProps> = ({ label, keyCode, uniqueKey, activeKey, isPress
         'flex items-center justify-center h-10 min-w-[2.5rem] p-1.5 border rounded-md shadow-sm transition-all duration-100 ease-in-out transform',
         isActive 
           ? 'bg-accent text-accent-foreground scale-105 ring-2 ring-accent ring-offset-2 ring-offset-background -translate-y-0.5' 
-          : isPressed // If ever pressed (and not currently active)
+          : isPressed 
             ? 'bg-secondary text-secondary-foreground' 
             : 'bg-card text-card-foreground border-border hover:bg-muted hover:-translate-y-px', 
         className,
@@ -61,45 +61,42 @@ const Key: React.FC<KeyProps> = ({ label, keyCode, uniqueKey, activeKey, isPress
 
 interface KeyboardLayoutProps {
   activeKey: string | null;
-  pressedKeys: Set<string>; // Currently held down keys
-  everPressedKeys: Set<string>; // Keys that have been pressed at least once
+  pressedKeys: Set<string>; 
+  everPressedKeys: Set<string>; 
 }
 
 const keyIconMap: Record<string, React.ReactNode> = {
-  Backspace: <Delete />,
-  Tab: <Columns />,
-  Enter: <CornerDownLeft />,
-  ShiftLeft: <ArrowUp className="transform rotate-[-0deg]" />, 
-  ShiftRight: <ArrowUp className="transform rotate-[-0deg]" />, 
+  Backspace: <MdBackspace />,
+  Tab: <MdKeyboardTab />,
+  Enter: <MdKeyboardReturn />,
+  ShiftLeft: <MdKeyboardArrowUp className="transform rotate-[-0deg]" />, 
+  ShiftRight: <MdKeyboardArrowUp className="transform rotate-[-0deg]" />, 
   ControlLeft: <span className="text-xs">Ctrl</span>, 
   ControlRight: <span className="text-xs">Ctrl</span>, 
-  AltLeftMac: <Option />, 
-  AltRightMac: <Option />, 
-  MetaLeftMac: <Command />, 
-  MetaRightMac: <Command />, 
-  CapsLock: <Lock />,
+  // Mac specific text symbols will be handled in getModifierLabel
+  CapsLock: <MdKeyboardCapslock />,
   Escape: <span className="text-xs">Esc</span>,
-  Space: <Square className="w-full h-5" />,
-  ArrowUp: <ArrowUp />,
-  ArrowDown: <ArrowDown />,
-  ArrowLeft: <ArrowLeft />,
-  ArrowRight: <ArrowRight />,
-  ContextMenu: <AlignLeft />,
-  PrintScreen: <Printer />,
-  ScrollLock: <Info />,
-  Pause: <HelpCircle />,
-  Insert: <Plus />,
-  Home: <Home />,
-  PageUp: <ChevronLeft className="transform rotate-90" />,
-  DeleteForward: <Delete />, 
-  End: <ExternalLink />,
-  PageDown: <ChevronRight className="transform rotate-90" />,
-  NumLock: <Table />,
+  Space: <MdSpaceBar className="w-full h-5" />,
+  ArrowUp: <MdArrowUpward />,
+  ArrowDown: <MdArrowDownward />,
+  ArrowLeft: <MdArrowBack />,
+  ArrowRight: <MdArrowForward />,
+  ContextMenu: <MdMenu />,
+  PrintScreen: <MdPrint />,
+  ScrollLock: <MdLockOutline />, // Mapped from Lucide Info
+  Pause: <MdPause />, // Mapped from Lucide HelpCircle
+  Insert: <MdAdd />, // Mapped from Lucide Plus
+  Home: <MdHome />,
+  PageUp: <MdKeyboardArrowUp />, // Mapped from Lucide ChevronLeft rotated
+  DeleteForward: <MdBackspace className="transform scale-x-[-1]" />, // Re-using backspace and flipping for Delete
+  End: <MdVerticalAlignBottom />, // Mapped from Lucide ExternalLink
+  PageDown: <MdKeyboardArrowDown />, // Mapped from Lucide ChevronRight rotated
+  NumLock: <MdDialpad />, // Mapped from Lucide Table
   NumpadDivide: <span className="text-lg">/</span>,
   NumpadMultiply: <span className="text-lg">*</span>,
-  NumpadSubtract: <Minus />,
-  NumpadAdd: <Plus />,
-  NumpadEnter: <CornerDownLeft />,
+  NumpadSubtract: <MdRemove />,
+  NumpadAdd: <MdAdd />,
+  NumpadEnter: <MdKeyboardReturn />,
   NumpadDecimal: <span className="text-lg">.</span>,
 };
 
@@ -134,20 +131,20 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
   }, []);
 
   const getModifierLabel = (baseCode: 'Alt' | 'Meta' | 'Control', side: 'Left' | 'Right'): React.ReactNode => {
-    const keyCode = `${baseCode}${side}`;
+    // const keyCode = `${baseCode}${side}`; // not used
     if (baseCode === 'Control') {
       return keyIconMap[`Control${side}`] || <span className="text-xs">Ctrl</span>;
     }
     if (baseCode === 'Alt') {
-      if (currentOs === 'mac') return keyIconMap[`Alt${side}Mac`] || <Option />;
+      if (currentOs === 'mac') return <span className="text-xs">⌥</span>; // Option key symbol
       return <span className="text-xs">Alt</span>;
     }
     if (baseCode === 'Meta') {
-      if (currentOs === 'mac') return keyIconMap[`Meta${side}Mac`] || <Command />;
-      if (currentOs === 'win') return <span className="text-xs">Win</span>;
-      return keyIconMap[`Meta${side}Mac`] || <Command />; 
+      if (currentOs === 'mac') return <span className="text-xs">⌘</span>; // Command key symbol
+      if (currentOs === 'win') return <MdWindow />; 
+      return <span className="text-xs">Meta</span>; // Fallback for Linux/Unknown
     }
-    return keyCode; 
+    return `${baseCode}${side}`; 
   };
 
 
@@ -214,39 +211,48 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
   ];
 
   const rightClusterLayout = [
-    { code: 'PrintScreen', label: keyIconMap.PrintScreen, uniqueSuffix: 'nav' },
-    { code: 'ScrollLock', label: keyIconMap.ScrollLock, uniqueSuffix: 'nav' },
-    { code: 'Pause', label: keyIconMap.Pause, uniqueSuffix: 'nav' },
-
-    { code: 'Insert', label: keyIconMap.Insert, uniqueSuffix: 'nav' },
-    { code: 'Home', label: keyIconMap.Home, uniqueSuffix: 'nav' },
-    { code: 'PageUp', label: keyIconMap.PageUp, uniqueSuffix: 'nav' },
-
-    { code: 'Delete', label: keyIconMap.DeleteForward, uniqueSuffix: 'nav' }, 
-    { code: 'End', label: keyIconMap.End, uniqueSuffix: 'nav' },
-    { code: 'PageDown', label: keyIconMap.PageDown, uniqueSuffix: 'nav' },
-
-    { code: 'NumLock', label: keyIconMap.NumLock, uniqueSuffix: 'numpad' },
-    { code: 'NumpadDivide', label: keyIconMap.NumpadDivide, uniqueSuffix: 'numpad' },
-    { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply, uniqueSuffix: 'numpad' },
-    { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract, uniqueSuffix: 'numpad' },
+    // Top navigation cluster (PrintScreen, ScrollLock, Pause) - 3 keys
+    { code: 'PrintScreen', label: keyIconMap.PrintScreen, uniqueSuffix: 'navTop1' },
+    { code: 'ScrollLock', label: keyIconMap.ScrollLock, uniqueSuffix: 'navTop2' },
+    { code: 'Pause', label: keyIconMap.Pause, uniqueSuffix: 'navTop3' },
+  
+    // Middle navigation cluster (Insert, Home, PageUp) - 3 keys
+    { code: 'Insert', label: keyIconMap.Insert, uniqueSuffix: 'navMid1' },
+    { code: 'Home', label: keyIconMap.Home, uniqueSuffix: 'navMid2' },
+    { code: 'PageUp', label: keyIconMap.PageUp, uniqueSuffix: 'navMid3' },
+  
+    // Bottom navigation cluster (Delete, End, PageDown) - 3 keys
+    { code: 'Delete', label: keyIconMap.DeleteForward, uniqueSuffix: 'navBot1' }, // 'Delete' is often used for forward delete
+    { code: 'End', label: keyIconMap.End, uniqueSuffix: 'navBot2' },
+    { code: 'PageDown', label: keyIconMap.PageDown, uniqueSuffix: 'navBot3' },
+  
+    // Numpad starts here
+    // Row 1: NumLock, NumpadDivide, NumpadMultiply, NumpadSubtract
+    { code: 'NumLock', label: keyIconMap.NumLock, uniqueSuffix: 'numpadR1C1' },
+    { code: 'NumpadDivide', label: keyIconMap.NumpadDivide, uniqueSuffix: 'numpadR1C2' },
+    { code: 'NumpadMultiply', label: keyIconMap.NumpadMultiply, uniqueSuffix: 'numpadR1C3' },
+    { code: 'NumpadSubtract', label: keyIconMap.NumpadSubtract, uniqueSuffix: 'numpadR1C4' },
     
-    { code: 'Numpad7', label: '7', uniqueSuffix: 'numpad' },
-    { code: 'Numpad8', label: '8', uniqueSuffix: 'numpad' },
-    { code: 'Numpad9', label: '9', uniqueSuffix: 'numpad' },
-    { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto', uniqueSuffix: 'numpad' },
-
-    { code: 'Numpad4', label: '4', uniqueSuffix: 'numpad' },
-    { code: 'Numpad5', label: '5', uniqueSuffix: 'numpad' },
-    { code: 'Numpad6', label: '6', uniqueSuffix: 'numpad' },
+    // Row 2: Numpad7, Numpad8, Numpad9, NumpadAdd (spans 2 rows)
+    { code: 'Numpad7', label: '7', uniqueSuffix: 'numpadR2C1' },
+    { code: 'Numpad8', label: '8', uniqueSuffix: 'numpadR2C2' },
+    { code: 'Numpad9', label: '9', uniqueSuffix: 'numpadR2C3' },
+    { code: 'NumpadAdd', label: keyIconMap.NumpadAdd, className: 'row-span-2 h-auto', uniqueSuffix: 'numpadR2C4' },
+  
+    // Row 3: Numpad4, Numpad5, Numpad6 (NumpadAdd continues here)
+    { code: 'Numpad4', label: '4', uniqueSuffix: 'numpadR3C1' },
+    { code: 'Numpad5', label: '5', uniqueSuffix: 'numpadR3C2' },
+    { code: 'Numpad6', label: '6', uniqueSuffix: 'numpadR3C3' },
     
-    { code: 'Numpad1', label: '1', uniqueSuffix: 'numpad' },
-    { code: 'Numpad2', label: '2', uniqueSuffix: 'numpad' },
-    { code: 'Numpad3', label: '3', uniqueSuffix: 'numpad' },
-    { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto', uniqueSuffix: 'numpad' },
-
-    { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto min-w-[calc(2*2.5rem)]', uniqueSuffix: 'numpad' },
-    { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal, uniqueSuffix: 'numpad' },
+    // Row 4: Numpad1, Numpad2, Numpad3, NumpadEnter (spans 2 rows)
+    { code: 'Numpad1', label: '1', uniqueSuffix: 'numpadR4C1' },
+    { code: 'Numpad2', label: '2', uniqueSuffix: 'numpadR4C2' },
+    { code: 'Numpad3', label: '3', uniqueSuffix: 'numpadR4C3' },
+    { code: 'NumpadEnter', label: keyIconMap.NumpadEnter, className: 'row-span-2 h-auto', uniqueSuffix: 'numpadR4C4' },
+  
+    // Row 5: Numpad0 (spans 2 columns), NumpadDecimal (NumpadEnter continues here)
+    { code: 'Numpad0', label: '0', className: 'col-span-2 w-auto min-w-[calc(2*2.5rem)]', uniqueSuffix: 'numpadR5C12' },
+    { code: 'NumpadDecimal', label: keyIconMap.NumpadDecimal, uniqueSuffix: 'numpadR5C3' },
   ];
 
 
@@ -255,9 +261,9 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
       <div className="space-y-1.5">
         {keyboardLayout.map((row, rowIndex) => (
           <div key={`main-row-${rowIndex}`} className="flex space-x-1.5 justify-start">
-            {row.map((keyConfig) => {
+            {row.map((keyConfig, keyIndex) => {
               const isIcon = typeof keyConfig.label !== 'string' && React.isValidElement(keyConfig.label);
-              const uniqueKey = `${keyConfig.code}-${keyConfig.uniqueSuffix}-${rowIndex}`;
+              const uniqueKey = `${keyConfig.code}-${keyConfig.uniqueSuffix}-${rowIndex}-${keyIndex}`;
               const hasBeenEverPressed = everPressedKeys.has(keyConfig.code);
               return <Key key={uniqueKey} uniqueKey={uniqueKey} label={keyConfig.label} keyCode={keyConfig.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={keyConfig.className} isIcon={isIcon} />;
             })}
@@ -266,35 +272,37 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
       </div>
 
       <div className="flex space-x-1.5"> 
-        <div className="flex flex-col space-y-1.5 mx-2">
+        {/* Navigation and Arrow Key Cluster */}
+        <div className="flex flex-col space-y-4"> {/* Increased spacing */}
+          {/* Top navigation group: PrtSc, ScrLk, Pause */}
           <div className="flex space-x-1.5">
-            <div className="flex flex-col space-y-1.5">
-              {rightClusterLayout.slice(0, 3).map(k => {
+            {rightClusterLayout.slice(0, 3).map((k, index) => {
                 const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol1`;
+                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navTop-${index}`;
                 const hasBeenEverPressed = everPressedKeys.has(k.code);
                 return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
-              })}
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              {rightClusterLayout.slice(3, 6).map(k => {
-                const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol2`;
-                const hasBeenEverPressed = everPressedKeys.has(k.code);
-                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
-              })}
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              {rightClusterLayout.slice(6, 9).map(k => {
-                const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navcol3`;
-                const hasBeenEverPressed = everPressedKeys.has(k.code);
-                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
-              })}
-              <div className="col-span-3 h-10"></div>
-            </div>
+            })}
           </div>
-          <div className="flex flex-col items-center space-y-1.5"> 
+          {/* Middle navigation group: Ins, Home, PgUp */}
+          <div className="flex space-x-1.5">
+            {rightClusterLayout.slice(3, 6).map((k, index) => {
+                const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navMid-${index}`;
+                const hasBeenEverPressed = everPressedKeys.has(k.code);
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
+            })}
+          </div>
+           {/* Bottom navigation group: Del, End, PgDn */}
+          <div className="flex space-x-1.5">
+             {rightClusterLayout.slice(6, 9).map((k, index) => {
+                const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+                const uniqueKey = `${k.code}-${k.uniqueSuffix}-navBot-${index}`;
+                const hasBeenEverPressed = everPressedKeys.has(k.code);
+                return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
+            })}
+          </div>
+          {/* Arrow keys, typically below nav cluster */}
+          <div className="flex flex-col items-center space-y-1.5 pt-4"> {/* Added padding top for separation */}
             <Key key="ArrowUp-arrow" uniqueKey="ArrowUp-arrow" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowUp")} isIcon={true} />
             <div className="flex space-x-1.5">
               <Key key="ArrowLeft-arrow" uniqueKey="ArrowLeft-arrow" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowLeft")} isIcon={true} />
@@ -304,38 +312,44 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
           </div>
         </div>
         
-        <div className="grid grid-cols-4 grid-rows-5 gap-1.5">
-          <div className="col-span-4 h-10"></div>
-          {rightClusterLayout.slice(9, 13).map(k => {
+        {/* Numpad Cluster */}
+        <div className="grid grid-cols-4 grid-rows-5 gap-1.5 ml-2"> {/* Added margin-left for separation */}
+          {/* Numpad Row 1 */}
+          {rightClusterLayout.slice(9, 13).map((k, index) => {
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad1`;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR1-${index}`;
             const hasBeenEverPressed = everPressedKeys.has(k.code);
             return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
 
-          {rightClusterLayout.slice(13, 16).map(k => {
+          {/* Numpad Row 2 (7,8,9, +) */}
+          {rightClusterLayout.slice(13, 16).map((k, index) => { // 7, 8, 9
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad2`;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR2-${index}`;
             const hasBeenEverPressed = everPressedKeys.has(k.code);
             return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
           {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-add`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
 
-          {rightClusterLayout.slice(17, 20).map(k => {
+
+          {/* Numpad Row 3 (4,5,6) NumpadAdd continues */}
+          {rightClusterLayout.slice(17, 20).map((k, index) => { // 4, 5, 6
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad3`;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR3-${index}`;
             const hasBeenEverPressed = everPressedKeys.has(k.code);
             return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
           
-          {rightClusterLayout.slice(20, 23).map(k => {
+          {/* Numpad Row 4 (1,2,3, Enter) */}
+          {rightClusterLayout.slice(20, 23).map((k, index) => { // 1, 2, 3
             const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad4`;
+            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR4-${index}`;
             const hasBeenEverPressed = everPressedKeys.has(k.code);
             return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
           })}
            {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-enter`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
-
+           
+          {/* Numpad Row 5 (0, .) NumpadEnter continues */}
           {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad0`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
           {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-dec`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />; })()}
         </div>
@@ -343,4 +357,3 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
     </div>
   );
 };
-

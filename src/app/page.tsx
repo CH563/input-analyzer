@@ -7,10 +7,10 @@ import { KeyboardTester } from '@/components/input-analyzer/keyboard-tester';
 import { MouseTester } from '@/components/input-analyzer/mouse-tester';
 import { KeyStatusLegend } from '@/components/input-analyzer/key-status-legend';
 import { Separator } from '@/components/ui/separator';
-import { HelpCircle, MonitorPlay, Timer, RotateCcw } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Button } from '@/components/ui/button';
+import { MdHelpOutline, MdDesktopWindows, MdAccessTime, MdRefresh } from 'react-icons/md';
 
 export default function InputAnalyzerPage() {
   const [lastKeyPressed, setLastKeyPressed] = useState<string>('N/A');
@@ -189,7 +189,7 @@ export default function InputAnalyzerPage() {
     <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4 md:p-8 selection:bg-accent selection:text-accent-foreground">
       <header className="mb-4 text-center w-full max-w-6xl flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <MonitorPlay className="h-10 w-10 text-primary" />
+          <MdDesktopWindows className="h-10 w-10 text-primary" />
           <div>
             <h1 className="text-3xl font-bold text-foreground text-left">Input Analyzer</h1>
             <p className="text-muted-foreground mt-1 text-sm text-left">
@@ -201,7 +201,7 @@ export default function InputAnalyzerPage() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline" size="icon" onClick={handleResetPressedKeys} className="h-9 w-9">
-                <RotateCcw className="h-4 w-4" />
+                <MdRefresh className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -237,7 +237,7 @@ export default function InputAnalyzerPage() {
         <Card className="shadow-lg">
           <CardHeader className="p-3 pb-1">
             <CardTitle className="text-base text-foreground flex items-center">
-              <Timer className="h-3.5 w-3.5 mr-1.5" /> Key Press Duration
+              <MdAccessTime className="h-3.5 w-3.5 mr-1.5" /> Key Press Duration
             </CardTitle>
           </CardHeader>
           <CardContent className="p-3 pt-1">
@@ -256,7 +256,7 @@ export default function InputAnalyzerPage() {
             <CardTitle className="text-xl text-foreground">Keyboard Visualizer</CardTitle>
             <Tooltip>
               <TooltipTrigger>
-                <HelpCircle className="h-5 w-5 text-muted-foreground" />
+                <MdHelpOutline className="h-5 w-5 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent className="max-w-sm md:max-w-md text-xs p-3">
                 <p className="font-semibold mb-1.5 text-sm text-foreground">Keyboard Testing Guide:</p>
@@ -288,7 +288,7 @@ export default function InputAnalyzerPage() {
             <CardTitle className="text-xl text-foreground">Mouse Visualizer</CardTitle>
              <Tooltip>
               <TooltipTrigger>
-                <HelpCircle className="h-5 w-5 text-muted-foreground" />
+                <MdHelpOutline className="h-5 w-5 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Click mouse buttons to see them light up. Right-click context menu is disabled on this page (except in input fields).</p>
@@ -308,4 +308,3 @@ export default function InputAnalyzerPage() {
     </TooltipProvider>
   );
 }
-

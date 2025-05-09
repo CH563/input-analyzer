@@ -2,8 +2,8 @@
 "use client"
 
 import * as React from "react"
-import { Laptop, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import { MdLaptopChromebook, MdBrightness2, MdWbSunny } from "react-icons/md"
 
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -18,9 +18,9 @@ export function ThemeSwitcher() {
   }, [])
 
   const themeOptions = [
-    { name: "light", icon: <Sun className="h-[1.1rem] w-[1.1rem]" />, label: "Light" },
-    { name: "dark", icon: <Moon className="h-[1.1rem] w-[1.1rem]" />, label: "Dark" },
-    { name: "system", icon: <Laptop className="h-[1.1rem] w-[1.1rem]" />, label: "System" },
+    { name: "light", icon: <MdWbSunny className="h-[1.1rem] w-[1.1rem]" />, label: "Light" },
+    { name: "dark", icon: <MdBrightness2 className="h-[1.1rem] w-[1.1rem]" />, label: "Dark" },
+    { name: "system", icon: <MdLaptopChromebook className="h-[1.1rem] w-[1.1rem]" />, label: "System" },
   ]
 
   if (!mounted) {
