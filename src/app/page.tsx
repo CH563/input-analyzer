@@ -1,16 +1,32 @@
+
 'use client';
 
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { KeyboardTester } from '@/components/input-analyzer/keyboard-tester';
 import { MouseTester } from '@/components/input-analyzer/mouse-tester';
 import { KeyStatusLegend } from '@/components/input-analyzer/key-status-legend';
+import { DataVisualizationCard } from '@/components/input-analyzer/data-visualization-card';
+import { KeyLogCard } from '@/components/input-analyzer/key-log-card';
+import { AboutKeyboardTestingCard } from '@/components/input-analyzer/about-keyboard-testing-card';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Button } from '@/components/ui/button';
 import { MdHelpOutline, MdDesktopWindows, MdAccessTime, MdRefresh } from 'react-icons/md';
+import { format } from 'date-fns';
+
+interface KeyLogEntry {
+  id: string;
+  timestamp: number;
+  displayValue: string;
+  type: 'down' | 'up';
+  delay?: number;
+  code: string;
+}
+
+const generateId = () => Math.random().toString(36).substr(2, 9);
 
 export default function InputAnalyzerPage() {
   const [lastKeyPressed, setLastKeyPressed] = useState<string>('N/A');
@@ -19,8 +35,21 @@ export default function InputAnalyzerPage() {
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
   const [everPressedKeys, setEverPressedKeys] = useState<Set<string>>(new Set());
   const [activeMouseButton, setActiveMouseButton] = useState<string | null>(null);
-  const [keyDownTimestamp, setKeyDownTimestamp] = useState<number | null>(null);
-  const [keyPressDelay, setKeyPressDelay] = useState<number | null>(null);
+  
+  const [singleKeyPressDuration, setSingleKeyPressDuration] = useState<number | null>(null);
+  const [lastKeyDownTimestamp, setLastKeyDownTimestamp] = useState<number | null>(null);
+
+  // New states for logging and visualization
+  const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
+  const [keyLog, setKeyLog] = useState<KeyLogEntry[]>([]);
+  const [keyPressDurations, setKeyPressDurations] = useState<number[]>([]);
+  const [keyFrequency, setKeyFrequency] = useState<Record<string, number>>({});
+  const [keyDownTimestampsMap, setKeyDownTimestampsMap] = useState<Map<string, number>>(new Map());
+
+
+  useEffect(() => {
+    setSessionStartTime(Date.now());
+  }, []);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     let keyDisplayValue = event.key;
@@ -47,9 +76,15 @@ export default function InputAnalyzerPage() {
         if (['Control', 'Alt', 'Meta', 'Shift'].includes(event.key)) {
             keyDisplayValue = event.key; 
         } else {
-            keyDisplayValue = `${prefix}${baseKey.length === 1 ? baseKey.toUpperCase() : baseKey }`;
+             const finalBaseKey = baseKey.length === 1 ? baseKey.toUpperCase() : baseKey;
+             if (finalBaseKey === 'DEAD') { // Handle dead keys that don't produce a character alone
+                keyDisplayValue = `${prefix}${event.code}`; // Fallback to code for dead keys
+             } else {
+                keyDisplayValue = `${prefix}${finalBaseKey}`;
+             }
         }
     }
+
 
     const codesToAlwaysPrevent = [
       'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
@@ -79,7 +114,7 @@ export default function InputAnalyzerPage() {
     if (event.key === 'Backspace' && !isEditable) {
         event.preventDefault();
     }
-
+    
     setLastKeyPressed(keyDisplayValue);
     setActiveKey(event.code);
     setPressedKeys(prev => {
@@ -92,13 +127,22 @@ export default function InputAnalyzerPage() {
         newSet.add(event.code);
         return newSet;
     });
-    setTimeout(() => setActiveKey(null), 200); // Visual flash duration for active key
+    setTimeout(() => setActiveKey(null), 200); 
 
-    if (!pressedKeys.has(event.code)) { // Only set timestamp if it's a new key press in the current combo
-        setKeyDownTimestamp(performance.now());
-        setKeyPressDelay(null); // Reset delay for new key press
+    // For single key press duration card
+    if (!pressedKeys.has(event.code)) { 
+        setLastKeyDownTimestamp(performance.now());
+        setSingleKeyPressDuration(null); 
     }
-  }, [pressedKeys]);
+
+    // For logging and average duration
+    if (!keyDownTimestampsMap.has(event.code)) {
+      setKeyDownTimestampsMap(prevMap => new Map(prevMap).set(event.code, performance.now()));
+    }
+    setKeyLog(prevLog => [...prevLog, { id: generateId(), timestamp: Date.now(), displayValue: keyDisplayValue, type: 'down', code: event.code }]);
+    setKeyFrequency(prevFreq => ({ ...prevFreq, [keyDisplayValue]: (prevFreq[keyDisplayValue] || 0) + 1 }));
+
+  }, [pressedKeys, keyDownTimestampsMap]);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     setPressedKeys(prev => {
@@ -107,15 +151,35 @@ export default function InputAnalyzerPage() {
       return newSet;
     });
 
-    if (keyDownTimestamp && pressedKeys.size === 1 && pressedKeys.has(event.code)) { 
+    // For single key press duration card
+    if (lastKeyDownTimestamp && pressedKeys.size === 1 && pressedKeys.has(event.code)) { 
       const upTime = performance.now();
-      const delay = Math.round(upTime - keyDownTimestamp);
-      setKeyPressDelay(delay);
-      setKeyDownTimestamp(null);
+      const delay = Math.round(upTime - lastKeyDownTimestamp);
+      setSingleKeyPressDuration(delay);
+      setLastKeyDownTimestamp(null);
     } else if (pressedKeys.size === 0) { 
-        setKeyDownTimestamp(null);
+        setLastKeyDownTimestamp(null);
     }
-  }, [keyDownTimestamp, pressedKeys]);
+
+    // For logging and average duration
+    const downTime = keyDownTimestampsMap.get(event.code);
+    if (downTime) {
+      const duration = performance.now() - downTime;
+      const roundedDuration = Math.round(duration);
+      
+      const lastDownEntry = keyLog.slice().reverse().find(entry => entry.code === event.code && entry.type === 'down');
+      const displayValueForUp = lastDownEntry ? lastDownEntry.displayValue : event.key;
+
+
+      setKeyLog(prevLog => [...prevLog, { id: generateId(), timestamp: Date.now(), displayValue: displayValueForUp, type: 'up', delay: roundedDuration, code: event.code }]);
+      setKeyPressDurations(prevDurations => [...prevDurations, roundedDuration]);
+      setKeyDownTimestampsMap(prevMap => {
+        const newMap = new Map(prevMap);
+        newMap.delete(event.code);
+        return newMap;
+      });
+    }
+  }, [lastKeyDownTimestamp, pressedKeys, keyDownTimestampsMap, keyLog]);
 
   const handleMouseDown = useCallback((event: MouseEvent) => {
     let buttonName = 'N/A';
@@ -145,16 +209,30 @@ export default function InputAnalyzerPage() {
   }, []);
   
   const handleMouseUp = useCallback((_event: MouseEvent) => {
-    // Potentially clear activeMouseButton if needed, or handle button release states
+    // Potentially clear activeMouseButton if needed
   }, []);
 
-  const handleResetPressedKeys = useCallback(() => {
+  const handleResetStates = useCallback(() => {
     setPressedKeys(new Set());
     setEverPressedKeys(new Set());
     setLastKeyPressed('N/A');
-    setKeyPressDelay(null);
-    setKeyDownTimestamp(null);
+    setSingleKeyPressDuration(null);
+    setLastKeyDownTimestamp(null);
+    // Reset new states as well
+    setKeyLog([]);
+    setKeyPressDurations([]);
+    setKeyFrequency({});
+    setKeyDownTimestampsMap(new Map());
+    // setSessionStartTime(Date.now()); // Optionally reset session start time
   }, []);
+
+  const handleClearLog = useCallback(() => {
+    setKeyLog([]);
+    setKeyPressDurations([]);
+    setKeyFrequency({});
+     // Optionally reset session start time or other derived stats if they are not always recalculated
+  }, []);
+
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => handleKeyDown(e);
@@ -184,6 +262,29 @@ export default function InputAnalyzerPage() {
     };
   }, [handleKeyDown, handleKeyUp, handleMouseDown, handleMouseUp]);
 
+  const averageDelay = useMemo(() => {
+    if (keyPressDurations.length === 0) return null;
+    const sum = keyPressDurations.reduce((acc, curr) => acc + curr, 0);
+    return Math.round(sum / keyPressDurations.length);
+  }, [keyPressDurations]);
+
+  const sessionDuration = useMemo(() => {
+    if (!sessionStartTime) return '00:00:00';
+    const durationMs = Date.now() - sessionStartTime;
+    const seconds = Math.floor((durationMs / 1000) % 60);
+    const minutes = Math.floor((durationMs / (1000 * 60)) % 60);
+    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }, [sessionStartTime, keyLog]); // Re-calculate when keyLog changes to update continuously
+
+  const mostFrequentKey = useMemo(() => {
+    if (Object.keys(keyFrequency).length === 0) return { key: 'N/A', count: 0 };
+    return Object.entries(keyFrequency).reduce((mfk, [key, count]) => {
+      return count > mfk.count ? { key, count } : mfk;
+    }, { key: 'N/A', count: 0 });
+  }, [keyFrequency]);
+
+
   return (
     <TooltipProvider>
     <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4 md:p-8 selection:bg-accent selection:text-accent-foreground">
@@ -200,12 +301,12 @@ export default function InputAnalyzerPage() {
         <div className="flex items-center space-x-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" onClick={handleResetPressedKeys} className="h-9 w-9">
+              <Button variant="outline" size="icon" onClick={handleResetStates} className="h-9 w-9">
                 <MdRefresh className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Reset Key States</p>
+              <p>Reset All States</p>
             </TooltipContent>
           </Tooltip>
           <KeyStatusLegend />
@@ -242,7 +343,7 @@ export default function InputAnalyzerPage() {
           </CardHeader>
           <CardContent className="p-3 pt-1">
             <p className="text-lg font-mono text-accent min-h-[2rem] flex items-center justify-center p-1.5 bg-muted rounded-md">
-              {keyPressDelay === null ? 'N/A' : `${keyPressDelay} ms`}
+              {singleKeyPressDuration === null ? 'N/A' : `${singleKeyPressDuration} ms`}
             </p>
           </CardContent>
         </Card>
@@ -300,6 +401,25 @@ export default function InputAnalyzerPage() {
           </CardContent>
         </Card>
       </div>
+      
+      <Separator className="my-6 w-full max-w-6xl" />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-6xl mb-6">
+        <DataVisualizationCard keyFrequency={keyFrequency} />
+        <KeyLogCard
+          keyLog={keyLog}
+          totalKeyPresses={Object.values(keyFrequency).reduce((sum, count) => sum + count, 0)}
+          averageDelay={averageDelay}
+          sessionDuration={sessionDuration}
+          mostFrequentKey={mostFrequentKey}
+          onClearLog={handleClearLog}
+        />
+      </div>
+      
+      <div className="w-full max-w-6xl">
+        <AboutKeyboardTestingCard />
+      </div>
+
 
       <footer className="mt-8 text-center text-xs text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} Input Analyzer. All rights reserved.</p>
