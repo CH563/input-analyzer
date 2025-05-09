@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { KeyboardTester } from '@/components/input-analyzer/keyboard-tester';
 import { MouseTester } from '@/components/input-analyzer/mouse-tester';
+import { KeyStatusLegend } from '@/components/input-analyzer/key-status-legend';
 import { Separator } from '@/components/ui/separator';
 import { HelpCircle, MonitorPlay, Timer } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -15,6 +16,7 @@ export default function InputAnalyzerPage() {
   const [lastKeyPressed, setLastKeyPressed] = useState<string>('N/A');
   const [lastMouseButton, setLastMouseButton] = useState<string>('N/A');
   const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
   const [activeMouseButton, setActiveMouseButton] = useState<string | null>(null);
   const [keyDownTimestamp, setKeyDownTimestamp] = useState<number | null>(null);
   const [keyPressDelay, setKeyPressDelay] = useState<number | null>(null);
@@ -67,7 +69,6 @@ export default function InputAnalyzerPage() {
              const commonShortcutKeys = ['r', 's', 'p', 'f', 'g', 'h', 'j', 'k', 'l', 'a', 'w', 'q', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 't', 'y', 'u', 'i', 'o', 'd', 'e', '+', '-', '='];
              if (commonShortcutKeys.includes(event.key.toLowerCase()) || event.code.startsWith("Digit")) {
                  event.preventDefault();
-                 // Update display value for Ctrl/Meta + letter/digit
                  const modifier = event.ctrlKey ? 'Ctrl' : 'Meta';
                  const displayKey = event.key.length === 1 ? event.key.toUpperCase() : event.key;
                  keyDisplayValue = `${modifier}+${displayKey}`;
@@ -80,6 +81,11 @@ export default function InputAnalyzerPage() {
 
     setLastKeyPressed(keyDisplayValue);
     setActiveKey(event.code);
+    setPressedKeys(prev => {
+      const newSet = new Set(prev);
+      newSet.add(event.code);
+      return newSet;
+    });
     setTimeout(() => setActiveKey(null), 200);
 
     setKeyDownTimestamp(performance.now());
@@ -172,7 +178,10 @@ export default function InputAnalyzerPage() {
             </p>
           </div>
         </div>
-        <ThemeSwitcher />
+        <div className="flex items-center space-x-2">
+          <KeyStatusLegend />
+          <ThemeSwitcher />
+        </div>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mb-4">
@@ -226,7 +235,7 @@ export default function InputAnalyzerPage() {
             </Tooltip>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <KeyboardTester activeKey={activeKey} />
+            <KeyboardTester activeKey={activeKey} pressedKeys={pressedKeys} />
           </CardContent>
         </Card>
 
