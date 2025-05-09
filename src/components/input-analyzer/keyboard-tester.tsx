@@ -222,8 +222,8 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
     { code: 'PageUp', label: keyIconMap.PageUp, uniqueSuffix: 'navMid3' },
   
     // Bottom navigation cluster (Delete, End, PageDown) - 3 keys
-    { code: 'Delete', label: keyIconMap.DeleteForward, uniqueSuffix: 'navBot1' }, // 'Delete' is often used for forward delete
-    { code: 'End', label: keyIconMap.End, uniqueSuffix: 'navBot2' },
+    { code: 'Delete', label: 'DEL', uniqueSuffix: 'navBot1' }, // 'Delete' is often used for forward delete
+    { code: 'End', label: 'END', uniqueSuffix: 'navBot2' },
     { code: 'PageDown', label: keyIconMap.PageDown, uniqueSuffix: 'navBot3' },
   
     // Numpad starts here
@@ -273,7 +273,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
 
       <div className="flex space-x-1.5"> 
         {/* Navigation and Arrow Key Cluster */}
-        <div className="flex flex-col space-y-4"> {/* Increased spacing */}
+        <div className="flex flex-col space-y-1.5 mx-2"> {/* Increased spacing */}
           {/* Top navigation group: PrtSc, ScrLk, Pause */}
           <div className="flex space-x-1.5">
             {rightClusterLayout.slice(0, 3).map((k, index) => {
@@ -301,8 +301,9 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
                 return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={k.className} isIcon={isIcon} />;
             })}
           </div>
+          <div className="h-10"></div>
           {/* Arrow keys, typically below nav cluster */}
-          <div className="flex flex-col items-center space-y-1.5 pt-4"> {/* Added padding top for separation */}
+          <div className="flex flex-col items-center space-y-1.5"> {/* Added padding top for separation */}
             <Key key="ArrowUp-arrow" uniqueKey="ArrowUp-arrow" label={keyIconMap.ArrowUp} keyCode="ArrowUp" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowUp")} isIcon={true} />
             <div className="flex space-x-1.5">
               <Key key="ArrowLeft-arrow" uniqueKey="ArrowLeft-arrow" label={keyIconMap.ArrowLeft} keyCode="ArrowLeft" activeKey={activeKey} isPressed={everPressedKeys.has("ArrowLeft")} isIcon={true} />
@@ -311,47 +312,49 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
             </div>
           </div>
         </div>
-        
-        {/* Numpad Cluster */}
-        <div className="grid grid-cols-4 grid-rows-5 gap-1.5 ml-2"> {/* Added margin-left for separation */}
-          {/* Numpad Row 1 */}
-          {rightClusterLayout.slice(9, 13).map((k, index) => {
-            const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR1-${index}`;
-            const hasBeenEverPressed = everPressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
-          })}
+        <div>
+          <div className="h-10 mb-1.5 text-center text-md text-gray-400 font-medium leading-10">HKKB</div>
+          {/* Numpad Cluster */}
+          <div className="grid grid-cols-4 grid-rows-5 gap-1.5"> {/* Added margin-left for separation */}
+            {/* Numpad Row 1 */}
+            {rightClusterLayout.slice(9, 13).map((k, index) => {
+              const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+              const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR1-${index}`;
+              const hasBeenEverPressed = everPressedKeys.has(k.code);
+              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
+            })}
 
-          {/* Numpad Row 2 (7,8,9, +) */}
-          {rightClusterLayout.slice(13, 16).map((k, index) => { // 7, 8, 9
-            const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR2-${index}`;
-            const hasBeenEverPressed = everPressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
-          })}
-          {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-add`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
+            {/* Numpad Row 2 (7,8,9, +) */}
+            {rightClusterLayout.slice(13, 16).map((k, index) => { // 7, 8, 9
+              const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+              const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR2-${index}`;
+              const hasBeenEverPressed = everPressedKeys.has(k.code);
+              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
+            })}
+            {(() => { const k = rightClusterLayout[16]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-add`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-2 row-end-4 col-start-4')} isIcon={isIcon} />; })()}
 
 
-          {/* Numpad Row 3 (4,5,6) NumpadAdd continues */}
-          {rightClusterLayout.slice(17, 20).map((k, index) => { // 4, 5, 6
-            const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR3-${index}`;
-            const hasBeenEverPressed = everPressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
-          })}
-          
-          {/* Numpad Row 4 (1,2,3, Enter) */}
-          {rightClusterLayout.slice(20, 23).map((k, index) => { // 1, 2, 3
-            const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
-            const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR4-${index}`;
-            const hasBeenEverPressed = everPressedKeys.has(k.code);
-            return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
-          })}
-           {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-enter`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
-           
-          {/* Numpad Row 5 (0, .) NumpadEnter continues */}
-          {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad0`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
-          {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-dec`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />; })()}
+            {/* Numpad Row 3 (4,5,6) NumpadAdd continues */}
+            {rightClusterLayout.slice(17, 20).map((k, index) => { // 4, 5, 6
+              const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+              const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR3-${index}`;
+              const hasBeenEverPressed = everPressedKeys.has(k.code);
+              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
+            })}
+            
+            {/* Numpad Row 4 (1,2,3, Enter) */}
+            {rightClusterLayout.slice(20, 23).map((k, index) => { // 1, 2, 3
+              const isIcon = typeof k.label !== 'string' && React.isValidElement(k.label);
+              const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpadR4-${index}`;
+              const hasBeenEverPressed = everPressedKeys.has(k.code);
+              return <Key key={uniqueKey} uniqueKey={uniqueKey} label={k.label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />;
+            })}
+            {(() => { const k = rightClusterLayout[23]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-enter`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'row-start-4 row-end-6 col-start-4')} isIcon={isIcon} />; })()}
+            
+            {/* Numpad Row 5 (0, .) NumpadEnter continues */}
+            {(() => { const k = rightClusterLayout[24]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad0`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className, 'col-span-2')} isIcon={isIcon} />; })()}
+            {(() => { const k = rightClusterLayout[25]; const label = k.label; const isIcon = typeof label !== 'string' && React.isValidElement(label); const uniqueKey = `${k.code}-${k.uniqueSuffix}-numpad-dec`; const hasBeenEverPressed = everPressedKeys.has(k.code); return <Key key={uniqueKey} uniqueKey={uniqueKey} label={label} keyCode={k.code} activeKey={activeKey} isPressed={hasBeenEverPressed} className={cn(k.className)} isIcon={isIcon} />; })()}
+          </div>
         </div>
       </div>
     </div>
