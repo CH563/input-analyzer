@@ -258,7 +258,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ activeKey, press
 
 
   return (
-    <div className="p-2 bg-background rounded-lg shadow-inner space-x-1.5 flex flex-row items-start max-w-fit mx-auto">
+    <div className="p-2 bg-background rounded-lg shadow-inner space-x-1.5 flex flex-row items-start w-[1040px] shrink-0">
       <div className="space-y-1.5">
         {keyboardLayout.map((row, rowIndex) => (
           <div key={`main-row-${rowIndex}`} className="flex gap-x-1.5 justify-start">

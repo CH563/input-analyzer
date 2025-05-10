@@ -288,7 +288,7 @@ export default function InputAnalyzerPage() {
   return (
     <TooltipProvider>
     <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4 md:p-8 selection:bg-accent selection:text-accent-foreground">
-      <header className="mb-4 text-center w-full max-w-6xl flex justify-between items-center">
+      <header className="mb-4 text-center w-full max-w-[1240px] flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <MdDesktopWindows className="h-10 w-10 text-primary" />
           <div>
@@ -301,7 +301,7 @@ export default function InputAnalyzerPage() {
         <div className="flex items-center space-x-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" onClick={handleResetStates} className="h-9 w-9">
+              <Button variant="outline" size="icon" onClick={handleResetStates} className="h-6 w-6">
                 <MdRefresh className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
@@ -314,7 +314,7 @@ export default function InputAnalyzerPage() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-[1240px] mb-4">
         <Card className="shadow-lg">
           <CardHeader className="p-3 pb-1">
             <CardTitle className="text-base text-foreground">Last Key Pressed</CardTitle>
@@ -349,9 +349,9 @@ export default function InputAnalyzerPage() {
         </Card>
       </div>
 
-      <Separator className="my-4 w-full max-w-6xl" />
+      <Separator className="my-4 w-full max-w-[1240px]" />
       
-      <div className="w-full max-w-6xl space-y-6">
+      <div className="w-full max-w-[1240px] space-y-6">
         <Card className="shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between p-4">
             <CardTitle className="text-xl text-foreground">Keyboard Visualizer</CardTitle>
@@ -379,32 +379,16 @@ export default function InputAnalyzerPage() {
               </TooltipContent>
             </Tooltip>
           </CardHeader>
-          <CardContent className="p-4 pt-0">
+          <CardContent className="p-4 pt-0 flex gap-2 justify-center">
             <KeyboardTester activeKey={activeKey} pressedKeys={pressedKeys} everPressedKeys={everPressedKeys} />
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-lg">
-          <CardHeader className="flex flex-row items-center justify-between p-4">
-            <CardTitle className="text-xl text-foreground">Mouse Visualizer</CardTitle>
-             <Tooltip>
-              <TooltipTrigger>
-                <MdHelpOutline className="h-5 w-5 text-muted-foreground" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Click mouse buttons to see them light up. Right-click context menu is disabled on this page (except in input fields).</p>
-              </TooltipContent>
-            </Tooltip>
-          </CardHeader>
-          <CardContent className="flex justify-center p-4 pt-0">
             <MouseTester activeMouseButton={activeMouseButton} />
           </CardContent>
         </Card>
       </div>
       
-      <Separator className="my-6 w-full max-w-6xl" />
+      <Separator className="my-6 w-full max-w-[1240px]" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-6xl mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-[1240px] mb-6">
         <DataVisualizationCard keyFrequency={keyFrequency} />
         <KeyLogCard
           keyLog={keyLog}
@@ -416,7 +400,7 @@ export default function InputAnalyzerPage() {
         />
       </div>
       
-      <div className="w-full max-w-6xl">
+      <div className="w-full max-w-[1240px]">
         <AboutKeyboardTestingCard />
       </div>
 

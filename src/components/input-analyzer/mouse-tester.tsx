@@ -15,7 +15,7 @@ export const MouseTester: React.FC<MouseTesterProps> = ({ activeMouseButton }) =
     <div className="p-4 bg-background rounded-lg shadow-inner inline-block">
       <svg
         width="120"
-        height="200"
+        height="auto"
         viewBox="0 0 120 200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
