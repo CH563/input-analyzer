@@ -31,7 +31,6 @@ const generateId = () => Math.random().toString(36).substr(2, 9);
 export default function InputAnalyzerPage() {
   const [lastKeyPressed, setLastKeyPressed] = useState<string>('N/A');
   const [lastMouseButton, setLastMouseButton] = useState<string>('N/A');
-  const [activeKey, setActiveKey] = useState<string | null>(null);
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
   const [everPressedKeys, setEverPressedKeys] = useState<Set<string>>(new Set());
   const [activeMouseButton, setActiveMouseButton] = useState<string | null>(null);
@@ -116,7 +115,6 @@ export default function InputAnalyzerPage() {
     }
     
     setLastKeyPressed(keyDisplayValue);
-    setActiveKey(event.code);
     setPressedKeys(prev => {
       const newSet = new Set(prev);
       newSet.add(event.code);
@@ -127,7 +125,6 @@ export default function InputAnalyzerPage() {
         newSet.add(event.code);
         return newSet;
     });
-    setTimeout(() => setActiveKey(null), 200); 
 
     // For single key press duration card
     if (!pressedKeys.has(event.code)) { 
@@ -362,17 +359,16 @@ export default function InputAnalyzerPage() {
               <TooltipContent className="max-w-sm md:max-w-md text-xs p-3">
                 <p className="font-semibold mb-1.5 text-sm text-foreground">Keyboard Testing Guide:</p>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Shows all keys currently held down (styled as 'Pressed').</li>
-                  <li>Keys that have been pressed and released will also show as 'Pressed'.</li>
-                  <li>The last key actively pressed will flash with the 'Active' style.</li>
+                  <li>Keys currently held down are styled as 'Active'.</li>
+                  <li>Keys that have been pressed and released during the session are styled as 'Pressed'.</li>
                   <li>
-                    <strong>Rollover Test:</strong> Press multiple keys simultaneously. The number of keys that light up indicates your keyboard's N-Key Rollover (NKRO) capability.
+                    <strong>Rollover Test (NKRO):</strong> Press multiple keys simultaneously. All keys that light up as 'Active' are registered by your system. This indicates your keyboard's N-Key Rollover capability.
                   </li>
                   <li>
-                    <strong>Ghosting Test:</strong> If an unpressed key lights up while you're holding down a combination of other keys, your keyboard may be experiencing ghosting.
+                    <strong>Ghosting Test:</strong> If an unpressed key lights up (either as 'Active' or 'Pressed') while you're holding down a combination of other keys, your keyboard may be experiencing ghosting.
                   </li>
                   <li>
-                    <strong>Jamming/Masking Test:</strong> If you press a key while holding others and it doesn't light up, your keyboard might be jamming or has reached its rollover limit.
+                    <strong>Jamming/Masking Test:</strong> If you press a key while holding others and it doesn't light up as 'Active', your keyboard might be jamming or has reached its rollover limit for that specific combination.
                   </li>
                   <li>Common browser shortcuts (e.g., Ctrl+R, F5) are generally disabled on this page to allow for more accurate testing of these keys.</li>
                 </ul>
@@ -380,7 +376,10 @@ export default function InputAnalyzerPage() {
             </Tooltip>
           </CardHeader>
           <CardContent className="p-4 pt-0 flex gap-2 justify-center">
-            <KeyboardTester activeKey={activeKey} pressedKeys={pressedKeys} everPressedKeys={everPressedKeys} />
+            <KeyboardTester 
+              currentActiveKeys={pressedKeys} 
+              everPressedKeys={everPressedKeys} 
+            />
             <MouseTester activeMouseButton={activeMouseButton} />
           </CardContent>
         </Card>
