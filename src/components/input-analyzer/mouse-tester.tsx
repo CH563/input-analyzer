@@ -12,7 +12,7 @@ export const MouseTester: React.FC<MouseTesterProps> = ({ activeMouseButton }) =
   const isActive = (buttonName: string) => activeMouseButton === buttonName;
 
   return (
-    <div className="p-4 bg-background rounded-lg shadow-inner inline-block">
+    <div className="p-4 bg-background rounded-lg shadow-inner hidden xl:inline-block">
       <svg
         width="120"
         height="auto"

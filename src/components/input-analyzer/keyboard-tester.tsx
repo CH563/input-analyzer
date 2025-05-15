@@ -246,7 +246,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ currentActiveKey
 
 
   return (
-    <div className="p-2 bg-background rounded-lg shadow-inner space-x-1.5 flex flex-row items-start w-[1040px] shrink-0">
+    <div className="p-2 bg-background rounded-lg shadow-inner space-x-1.5 flex flex-row items-start lg:w-[1040px] shrink-0">
       <div className="space-y-1.5">
         {keyboardLayout.map((row, rowIndex) => (
           <div key={`main-row-${rowIndex}`} className="flex gap-x-1.5 justify-start">
@@ -304,7 +304,7 @@ export const KeyboardTester: React.FC<KeyboardLayoutProps> = ({ currentActiveKey
             </div>
           </div>
         </div>
-        <div>
+        <div className="hidden lg:block">
           <div className="h-10 mb-1.5 text-center text-md text-gray-400 font-medium leading-10">HKKB</div>
           <div className="grid grid-cols-4 grid-rows-5 gap-1.5"> 
             {rightClusterLayout.slice(9, 13).map((k, index) => {
