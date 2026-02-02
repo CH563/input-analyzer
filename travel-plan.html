@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柳州螺蛳粉之旅 | 2月6-8日</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #FAF6F1;
+            --color-bg-warm: #F5EDE4;
+            --color-ink: #2C1810;
+            --color-ink-light: #5C4A42;
+            --color-accent: #C84B31;
+            --color-accent-dark: #A33A24;
+            --color-gold: #D4A574;
+            --color-sage: #7A9E7E;
+            --color-night: #1A1A2E;
+            --color-cream: #FFF8F0;
+            --font-serif: 'Noto Serif SC', 'Crimson Pro', Georgia, serif;
+            --font-mono: 'Space Mono', monospace;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--color-bg);
+            color: var(--color-ink);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* ========== HEADER ========== */
+        .hero {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(200, 75, 49, 0.15), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(212, 165, 116, 0.2), transparent),
+                var(--color-bg);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, var(--color-bg), transparent);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            animation: fadeUp 1.2s var(--ease-out-expo) both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: var(--color-ink);
+            color: var(--color-cream);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeUp 1.2s var(--ease-out-expo) 0.1s both;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 1.2s var(--ease-out-expo) 0.2s both;
+        }
+
+        .hero-title .accent {
+            color: var(--color-accent);
+            font-style: italic;
+            margin-right: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--color-ink-light);
+            font-weight: 400;
+            margin-bottom: 3rem;
+            animation: fadeUp 1.2s var(--ease-out-expo) 0.3s both;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-ink-light);
+            animation: fadeUp 1.2s var(--ease-out-expo) 0.4s both;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .hero-meta-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-ink);
+            font-family: var(--font-serif);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            /* left: 50%; */
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-ink-light);
+            animation: fadeUp 1.2s var(--ease-out-expo) 0.6s both;
+            z-index: 1;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--color-accent), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.6); opacity: 0.5; }
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 6rem;
+        }
+
+        /* ========== SECTION STYLES ========== */
+        .section {
+            margin-bottom: 6rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(44, 24, 16, 0.1);
+        }
+
+        .section-number {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* ========== WEATHER CARD ========== */
+        .weather-section {
+            background: linear-gradient(135deg, var(--color-night) 0%, #2D2D44 100%);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.3), transparent 70%);
+            pointer-events: none;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .weather-day {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .weather-day:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .weather-date {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .weather-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-temp {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .weather-condition {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+
+        /* ========== HOTEL CARD ========== */
+        .hotel-card {
+            background: var(--color-cream);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+            border: 1px solid rgba(44, 24, 16, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hotel-card::before {
+            content: '🏨';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 8rem;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .hotel-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .hotel-name {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .hotel-address {
+            color: var(--color-ink-light);
+            font-size: 0.95rem;
+        }
+
+        .hotel-badge {
+            background: var(--color-accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 600px) {
+            .hotel-card {
+                grid-template-columns: 1fr;
+            }
+            .hotel-badge {
+                justify-self: start;
+            }
+        }
+
+        /* ========== ROUTE VISUALIZATION ========== */
+        .route-visual {
+            background: var(--color-bg-warm);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .route-path {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .route-path::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--color-gold) 0,
+                var(--color-gold) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .route-point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .route-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: var(--color-cream);
+            border: 3px solid var(--color-gold);
+            box-shadow: 0 4px 20px rgba(212, 165, 116, 0.3);
+            transition: all 0.3s var(--ease-out-back);
+        }
+
+        .route-dot:hover {
+            transform: scale(1.15);
+        }
+
+        .route-dot.start { border-color: var(--color-sage); }
+        .route-dot.charge { border-color: var(--color-gold); }
+        .route-dot.end { border-color: var(--color-accent); }
+
+        .route-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            max-width: 100px;
+        }
+
+        .route-distance {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-200%);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-ink-light);
+            background: var(--color-bg-warm);
+            padding: 0.25rem 0.5rem;
+        }
+
+        .route-distance.first { left: 25%; }
+        .route-distance.second { left: 65%; }
+
+        @media (max-width: 600px) {
+            .route-path {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .route-path::before {
+                top: 60px;
+                bottom: 60px;
+                left: 50%;
+                right: auto;
+                width: 2px;
+                height: auto;
+                background: repeating-linear-gradient(
+                    180deg,
+                    var(--color-gold) 0,
+                    var(--color-gold) 8px,
+                    transparent 8px,
+                    transparent 16px
+                );
+                transform: translateX(-50%);
+            }
+            .route-distance {
+                position: static;
+                transform: none;
+                margin: -1rem 0;
+            }
+        }
+
+        /* ========== DAY SCHEDULE ========== */
+        .day-card {
+            background: var(--color-cream);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(44, 24, 16, 0.06);
+        }
+
+        .day-header {
+            background: var(--color-ink);
+            color: var(--color-cream);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .day-date {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .day-weather {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .day-content {
+            padding: 2rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--color-accent), var(--color-gold), var(--color-sage));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            border: 2px solid var(--color-cream);
+            transform: translateX(-4px);
+        }
+
+        .timeline-time {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--color-ink-light);
+        }
+
+        /* ========== FOOD SECTION ========== */
+        .food-section {
+            margin-top: 2rem;
+        }
+
+        .food-area {
+            margin-bottom: 2rem;
+        }
+
+        .food-area-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--color-bg-warm);
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            color: var(--color-ink-light);
+            margin-bottom: 1rem;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            border: 1px solid rgba(44, 24, 16, 0.06);
+            transition: all 0.3s var(--ease-out-expo);
+            cursor: pointer;
+        }
+
+        .food-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(44, 24, 16, 0.1);
+        }
+
+        .food-card.featured {
+            background: linear-gradient(135deg, #FFF5F2 0%, #FFF 100%);
+            border: 2px solid var(--color-accent);
+        }
+
+        .food-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .food-name {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .food-badge {
+            flex-shrink: 0;
+            padding: 0.25rem 0.6rem;
+            border-radius: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .food-badge.must { background: var(--color-accent); color: white; }
+        .food-badge.recommend { background: var(--color-gold); color: var(--color-ink); }
+        .food-badge.scenic { background: var(--color-sage); color: white; }
+        .food-badge.backup { background: #E0E0E0; color: var(--color-ink-light); }
+
+        .food-address {
+            font-size: 0.8rem;
+            color: var(--color-ink-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.35rem;
+        }
+
+        .food-note {
+            font-size: 0.85rem;
+            color: var(--color-accent-dark);
+            font-style: italic;
+            padding-top: 0.5rem;
+            border-top: 1px dashed rgba(44, 24, 16, 0.1);
+        }
+
+        /* ========== TIPS BOX ========== */
+        .tips-box {
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFF5DC 100%);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--color-gold);
+        }
+
+        .tips-title {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-content {
+            font-size: 0.9rem;
+            color: var(--color-ink-light);
+            line-height: 1.8;
+        }
+
+        /* ========== CHARGING SECTION ========== */
+        .charging-card {
+            background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+
+        .charging-station {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(122, 158, 126, 0.2);
+        }
+
+        .charging-station.primary {
+            border: 2px solid var(--color-sage);
+        }
+
+        .station-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .station-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .station-tag {
+            background: var(--color-sage);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .charger-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .charger-item {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            border: 1px solid rgba(44, 24, 16, 0.1);
+            background: var(--color-bg);
+        }
+
+        .charger-item.fast {
+            background: #FFF3E0;
+            border-color: var(--color-gold);
+        }
+
+        .station-note {
+            font-size: 0.8rem;
+            color: var(--color-ink-light);
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed rgba(44, 24, 16, 0.1);
+        }
+
+        /* ========== COST TABLE ========== */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 20px rgba(44, 24, 16, 0.05);
+        }
+
+        .cost-table th,
+        .cost-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(44, 24, 16, 0.06);
+        }
+
+        .cost-table th {
+            background: var(--color-bg-warm);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-ink-light);
+            font-weight: 600;
+        }
+
+        .cost-table tr:last-child td {
+            border-bottom: none;
+            background: var(--color-ink);
+            color: var(--color-cream);
+            font-weight: 600;
+        }
+
+        /* ========== CHECKLIST ========== */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .checklist-group h4 {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(44, 24, 16, 0.06);
+            font-size: 0.95rem;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--color-gold);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .checklist-note {
+            font-size: 0.8rem;
+            color: var(--color-accent);
+            margin-left: auto;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--color-ink);
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '🍜';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20rem;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .footer-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-sub {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .footer-meta {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+
+        /* ========== SCROLL ANIMATIONS ========== */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-item {
+            animation: slideInLeft 0.6s var(--ease-out-expo) both;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1.5rem;
+            }
+
+            .hero-meta {
+                gap: 1.5rem;
+            }
+
+            .section {
+                margin-bottom: 4rem;
+            }
+
+            .day-header {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .day-content {
+                padding: 1.5rem;
+            }
+
+            .timeline {
+                padding-left: 1.5rem;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weather-section,
+            .charging-card {
+                padding: 1.5rem;
+            }
+
+            .hotel-card {
+                padding: 1.5rem;
+            }
+
+            .cost-table th,
+            .cost-table td {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🚗</span> Tesla Model Y 自驾
+            </div>
+            <h1 class="hero-title">
+                <span class="accent">螺蛳粉</span>之旅
+            </h1>
+            <p class="hero-subtitle">广州 → 柳州 · 两天一夜美食探索</p>
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <span class="hero-meta-value">510</span>
+                    <span>公里</span>
+                </div>
+                <div class="hero-meta-item">
+                    <span class="hero-meta-value">6</span>
+                    <span>小时</span>
+                </div>
+                <div class="hero-meta-item">
+                    <span class="hero-meta-value">2.6-8</span>
+                    <span>二月</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint">向下滚动</div>
+    </header>
+
+    <main class="main">
+        <!-- WEATHER -->
+        <section class="section" id="weather">
+            <div class="weather-section">
+                <div class="section-header" style="border-color: rgba(255,255,255,0.2);">
+                    <span class="section-number" style="color: var(--color-gold);">01</span>
+                    <h2 class="section-title" style="color: var(--color-cream);">天气预报</h2>
+                </div>
+                <div class="weather-grid">
+                    <div class="weather-day">
+                        <div class="weather-date">2月6日 周五</div>
+                        <div class="weather-icon">🌧️</div>
+                        <div class="weather-temp">14°C - 19°C</div>
+                        <div class="weather-condition">小雨转阴</div>
+                    </div>
+                    <div class="weather-day">
+                        <div class="weather-date">2月7日 周六</div>
+                        <div class="weather-icon">☁️</div>
+                        <div class="weather-temp">13°C - 20°C</div>
+                        <div class="weather-condition">多云</div>
+                    </div>
+                    <div class="weather-day">
+                        <div class="weather-date">2月8日 周日</div>
+                        <div class="weather-icon">⛅</div>
+                        <div class="weather-temp">14°C - 21°C</div>
+                        <div class="weather-condition">多云转晴</div>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;">
+                    💡 建议带伞，周五可能有小雨。气温舒适，穿薄外套即可。
+                </p>
+            </div>
+        </section>
+
+        <!-- HOTEL -->
+        <section class="section" id="hotel">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2 class="section-title">住宿</h2>
+            </div>
+            <div class="hotel-card">
+                <div>
+                    <div class="hotel-label">目的地酒店</div>
+                    <h3 class="hotel-name">美豪酒店（五星步行街地王店）</h3>
+                    <p class="hotel-address">📍 柳州市三中路59号 明硕科技商业大厦F1层</p>
+                </div>
+                <div class="hotel-badge">核心商圈</div>
+            </div>
+        </section>
+
+        <!-- ROUTE -->
+        <section class="section" id="route">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">行车路线</h2>
+            </div>
+            <div class="route-visual">
+                <div class="route-path">
+                    <div class="route-point">
+                        <div class="route-dot start">🏠</div>
+                        <div class="route-label">广州碧桂园</div>
+                    </div>
+                    <div class="route-distance first">~200km</div>
+                    <div class="route-point">
+                        <div class="route-dot charge">⚡</div>
+                        <div class="route-label">怀集充电<br><small style="font-size: 0.7rem; color: var(--color-accent);">特斯拉/服务区</small></div>
+                    </div>
+                    <div class="route-distance second">~310km</div>
+                    <div class="route-point">
+                        <div class="route-dot end">🍜</div>
+                        <div class="route-label">柳州美豪酒店</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DAY 1: FRIDAY -->
+        <section class="section" id="day1">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2 class="section-title">行程安排</h2>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-date">2月6日 · 星期五</div>
+                        <h3 class="day-title">出发日</h3>
+                    </div>
+                    <div class="day-weather">🌧️ 小雨 14-19°C</div>
+                </div>
+                <div class="day-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">06:30</div>
+                            <div class="timeline-title">🏠 广州碧桂园出发</div>
+                            <div class="timeline-desc">满电428km，走二广高速</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">08:30 - 09:00</div>
+                            <div class="timeline-title">⚡ 怀集充电（二选一）</div>
+                            <div class="timeline-desc">
+                                💰 <strong>省钱：</strong>怀集新洲未来城特斯拉超充（1元/度，约25分钟）<br>
+                                ⏱️ <strong>省时：</strong>怀城服务区（1.4-1.8元/度，约40分钟，无需下高速）
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">12:30</div>
+                            <div class="timeline-title">🎯 到达柳州</div>
+                            <div class="timeline-desc">美豪酒店办理入住</div>
+                        </div>
+                    </div>
+
+                    <div class="food-section">
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 五星步行街 · 午餐</div>
+                            <div class="food-grid">
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">🥇 六品坊螺蛳粉</span>
+                                        <span class="food-badge must">必去</span>
+                                    </div>
+                                    <div class="food-address">📍 公园路北三巷10号一楼内</div>
+                                    <div class="food-note">💡 巷子老店，环境简陋但味道一流</div>
+                                </div>
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">聚宝螺蛳粉（总店）</span>
+                                        <span class="food-badge recommend">推荐</span>
+                                    </div>
+                                    <div class="food-address">📍 龙城路6号</div>
+                                    <div class="food-note">20年老字号，汤底浓郁</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 蟠龙山 · 下午茶</div>
+                            <div class="food-grid">
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">🏔️ 蟠龙山公园</span>
+                                        <span class="food-badge scenic">景点</span>
+                                    </div>
+                                    <div class="food-address">📍 柳东路3号</div>
+                                    <div class="food-note">💡 周五若有雨可改周六去看日落</div>
+                                </div>
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">金弟炒螺蛳粉</span>
+                                        <span class="food-badge must">必吃</span>
+                                    </div>
+                                    <div class="food-address">📍 驾鹤路3号国泰大厦1-13</div>
+                                    <div class="food-note">💡 炒的！和汤粉完全不一样</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 北站夜市 · 晚餐</div>
+                            <div class="tips-box">
+                                <div class="tips-title">💡 夜市攻略</div>
+                                <div class="tips-content">
+                                    营业时间 20:00-04:00，建议20:30后到。有停车场，即使下雨也营业！
+                                </div>
+                            </div>
+                            <div class="food-grid">
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">🔥 钟记烧烤</span>
+                                        <span class="food-badge must">强推</span>
+                                    </div>
+                                    <div class="food-address">📍 跃进路东一巷</div>
+                                    <div class="food-note">🌟 一定要加黄皮酱！！</div>
+                                </div>
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">叶记牛肠酸</span>
+                                        <span class="food-badge must">朋友推</span>
+                                    </div>
+                                    <div class="food-address">📍 跃进路东一巷11栋</div>
+                                    <div class="food-note">💡 柳州特色，酸爽开胃</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 2: SATURDAY -->
+            <div class="day-card">
+                <div class="day-header" style="background: linear-gradient(135deg, #2D4A3E 0%, #1A2F26 100%);">
+                    <div>
+                        <div class="day-date">2月7日 · 星期六</div>
+                        <h3 class="day-title">探索日</h3>
+                    </div>
+                    <div class="day-weather">☁️ 多云 13-20°C</div>
+                </div>
+                <div class="day-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">08:00</div>
+                            <div class="timeline-title">🥣 早餐</div>
+                            <div class="timeline-desc">天山牛杂 或 蒙记豆浆</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">09:30 - 12:00</div>
+                            <div class="timeline-title">🌳 大龙潭公园</div>
+                            <div class="timeline-desc">免费入园，很大很好逛</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">12:30</div>
+                            <div class="timeline-title">🍜 北雀路螺蛳粉</div>
+                            <div class="timeline-desc">螺蛳粉老店一条街</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">15:00 - 18:30</div>
+                            <div class="timeline-title">🌄 蟠龙山看日落</div>
+                            <div class="timeline-desc">天气好必去！日落约18:00</div>
+                        </div>
+                    </div>
+
+                    <div class="food-section">
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 水南路 · 早餐</div>
+                            <div class="food-grid">
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">天山牛杂城</span>
+                                        <span class="food-badge must">朋友推</span>
+                                    </div>
+                                    <div class="food-address">📍 水南路245号</div>
+                                </div>
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">蒙记老牌豆浆</span>
+                                        <span class="food-badge recommend">推荐</span>
+                                    </div>
+                                    <div class="food-address">📍 水南路211号</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 北雀路 · 午餐</div>
+                            <div class="food-grid">
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">🥇 阿蓝螺蛳粉</span>
+                                        <span class="food-badge must">必去</span>
+                                    </div>
+                                    <div class="food-address">📍 红岩路1区34号</div>
+                                    <div class="food-note">🌟 朋友必推的螺蛳粉店</div>
+                                </div>
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">印象阿牛哥</span>
+                                        <span class="food-badge recommend">网红</span>
+                                    </div>
+                                    <div class="food-address">📍 北雀路35-17号</div>
+                                    <div class="food-note">原汤螺蛳粉</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 下午 · 甜品/逛街</div>
+                            <div class="food-grid">
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">韦韦木薯羹</span>
+                                        <span class="food-badge recommend">网红</span>
+                                    </div>
+                                    <div class="food-address">📍 曙光东路228号</div>
+                                    <div class="food-note">💡 柳州特色甜品，解腻神器</div>
+                                </div>
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">🏔️ 蟠龙山公园</span>
+                                        <span class="food-badge scenic">日落</span>
+                                    </div>
+                                    <div class="food-address">📍 柳东路3号</div>
+                                    <div class="food-note">💡 天气好必去看日落！</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 3: SUNDAY -->
+            <div class="day-card">
+                <div class="day-header" style="background: linear-gradient(135deg, #4A4A4A 0%, #2A2A2A 100%);">
+                    <div>
+                        <div class="day-date">2月8日 · 星期日</div>
+                        <h3 class="day-title">返程日</h3>
+                    </div>
+                    <div class="day-weather">⛅ 多云转晴 14-21°C</div>
+                </div>
+                <div class="day-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">07:00 - 08:00</div>
+                            <div class="timeline-title">🥣 早餐 + 充电</div>
+                            <div class="timeline-desc">窑埠古镇特斯拉超充站</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">08:00</div>
+                            <div class="timeline-title">🚗 出发返程</div>
+                            <div class="timeline-desc">梧柳高速 → 广佛肇高速</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">11:00 - 11:40</div>
+                            <div class="timeline-title">⚡ 怀城服务区充电</div>
+                            <div class="timeline-desc">充电40分钟，顺便休息</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">14:00</div>
+                            <div class="timeline-title">🏠 到达广州</div>
+                            <div class="timeline-desc">全程约6小时，回家！</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHARGING -->
+        <section class="section" id="charging">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2 class="section-title">充电策略</h2>
+            </div>
+            <div class="charging-card">
+                <!-- 价格对比表 -->
+                <div style="background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1rem; border: 2px solid var(--color-gold);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-gold); letter-spacing: 0.1em; text-transform: uppercase;">
+                        💰 充电价格对比
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
+                        <div style="background: linear-gradient(135deg, #FFE8E8 0%, #FFF 100%); padding: 1rem; border-radius: 0.75rem; text-align: center; border: 2px solid var(--color-accent);">
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light); margin-bottom: 0.25rem;">🔴 特斯拉超充</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-accent);">1.0元</div>
+                            <div style="font-size: 0.7rem; color: var(--color-sage); font-weight: 600;">✅ 最划算</div>
+                        </div>
+                        <div style="background: var(--color-bg); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light); margin-bottom: 0.25rem;">🟢 理想5C超充</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-ink);">1.5-1.8元</div>
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light);">服务区内</div>
+                        </div>
+                        <div style="background: var(--color-bg); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light); margin-bottom: 0.25rem;">⚡ 南方电网超充</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-ink);">1.2-1.6元</div>
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light);">服务区内</div>
+                        </div>
+                        <div style="background: var(--color-bg); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light); margin-bottom: 0.25rem;">🔵 国家电网</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-ink);">1.1-1.6元</div>
+                            <div style="font-size: 0.7rem; color: var(--color-ink-light);">服务区常见</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed rgba(44,24,16,0.1); font-size: 0.8rem; color: var(--color-ink-light);">
+                        💡 <strong>省钱攻略：</strong>特斯拉超充1元/度最划算！单次充40度可省20-30元，但需下高速
+                    </div>
+                </div>
+
+                <div class="charging-station" style="border: 2px solid var(--color-accent);">
+                    <div class="station-header">
+                        <span class="station-name">📍 怀集特斯拉超充（去程）</span>
+                        <span class="station-tag" style="background: var(--color-accent);">💰 最省钱</span>
+                    </div>
+                    <div class="charger-list">
+                        <span class="charger-item" style="background: #FFE8E8; border-color: var(--color-accent);">🔴 新洲未来城 · G234与G355交叉口东南 <strong style="color: var(--color-accent);">· 1.0元/度</strong></span>
+                    </div>
+                    <div class="station-note">
+                        距起点约200km · 需下高速约5分钟 · V3超充180kW+ · 充至80%约25分钟<br>
+                        <strong>💰 预计费用：</strong>充40度仅需40元，比服务区省16-32元！
+                    </div>
+                </div>
+                <div class="charging-station primary">
+                    <div class="station-header">
+                        <span class="station-name">📍 怀城服务区（去程备选）</span>
+                        <span class="station-tag">⭐ 便捷</span>
+                    </div>
+                    <div class="charger-list">
+                        <span class="charger-item fast">🟢 理想5C超充 520kW <strong style="color: var(--color-accent);">· 约1.8元/度</strong></span>
+                        <span class="charger-item fast">⚡ 南方电网超充 120kW <strong style="color: var(--color-accent);">· 约1.4元/度</strong></span>
+                    </div>
+                    <div class="station-note">
+                        距起点约200km · 无需下高速 · 特斯拉实际约60-80kW · 充至80%约40分钟<br>
+                        <strong>💰 预计费用：</strong>充40度约56-72元（服务区内，省时间）
+                    </div>
+                </div>
+                <div class="charging-station" style="border: 2px solid var(--color-accent);">
+                    <div class="station-header">
+                        <span class="station-name">📍 柳州特斯拉超充</span>
+                        <span class="station-tag" style="background: var(--color-accent);">💰 最省钱</span>
+                    </div>
+                    <div class="charger-list">
+                        <span class="charger-item" style="background: #FFE8E8; border-color: var(--color-accent);">🔴 窑埠古镇 · 蟠龙路9号 <strong style="color: var(--color-accent);">· 1.0元/度</strong></span>
+                        <span class="charger-item" style="background: #FFE8E8; border-color: var(--color-accent);">🔴 柳南万达 · 柳邕路263号 <strong style="color: var(--color-accent);">· 1.0元/度</strong></span>
+                    </div>
+                    <div class="station-note">
+                        V3超充 180kW+ · 充至80%约25分钟 · <strong style="color: var(--color-sage);">充电更快！</strong><br>
+                        <strong>💰 预计费用：</strong>充40度仅需40元，比服务区省16-32元！
+                    </div>
+                </div>
+                <div class="tips-box" style="margin-top: 1rem; margin-bottom: 0;">
+                    <div class="tips-title">💡 充电建议</div>
+                    <div class="tips-content">
+                        <strong>去程：</strong>怀城服务区充电（方便，不下高速，约60元）<br>
+                        <strong>返程前：</strong>柳州窑埠古镇特斯拉超充（1元/度，最省钱，仅40元）<br>
+                        <strong>往返总计：</strong>特斯拉超充方案约 <strong style="color: var(--color-sage);">100元</strong> vs 全服务区方案约 <strong>120-140元</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COST -->
+        <section class="section" id="cost">
+            <div class="section-header">
+                <span class="section-number">06</span>
+                <h2 class="section-title">费用预估</h2>
+            </div>
+            <table class="cost-table">
+                <thead>
+                    <tr>
+                        <th>项目</th>
+                        <th>省钱方案 💰</th>
+                        <th>便捷方案</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>高速通行费</td>
+                        <td>约 400-460 元</td>
+                        <td>约 400-460 元</td>
+                    </tr>
+                    <tr>
+                        <td>充电费用<br><small style="color: var(--color-ink-light);">（往返约80度电）</small></td>
+                        <td style="color: var(--color-sage); font-weight: 600;">
+                            约 80-100 元<br>
+                            <small style="color: var(--color-ink-light);">特斯拉超充1元/度</small>
+                        </td>
+                        <td>
+                            约 120-140 元<br>
+                            <small style="color: var(--color-ink-light);">服务区充电1.4-1.8元/度</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>交通合计</td>
+                        <td style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); color: var(--color-ink);">约 480-560 元 ✅</td>
+                        <td>约 520-600 元</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 1rem; padding: 1rem; background: var(--color-bg-warm); border-radius: 0.75rem; font-size: 0.85rem; color: var(--color-ink-light);">
+                💡 <strong>省钱方案：</strong>去程用怀集新洲未来城特斯拉超充 + 返程前用柳州窑埠古镇特斯拉超充，全程1元/度，可省约 <strong style="color: var(--color-sage);">40-60元</strong>
+            </div>
+        </section>
+
+        <!-- CHECKLIST -->
+        <section class="section" id="checklist">
+            <div class="section-header">
+                <span class="section-number">07</span>
+                <h2 class="section-title">必打卡清单</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-group">
+                    <h4>🍜 螺蛳粉</h4>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>六品坊螺蛳粉</span>
+                        <span class="checklist-note">老店</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>阿蓝螺蛳粉</span>
+                        <span class="checklist-note">朋友推</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>金弟炒螺蛳粉</span>
+                        <span class="checklist-note">炒粉</span>
+                    </div>
+                </div>
+                <div class="checklist-group">
+                    <h4>🔥 夜市小吃</h4>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>钟记烧烤</span>
+                        <span class="checklist-note">加黄皮酱！</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>叶记牛肠酸</span>
+                        <span class="checklist-note">朋友推</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>天山牛杂</span>
+                        <span class="checklist-note">早餐</span>
+                    </div>
+                </div>
+                <div class="checklist-group">
+                    <h4>🏔️ 景点</h4>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>蟠龙山日落</span>
+                        <span class="checklist-note">天气好</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-box"></span>
+                        <span>大龙潭公园</span>
+                        <span class="checklist-note">好逛</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIPS -->
+        <section class="section" id="tips">
+            <div class="section-header">
+                <span class="section-number">08</span>
+                <h2 class="section-title">温馨提示</h2>
+            </div>
+            <div class="tips-box" style="background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%); border-color: var(--color-sage);">
+                <div class="tips-title" style="color: var(--color-sage);">🌧️ 天气提醒</div>
+                <div class="tips-content">
+                    周五可能有小雨，记得带伞<br>
+                    周六天气好转，适合户外活动<br>
+                    气温15-22°C，穿薄外套即可
+                </div>
+            </div>
+            <div class="tips-box">
+                <div class="tips-title">🌙 北站夜市</div>
+                <div class="tips-content">
+                    营业时间 20:00-04:00，建议20:30后到<br>
+                    钟记烧烤一定要加黄皮酱！<br>
+                    有北站夜市停车场，可以开车去
+                </div>
+            </div>
+            <div class="tips-box" style="background: linear-gradient(135deg, #FFF0F0 0%, #FFF 100%); border-color: var(--color-accent);">
+                <div class="tips-title" style="color: var(--color-accent);">🍜 吃螺蛳粉</div>
+                <div class="tips-content">
+                    第一次吃可以先点"少辣少酸"<br>
+                    推荐加料：卤蛋、鸭脚、腐竹、木耳<br>
+                    炒螺蛳粉和汤螺蛳粉都值得尝试
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-emoji">🍜</div>
+        <p class="footer-text">柳州螺蛳粉，等你来嗦！</p>
+        <p class="footer-sub">祝旅途愉快</p>
+        <p class="footer-meta">2026年2月6日 - 2月8日 · 广州 → 柳州</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
