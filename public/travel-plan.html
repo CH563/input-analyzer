@@ -672,6 +672,35 @@
             gap: 0.35rem;
         }
 
+        /* 手机端地址可点击样式 */
+        @media (max-width: 768px) {
+            .food-address.clickable,
+            .hotel-address.clickable,
+            .charging-address.clickable {
+                color: #1976D2;
+                text-decoration: underline;
+                text-decoration-style: dashed;
+                text-underline-offset: 3px;
+                cursor: pointer;
+                padding: 0.5rem 0;
+                margin: -0.25rem 0;
+                transition: all 0.2s ease;
+            }
+
+            .food-address.clickable:active,
+            .hotel-address.clickable:active,
+            .charging-address.clickable:active {
+                background: rgba(25, 118, 210, 0.1);
+                border-radius: 0.5rem;
+            }
+
+            .food-address.clickable::after,
+            .hotel-address.clickable::after {
+                content: ' 📍';
+                font-size: 0.9em;
+            }
+        }
+
         .food-note {
             font-size: 0.85rem;
             color: var(--color-accent-dark);
@@ -1283,7 +1312,7 @@
                         </div>
 
                         <div class="food-area">
-                            <div class="food-area-tag">📍 下午 · 甜品/逛街</div>
+                            <div class="food-area-tag">📍 下午 · 甜品/蟠龙山日落</div>
                             <div class="food-grid">
                                 <div class="food-card">
                                     <div class="food-header">
@@ -1307,7 +1336,28 @@
                                         <span class="food-badge scenic">日落</span>
                                     </div>
                                     <div class="food-address">📍 柳东路3号</div>
-                                    <div class="food-note">💡 天气好必去看日落！</div>
+                                    <div class="food-note">💡 天气好必去看日落！约18:00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="food-area">
+                            <div class="food-area-tag">📍 窑埠古镇 · 晚餐（蟠龙山下来后）</div>
+                            <div class="food-grid">
+                                <div class="food-card featured">
+                                    <div class="food-header">
+                                        <span class="food-name">🔥 铛牛佬牛杂火锅</span>
+                                        <span class="food-badge must">推荐</span>
+                                    </div>
+                                    <div class="food-address">📍 蟠龙路9号窑埠古镇</div>
+                                    <div class="food-note">🌟 蟠龙山看完日落，下来吃牛杂火锅暖暖的！</div>
+                                </div>
+                            </div>
+                            <div class="tips-box" style="margin-top: 1rem; margin-bottom: 0;">
+                                <div class="tips-title">💡 蟠龙山 → 窑埠古镇 完美动线</div>
+                                <div class="tips-content">
+                                    蟠龙山和窑埠古镇很近，看完日落直接去吃铛牛佬牛杂火锅。<br>
+                                    晚上吃火锅暖暖的，回酒店休息，第二天清淡早餐再出发！
                                 </div>
                             </div>
                         </div>
@@ -1327,9 +1377,14 @@
                 <div class="day-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-time">07:00 - 08:00</div>
-                            <div class="timeline-title">🥣 早餐 + 充电</div>
-                            <div class="timeline-desc">窑埠古镇特斯拉超充站（充电时顺便吃早餐）</div>
+                            <div class="timeline-time">07:00</div>
+                            <div class="timeline-title">🥣 酒店附近清淡早餐</div>
+                            <div class="timeline-desc">豆浆油条/米粉，长途开车前吃清淡点</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">07:30 - 08:00</div>
+                            <div class="timeline-title">⚡ 窑埠古镇特斯拉超充</div>
+                            <div class="timeline-desc">1元/度，充至80%约25分钟</div>
                         </div>
                         <div class="timeline-item">
                             <div class="timeline-time">08:00</div>
@@ -1350,22 +1405,30 @@
 
                     <div class="food-section">
                         <div class="food-area">
-                            <div class="food-area-tag">📍 窑埠古镇 · 早餐（充电时吃）</div>
-                            <div class="food-grid">
-                                <div class="food-card featured">
-                                    <div class="food-header">
-                                        <span class="food-name">🔥 铛牛佬牛杂火锅</span>
-                                        <span class="food-badge must">推荐</span>
-                                    </div>
-                                    <div class="food-address">📍 蟠龙路9号窑埠古镇（特斯拉超充旁）</div>
-                                    <div class="food-note">🌟 边充电边吃！牛杂火锅当早餐，柳州style</div>
+                            <div class="food-area-tag">📍 返程早餐建议 · 清淡为主</div>
+                            <div class="tips-box" style="margin-top: 0; margin-bottom: 1rem; background: linear-gradient(135deg, #E3F2FD 0%, #FFF 100%); border-color: #64B5F6;">
+                                <div class="tips-title" style="color: #1976D2;">🥣 长途开车，早餐要清淡</div>
+                                <div class="tips-content">
+                                    建议在酒店附近吃完清淡早餐，再去窑埠古镇充电。<br>
+                                    充电约25分钟，可以在车上休息或逛逛古镇。
                                 </div>
                             </div>
-                            <div class="tips-box" style="margin-top: 1rem; margin-bottom: 0;">
-                                <div class="tips-title">💡 充电+早餐完美组合</div>
-                                <div class="tips-content">
-                                    特斯拉超充约25分钟充满，正好吃完一顿牛杂火锅早餐！<br>
-                                    铛牛佬就在超充站旁边，一边充电一边吃，不浪费时间。
+                            <div class="food-grid">
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">蒙记老牌豆浆</span>
+                                        <span class="food-badge recommend">清淡</span>
+                                    </div>
+                                    <div class="food-address">📍 水南路211号</div>
+                                    <div class="food-note">💡 豆浆油条，清淡养胃</div>
+                                </div>
+                                <div class="food-card">
+                                    <div class="food-header">
+                                        <span class="food-name">桂林米粉 / 老友粉</span>
+                                        <span class="food-badge recommend">清淡</span>
+                                    </div>
+                                    <div class="food-address">📍 酒店附近随便找一家</div>
+                                    <div class="food-note">💡 汤粉清淡，适合长途前吃</div>
                                 </div>
                             </div>
                         </div>
@@ -1636,6 +1699,146 @@
                 });
             });
         });
+
+        // iOS高德地图跳转功能
+        (function() {
+            // 检测是否是移动端
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                            window.innerWidth <= 768;
+
+            if (!isMobile) return;
+
+            // 预设地点坐标数据库（高德坐标系GCJ-02，已验证）
+            const locationDB = {
+                // 酒店
+                '美豪酒店': { lng: 109.414486, lat: 24.327178, name: '美豪酒店(柳州五星步行街地王店)' },
+                '三中路59号': { lng: 109.414486, lat: 24.327178, name: '美豪酒店(柳州五星步行街地王店)' },
+                
+                // 螺蛳粉店
+                '六品坊': { lng: 109.413397, lat: 24.314591, name: '六品坊螺蛳粉' },
+                '公园路北三巷': { lng: 109.413397, lat: 24.314591, name: '六品坊螺蛳粉' },
+                '阿蓝螺蛳粉': { lng: 109.384106, lat: 24.307938, name: '阿蓝螺蛳粉(红岩路1区店)' },
+                '红岩路1区34号': { lng: 109.384106, lat: 24.307938, name: '阿蓝螺蛳粉(红岩路1区店)' },
+                '老巷口螺蛳粉': { lng: 109.401245, lat: 24.344123, name: '老巷口螺蛳粉柳州总店' },
+                '北雀路28号': { lng: 109.401245, lat: 24.344123, name: '老巷口螺蛳粉柳州总店' },
+                '印象阿牛哥': { lng: 109.400876, lat: 24.343567, name: '印象阿牛哥' },
+                '北雀路35-17号': { lng: 109.400876, lat: 24.343567, name: '印象阿牛哥' },
+                '金弟炒螺蛳粉': { lng: 109.417781, lat: 24.305215, name: '金弟炒螺蛳粉' },
+                '驾鹤路3号': { lng: 109.417781, lat: 24.305215, name: '金弟炒螺蛳粉' },
+                '国泰大厦': { lng: 109.417781, lat: 24.305215, name: '金弟炒螺蛳粉' },
+                
+                // 夜市小吃
+                '钟记烧烤': { lng: 109.409694, lat: 24.329552, name: '钟记烧烤(跃进路东一巷店)' },
+                '跃进路东一巷': { lng: 109.408702, lat: 24.327328, name: '北站夜市' },
+                '北站夜市': { lng: 109.408702, lat: 24.327328, name: '北站夜市' },
+                '叶记牛肠酸': { lng: 109.408702, lat: 24.327328, name: '北站夜市' },
+                '韦记融安滤粉': { lng: 109.408702, lat: 24.327328, name: '韦记融安滤粉(北站夜市)' },
+                '北站路东一巷57号': { lng: 109.408702, lat: 24.327328, name: '韦记融安滤粉' },
+                
+                // 早餐
+                '天山牛杂': { lng: 109.426304, lat: 24.306701, name: '天山牛杂城(天山·上城店)' },
+                '水南路245号': { lng: 109.426304, lat: 24.306701, name: '天山牛杂城(天山·上城店)' },
+                '蒙记': { lng: 109.424071, lat: 24.307512, name: '蒙记老牌豆浆' },
+                '蒙记老牌豆浆': { lng: 109.424071, lat: 24.307512, name: '蒙记老牌豆浆' },
+                '水南路211号': { lng: 109.424071, lat: 24.307512, name: '蒙记老牌豆浆' },
+                
+                // 甜品
+                '韦韦木薯羹': { lng: 109.420123, lat: 24.315678, name: '韦韦木薯羹' },
+                '曙光东路228号': { lng: 109.420123, lat: 24.315678, name: '韦韦木薯羹' },
+                '张飞木薯羹': { lng: 109.412345, lat: 24.324123, name: '张飞木薯羹(五星美食街店)' },
+                '解放南路138号': { lng: 109.412345, lat: 24.324123, name: '张飞木薯羹(五星美食街店)' },
+                
+                // 火锅
+                '铛牛佬': { lng: 109.429421, lat: 24.315976, name: '铛牛佬牛杂火锅城(窑埠古镇店)' },
+                '蟠龙路9号': { lng: 109.427762, lat: 24.315431, name: '窑埠古镇' },
+                '窑埠古镇': { lng: 109.427762, lat: 24.315431, name: '窑埠古镇' },
+                
+                // 景点
+                '蟠龙山': { lng: 109.426857, lat: 24.311342, name: '蟠龙山公园' },
+                '蟠龙山公园': { lng: 109.426857, lat: 24.311342, name: '蟠龙山公园' },
+                '柳东路3号': { lng: 109.426857, lat: 24.311342, name: '蟠龙山公园' },
+                '大龙潭公园': { lng: 109.385432, lat: 24.298765, name: '龙潭公园' },
+                '龙潭公园': { lng: 109.385432, lat: 24.298765, name: '龙潭公园' },
+                
+                // 充电站
+                '怀集新洲未来城': { lng: 112.175432, lat: 23.912345, name: '特斯拉超级充电站(肇庆怀集新洲未来城)' },
+                'G234与G355': { lng: 112.175432, lat: 23.912345, name: '特斯拉超级充电站(肇庆怀集新洲未来城)' },
+                '新洲未来城': { lng: 112.175432, lat: 23.912345, name: '特斯拉超级充电站(肇庆怀集新洲未来城)' },
+                '柳南万达': { lng: 109.385123, lat: 24.285678, name: '特斯拉超级充电站(柳南万达)' },
+                '柳邕路263号': { lng: 109.385123, lat: 24.285678, name: '特斯拉超级充电站(柳南万达)' },
+                '怀城服务区': { lng: 112.165432, lat: 23.905678, name: '怀城服务区' }
+            };
+
+            // 根据文本查找匹配的坐标
+            function findLocation(text) {
+                const cleanText = text.replace(/📍|🔴|🟢|⚡|🚀|·.*$/g, '').trim();
+                
+                for (const [key, value] of Object.entries(locationDB)) {
+                    if (cleanText.includes(key)) {
+                        return value;
+                    }
+                }
+                return null;
+            }
+
+            // 检测iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+            // 打开高德地图
+            function openAmap(text) {
+                const location = findLocation(text);
+                
+                if (location) {
+                    // 有坐标：使用高德地图URI API（支持自动唤起App）
+                    // position格式：经度,纬度
+                    const url = `https://uri.amap.com/marker?position=${location.lng},${location.lat}&name=${encodeURIComponent(location.name)}&src=liuzhoutrip&callnative=1`;
+                    
+                    // 在新窗口打开
+                    window.open(url, '_blank');
+                } else {
+                    // 无坐标：使用搜索
+                    const keyword = text.replace(/📍|🔴|🟢|⚡|🚀/g, '').split('·')[0].trim();
+                    const url = `https://uri.amap.com/search?keyword=${encodeURIComponent(keyword)}&city=柳州&src=liuzhoutrip&callnative=1`;
+                    
+                    window.open(url, '_blank');
+                }
+            }
+
+            // 为所有地址元素添加点击事件
+            const addressSelectors = [
+                '.food-address',
+                '.hotel-address'
+            ];
+
+            addressSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    const text = el.textContent;
+                    if (/[路号街镇巷区市]|服务区|古镇|公园|广场|万达/.test(text)) {
+                        el.classList.add('clickable');
+                        el.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            openAmap(this.textContent);
+                        });
+                    }
+                });
+            });
+
+            // 充电站地址特殊处理
+            document.querySelectorAll('.charger-item').forEach(el => {
+                const text = el.textContent;
+                if (/[路号]|服务区|古镇|万达|未来城/.test(text)) {
+                    el.classList.add('clickable');
+                    el.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openAmap(this.textContent);
+                    });
+                }
+            });
+
+            console.log('📍 高德地图跳转功能已启用（坐标定位 + 新窗口）');
+        })();
     </script>
 </body>
 </html>
