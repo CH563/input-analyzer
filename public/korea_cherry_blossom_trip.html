@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#3d2f36">
+  <meta name="description" content="韩国赏樱 4/3–4/7 行程 · 首尔釜山 · 三校巡礼与镇海樱">
+  <title>韩国赏樱深度游 · 三校巡礼 & 双城记</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --nav-height: 64px;
+      --bg: #f8f5f6;
+      --card: rgba(255, 255, 255, 0.92);
+      --card-solid: #fff;
+      --ink: #2c2528;
+      --ink-light: #5c5358;
+      --accent: #b84d6d;
+      --accent-soft: rgba(184, 77, 109, 0.12);
+      --coral: #c75d52;
+      --mint: #4a8b7a;
+      --lavender: #7b6b94;
+      --border: rgba(44, 37, 40, 0.08);
+      --shadow: 0 2px 16px rgba(44, 37, 40, 0.06);
+      --radius: 12px;
+      --font-head: "Noto Serif SC", "PingFang SC", serif;
+      --font-body: "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      padding: 0 0 4rem;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 4rem);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 40% at 50% -5%, rgba(184, 77, 109, 0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 30% at 100% 50%, rgba(123, 107, 148, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 25% at 0% 70%, rgba(74, 139, 122, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .header {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 250, 251, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 1.25rem 1.25rem 1rem;
+      padding-top: max(1.25rem, env(safe-area-inset-top));
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header h1 {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.2rem;
+    }
+
+    .header .version {
+      font-size: 0.8rem;
+      color: var(--ink-light);
+    }
+
+    .quick-bar {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .quick-bar .dates {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+    }
+
+    .quick-bar .dates strong {
+      color: var(--ink);
+    }
+
+    .quick-bar .total-cost {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 252, 253, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    nav {
+      padding: 0.5rem 0.75rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      white-space: nowrap;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav .nav-inner {
+      display: inline-flex;
+      gap: 0.35rem;
+      padding: 0 0.25rem;
+    }
+
+    nav a {
+      display: inline-block;
+      padding: 0.45rem 0.75rem;
+      color: var(--ink-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-radius: 20px;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    nav a.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      margin: 0 .5rem 1.25rem;
+      scroll-margin-top: var(--nav-height);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      opacity: 0;
+      transform: translateY(8px);
+      animation: sectionReveal 0.5s ease forwards;
+    }
+
+    section:nth-child(4) {
+      animation-delay: 0s;
+    }
+
+    section:nth-child(5) {
+      animation-delay: 0.03s;
+    }
+
+    section:nth-child(6) {
+      animation-delay: 0.06s;
+    }
+
+    section:nth-child(7) {
+      animation-delay: 0.09s;
+    }
+
+    section:nth-child(8) {
+      animation-delay: 0.12s;
+    }
+
+    section:nth-child(9) {
+      animation-delay: 0.15s;
+    }
+
+    section:nth-child(10) {
+      animation-delay: 0.18s;
+    }
+
+    section:nth-child(11) {
+      animation-delay: 0.21s;
+    }
+
+    section:nth-child(12) {
+      animation-delay: 0.24s;
+    }
+
+    section:nth-child(13) {
+      animation-delay: 0.27s;
+    }
+
+    section:nth-child(14) {
+      animation-delay: 0.3s;
+    }
+
+    section:nth-child(15) {
+      animation-delay: 0.33s;
+    }
+
+    @keyframes sectionReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section h2 {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(135deg, rgba(184, 77, 109, 0.08) 0%, rgba(184, 77, 109, 0.03) 100%);
+      color: var(--ink);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-body {
+      padding: 1rem .5rem;
+      background: var(--card-solid);
+    }
+
+    .section-summary {
+      font-size: 0.88rem;
+      color: var(--ink-light);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th,
+    td {
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 500;
+      color: var(--ink-light);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .time {
+      white-space: nowrap;
+      color: var(--ink-light);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cost {
+      white-space: nowrap;
+      color: var(--accent);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .focus {
+      background: var(--accent-soft);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    ul,
+    ol {
+      padding-left: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    li {
+      margin: 0.2rem 0;
+    }
+
+    .tip {
+      background: rgba(74, 139, 122, 0.08);
+      border-left: 3px solid var(--mint);
+      padding: 0.6rem 0.9rem;
+      margin: 0.75rem 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+
+    .weather-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 0.75rem 0;
+    }
+
+    .weather-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 0.8rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, #5f88c9 0%, #4a74b8 100%);
+      box-shadow: 0 2px 8px rgba(74, 116, 184, 0.25);
+    }
+
+    .weather-btn.secondary {
+      background: linear-gradient(90deg, #4a8b7a 0%, #3b7466 100%);
+      box-shadow: 0 2px 8px rgba(59, 116, 102, 0.25);
+    }
+
+    .weather-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .timeline li {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      margin: 0;
+      align-items: flex-start;
+    }
+
+    .timeline li:last-child {
+      border-bottom: none;
+    }
+
+    .timeline .time-pill {
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink-light);
+      background: var(--accent-soft);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      min-width: 4.2em;
+      text-align: center;
+    }
+
+    .timeline .desc {
+      flex: 1;
+    }
+
+    .timeline .desc .cost {
+      font-size: 0.85rem;
+    }
+
+    .day-card {
+      margin-bottom: 1rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .day-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .day-title {
+      font-family: var(--font-head);
+      padding: 0.65rem 1rem;
+      background: linear-gradient(90deg, var(--accent) 0%, #9e4058 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .day-body {
+      padding: 0.85rem 1rem;
+    }
+
+    .spot-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .spot-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      margin: 0;
+    }
+
+    .spot-list li:last-child {
+      border-bottom: none;
+    }
+
+    .spot-name {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.45rem 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1.05rem;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.82rem;
+      color: var(--ink-light);
+    }
+
+    .emergency-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: rgba(44, 37, 40, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.5rem 1rem;
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .emergency-bar a {
+      color: #ffb3b3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .emergency-bar a:focus-visible {
+      outline: 2px solid #ffb3b3;
+      outline-offset: 2px;
+    }
+
+    .back-top {
+      position: fixed;
+      right: 1rem;
+      bottom: 4rem;
+      bottom: calc(4rem + env(safe-area-inset-bottom));
+      z-index: 25;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(184, 77, 109, 0.4);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .back-top.visible {
+      display: flex;
+    }
+
+    .back-top:hover {
+      transform: scale(1.05);
+    }
+
+    .back-top:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    @media (min-width: 600px) {
+      body {
+        max-width: 540px;
+        margin: 0 auto;
+      }
+
+      .back-top {
+        right: calc(50% - 270px + 1rem);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1>🌸 韩国赏樱深度游</h1>
+    <p class="version">三校巡礼 & 双城记 · 行程</p>
+  </header>
+
+  <div class="quick-bar">
+    <span class="dates"><strong>4/3–4/7</strong> 共 5 天 · 首尔 → 釜山 → 首尔</span>
+    <span class="total-cost">预算约 ¥2,454</span>
+  </div>
+
+  <div class="nav-wrap">
+    <nav id="mainNav">
+      <div class="nav-inner">
+        <a href="#overview" data-section="overview">📋 概览</a>
+        <a href="#bloom" data-section="bloom">🌸 花期</a>
+        <a href="#day1" data-section="day1">Day1</a>
+        <a href="#day2" data-section="day2">Day2</a>
+        <a href="#day3" data-section="day3">Day3</a>
+        <a href="#day4" data-section="day4">Day4</a>
+        <a href="#day5" data-section="day5">Day5</a>
+        <a href="#schools" data-section="schools">🏫 三校</a>
+        <a href="#spots" data-section="spots">🌸 赏樱</a>
+        <a href="#traffic" data-section="traffic">🚃 交通</a>
+        <a href="#budget" data-section="budget">💰 预算</a>
+        <a href="#weather" data-section="weather">⛅ 天气</a>
+        <a href="#tips" data-section="tips">💡 贴士</a>
+      </div>
+    </nav>
+  </div>
+
+  <section id="overview">
+    <h2>📋 一、行程概览与已确认信息</h2>
+    <div class="section-body">
+      <p class="section-summary"><strong>✨ 亮点：</strong>三校巡礼（庆熙、延世、梨花）白天最佳光线；庆熙+明洞免税店无缝衔接；釜山镇海赏樱完整保留。</p>
+      <table>
+        <tr>
+          <th>项目</th>
+          <th>详情</th>
+        </tr>
+        <tr>
+          <td>✈️ 去程</td>
+          <td>4月3日 12:40 广州 → 17:15 首尔仁川</td>
+        </tr>
+        <tr>
+          <td>✈️ 回程</td>
+          <td>4月7日 15:15 首尔仁川 → 18:10 广州</td>
+        </tr>
+        <tr>
+          <td>🏨 4/3 住宿</td>
+          <td>Mercure Ambassador Seoul Hongdae（弘大美居）</td>
+        </tr>
+        <tr>
+          <td>🏨 4/4-5 住宿</td>
+          <td>L7 HAEUNDAE（L7海云台）</td>
+        </tr>
+        <tr>
+          <td>🏨 4/6 住宿</td>
+          <td>RYSE, Autograph Collection（弘大）</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="bloom">
+    <h2>🌸 二、樱花花期分析（2026预测）</h2>
+    <div class="section-body">
+      <table>
+        <tr>
+          <th>地区</th>
+          <th>开花日</th>
+          <th>满开日</th>
+          <th>4/3-7 花况</th>
+        </tr>
+        <tr>
+          <td>釜山</td>
+          <td>3/25</td>
+          <td>约4/1</td>
+          <td><span class="focus">满开末至落樱，落樱纷飞</span></td>
+        </tr>
+        <tr>
+          <td>镇海</td>
+          <td>3/27</td>
+          <td>约3/31</td>
+          <td>满开末期，军港节最后一天 4/5</td>
+        </tr>
+        <tr>
+          <td>首尔</td>
+          <td>4/3</td>
+          <td>约4/10</td>
+          <td>刚开至 3–5 成，初开期</td>
+        </tr>
+      </table>
+      <p style="margin-top:0.75rem;">💡 赏樱重心放在釜山海云台和镇海最合理。</p>
+    </div>
+  </section>
+
+  <section id="day1">
+    <h2>✈️ Day 1 · 4月3日 周五</h2>
+    <div class="section-body">
+      <p class="section-summary">抵达首尔，入住弘大。航班 17:15 降落，预留约 1–1.5 小时入境取行李。</p>
+      <div class="day-card">
+        <div class="day-title">当日行程</div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><span class="time-pill">17:15</span><span class="desc">抵达仁川机场</span></li>
+            <li><span class="time-pill">17:15–18:30</span><span class="desc">入境、取行李</span></li>
+            <li><span class="time-pill">18:30–19:25</span><span class="desc">仁川→弘大入口 AREX 普通 <span
+                  class="cost">₩4,950</span></span></li>
+            <li><span class="time-pill">19:25–19:40</span><span class="desc">9号出口步行约 2 分钟到美居酒店</span></li>
+            <li><span class="time-pill">19:40–22:00</span><span class="desc">入住、晚餐 & 弘大商圈初探 <span
+                  class="cost">₩20,000</span></span></li>
+            <li><span class="time-pill">22:00</span><span class="desc">休息（次日需早起）</span></li>
+          </ul>
+          <p style="margin-top:0.75rem;"><strong>🍽️ 弘大晚餐推荐：</strong>姜虎东白丁烤肉、桥村炸鸡、弘大猪脚一条街。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="day2">
+    <h2>🏫 Day 2 · 4月4日 周六</h2>
+    <div class="section-body">
+      <p class="section-summary">庆熙大学 → 明洞免税店 → 釜山海云台。<span class="focus">KTX 改为 14:15，天空胶囊固定 18:00–18:30，釜山站建议 Uber 直达酒店。</span></p>
+      <div class="day-card">
+        <div class="day-title">当日行程</div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><span class="time-pill">07:15–07:45</span><span class="desc">早餐 & 退房寄存行李 <span
+                  class="cost">₩8,000</span></span></li>
+            <li><span class="time-pill">08:00–08:40</span><span class="desc">弘大→回基站 地铁 <span
+                  class="cost">₩1,350</span></span></li>
+            <li><span class="time-pill">08:45–09:00</span><span class="desc">回基→庆熙正门 东大门01小巴 <span
+                  class="cost">₩900</span></span></li>
+            <li><span class="time-pill">09:00–10:00</span><span class="desc">庆熙大学参观（和平殿堂、本馆、图书馆、樱花隧道）</span></li>
+            <li><span class="time-pill">10:00–10:30</span><span class="desc">庆熙→回基→明洞 地铁 <span
+                  class="cost">₩1,250</span></span></li>
+            <li><span class="time-pill">10:30–12:00</span><span class="desc">乐天免税店 9–12 楼（10:30 开门）</span></li>
+            <li><span class="time-pill">12:00–12:30</span><span class="desc">午餐明洞 <span
+                  class="cost">₩12,000</span></span></li>
+            <li><span class="time-pill">12:30–13:40</span><span class="desc">取行李→首尔站，提前候车</span></li>
+            <li><span class="time-pill">14:15–16:44</span><span class="desc">首尔→釜山 KTX <span
+                  class="cost">₩59,800</span></span></li>
+            <li><span class="time-pill">16:44–17:20</span><span class="desc">釜山站→L7海云台 Uber 直达（节省时间）<span
+                  class="cost">约₩25,000</span></span></li>
+            <li><span class="time-pill">17:20–17:45</span><span class="desc">酒店快速办理入住、放行李</span></li>
+            <li><span class="time-pill">18:00–18:30</span><span class="desc"><span class="focus">天空胶囊（已预订固定时段）</span></span></li>
+            <li><span class="time-pill">19:00–20:30</span><span class="desc">晚餐 & 海云台海滩夜景 <span
+                  class="cost">₩25,000</span></span></li>
+          </ul>
+          <p style="margin-top:0.75rem;"><strong>🏛️ 庆熙看点：</strong>和平殿堂、本馆、中央图书馆、樱花隧道。回基站 1 号出口右侧东大门01小巴终点即庆熙。</p>
+          <p><strong>🛒 免税店：</strong><span class="focus">最晚购买截止 4/6 18:30</span>，4/4 上午购物无风险；提货单建议拍照备份。</p>
+          <p><strong>🍽️ 海云台晚餐：</strong>密阳血肠猪肉汤饭、百年食堂、高饭食堂。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="day3">
+    <h2>🌸 Day 3 · 4月5日 周日</h2>
+    <div class="section-body">
+      <p class="section-summary">镇海军港节最后一天。<span class="focus">建议参加一日游团</span>，自行前往需多次换乘约 2 小时。</p>
+      <div class="day-card">
+        <div class="day-title">当日行程</div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><span class="time-pill">07:30–08:00</span><span class="desc">早餐 <span class="cost">₩10,000</span>（推荐 EGG
+                DROP）</span></li>
+            <li><span class="time-pill">08:30–09:00</span><span class="desc">海云台站附近集合出发</span></li>
+            <li><span class="time-pill">09:00–10:30</span><span class="desc">前往镇海 约 1.5 小时</span></li>
+            <li><span class="time-pill">10:30–12:00</span><span class="desc">余佐川樱花道（1.5km 樱花溪流，镇海最美）</span></li>
+            <li><span class="time-pill">12:00–13:00</span><span class="desc">午餐镇海当地 <span
+                  class="cost">₩12,000</span></span></li>
+            <li><span class="time-pill">13:00–14:30</span><span class="desc">庆和火车站（800m 樱花铁路，火车穿越）</span></li>
+            <li><span class="time-pill">14:30–16:00</span><span class="desc">帝皇山/长福山雕刻公园</span></li>
+            <li><span class="time-pill">16:00–17:30</span><span class="desc">返回海云台</span></li>
+            <li><span class="time-pill">17:30–19:00</span><span class="desc">海云台迎月路赏樱预览 出租车 <span
+                  class="cost">₩5,000</span></span></li>
+            <li><span class="time-pill">19:00–20:30</span><span class="desc">晚餐海云台市场 <span
+                  class="cost">₩20,000</span></span></li>
+            <li><span class="time-pill">20:30–21:30</span><span class="desc">L7 顶楼泳池/酒吧 <span
+                  class="cost">₩15,000</span></span></li>
+          </ul>
+          <p style="margin-top:0.75rem;">🎫 一日游可在 Klook/KKday/Creatrip 搜「釜山出发 镇海军港节一日游」，约
+            <strong>¥260–340/人</strong>，建议提前至少一周预订。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="day4">
+    <h2>🏫 Day 4 · 4月6日 周一</h2>
+    <div class="section-body">
+      <p class="section-summary">海云台迎月路赏樱 → 首尔延世/梨大巡礼。<span class="focus">下午 16:00–18:00 黄金光线</span>参观两校。可选：早起海边跑步再回酒店洗澡。</p>
+      <div class="day-card">
+        <div class="day-title">当日行程</div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><span class="time-pill">06:00</span><span class="desc">起床</span></li>
+            <li><span class="time-pill">06:15–07:15</span><span class="desc"><strong>海边跑步约 5km</strong> · 海云台海水浴场沿岸，享受清晨空气与海景</span></li>
+            <li><span class="time-pill">07:15–08:00</span><span class="desc">回 L7 酒店洗澡、更衣</span></li>
+            <li><span class="time-pill">08:00–08:30</span><span class="desc">早餐、退房寄存 <span
+                  class="cost">₩10,000</span></span></li>
+            <li><span class="time-pill">08:30–10:30</span><span class="desc">海云台迎月路赏樱 出租车 <span
+                  class="cost">₩5,000</span>（2 小时核心段）</span></li>
+            <li><span class="time-pill">10:30–11:00</span><span class="desc">回酒店取行李 出租车 <span
+                  class="cost">₩5,000</span></span></li>
+            <li><span class="time-pill">11:00–12:10</span><span class="desc">L7→釜山站 地铁 <span
+                  class="cost">₩1,650</span></span></li>
+            <li><span class="time-pill">13:03–15:48</span><span class="desc">釜山→首尔 KTX <span
+                  class="cost">₩59,800</span></span></li>
+            <li><span class="time-pill">15:48–16:25</span><span class="desc">首尔站→弘大→RYSE 入住放行李</span></li>
+            <li><span class="time-pill">16:25–16:35</span><span class="desc">弘大→新村站 地铁 1 站 <span
+                  class="cost">₩1,250</span></span></li>
+            <li><span class="time-pill">16:35–17:20</span><span class="desc">延世大学参观（新村站 2 号出口步行 10 分钟）</span></li>
+            <li><span class="time-pill">17:20–17:35</span><span class="desc">延世→梨大 步行约 10 分钟</span></li>
+            <li><span class="time-pill">17:35–18:20</span><span class="desc">梨花女子大学（ECC、梨花教堂）</span></li>
+            <li><span class="time-pill">18:30–20:00</span><span class="desc">晚餐新村/梨大商圈 <span
+                  class="cost">₩20,000</span>（春川辣炒鸡排）</span></li>
+            <li><span class="time-pill">20:00–</span><span class="desc">弘大商圈自由活动</span></li>
+          </ul>
+          <p style="margin-top:0.75rem;"><strong>🌸 迎月路：</strong>海水浴场翻越卧牛山至松亭，核心赏樱段约 4.5km，大韩八景之一。</p>
+          <p><strong>🏛️ 延世：</strong>灰色花岗岩欧式建筑、本馆前广场、校园樱花。</p>
+          <p><strong>🏛️ 梨大：</strong>ECC 下沉式建筑、梨花教堂、欧式庭园。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="day5">
+    <h2>✈️ Day 5 · 4月7日 周二</h2>
+    <div class="section-body">
+      <p class="section-summary">机场提货，返程。<span class="focus">15:15 起飞，白天节奏更从容。</span></p>
+      <div class="day-card">
+        <div class="day-title">当日行程</div>
+        <div class="day-body">
+          <ul class="timeline">
+            <li><span class="time-pill">09:00–09:40</span><span class="desc">起床、早餐、整理行李</span></li>
+            <li><span class="time-pill">10:00–11:20</span><span class="desc">弘大商圈自由活动 / 早午餐</span></li>
+            <li><span class="time-pill">11:20–11:40</span><span class="desc">回酒店退房取行李</span></li>
+            <li><span class="time-pill">12:00–12:55</span><span class="desc">弘大入口→仁川 T1 AREX <span
+                  class="cost">₩4,950</span></span></li>
+            <li><span class="time-pill">12:55–13:45</span><span class="desc">值机、托运、安检</span></li>
+            <li><span class="time-pill">13:45–14:25</span><span class="desc">免税品提货（T1 安检后 26/28 号登机口附近）</span></li>
+            <li><span class="time-pill">15:15</span><span class="desc">起飞，约 18:10 抵广州</span></li>
+          </ul>
+          <div class="tip">⚠️ 免税品只能手提上机，不能托运；单件超 ¥5000 需申报。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="schools">
+    <h2>🏫 四、三校巡礼总览</h2>
+    <div class="section-body">
+      <table>
+        <tr>
+          <th>日期</th>
+          <th>大学</th>
+          <th>时间</th>
+          <th>看点</th>
+        </tr>
+        <tr>
+          <td>4/4</td>
+          <td>庆熙大学</td>
+          <td>09:00–10:00</td>
+          <td>和平殿堂、本馆、樱花隧道</td>
+        </tr>
+        <tr>
+          <td>4/6</td>
+          <td>延世大学</td>
+          <td>16:35–17:20</td>
+          <td>灰色花岗岩欧式建筑、本馆广场</td>
+        </tr>
+        <tr>
+          <td>4/6</td>
+          <td>梨花女子大学</td>
+          <td>17:35–18:20</td>
+          <td>ECC 下沉式建筑、梨花教堂</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="spots">
+    <h2>🌸 五、赏樱景点总览</h2>
+    <div class="section-body">
+      <ul class="spot-list">
+        <li><span class="spot-name">庆熙大学</span> 4/4 · 校园樱花初开 · 哥特式建筑+初绽樱花</li>
+        <li><span class="spot-name">余佐川樱花道</span> 4/5 · 1.5km 溪流樱花 · 韩剧取景地</li>
+        <li><span class="spot-name">庆和火车站</span> 4/5 · 800m 铁路樱花 · 火车穿越花海</li>
+        <li><span class="spot-name">海云台迎月路</span> 4/5 预览 / 4/6 深度 · 大韩八景，海与樱花</li>
+        <li><span class="spot-name">延世/梨大</span> 4/6 · 校园樱花初开 · 欧式建筑+初绽樱花</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="traffic">
+    <h2>六、交通费用汇总</h2>
+    <div class="section-body">
+      <table>
+        <tr>
+          <th>日期</th>
+          <th>路线</th>
+          <th>费用</th>
+        </tr>
+        <tr>
+          <td>4/3</td>
+          <td>仁川→弘大 AREX</td>
+          <td>₩4,950</td>
+        </tr>
+        <tr>
+          <td>4/4</td>
+          <td>弘大→回基、回基↔庆熙小巴、回基→明洞、明洞→弘大→首尔站</td>
+          <td>₩6,900</td>
+        </tr>
+        <tr>
+          <td>4/4</td>
+          <td>首尔→釜山 KTX、釜山站→海云台（Uber）</td>
+          <td>₩84,800</td>
+        </tr>
+        <tr>
+          <td>4/5</td>
+          <td>镇海一日游、迎月路出租车</td>
+          <td>₩55,000</td>
+        </tr>
+        <tr>
+          <td>4/6</td>
+          <td>迎月路往返、海云台→釜山站、KTX、首尔→弘大、弘大↔新村梨大</td>
+          <td>₩79,200</td>
+        </tr>
+        <tr>
+          <td>4/7</td>
+          <td>弘大→仁川 AREX</td>
+          <td>₩4,950</td>
+        </tr>
+      </table>
+      <p style="margin-top:0.75rem;"><strong>💰 交通总计：</strong><span class="focus">约 ₩231,800（约 ¥1,206）</span></p>
+      <p>💡 KR PASS 自选 2 日券 ₩121,000 可覆盖 KTX 往返，若在釜山还乘其他 Korail 更划算。</p>
+    </div>
+  </section>
+
+  <section id="budget">
+    <h2>💰 七、总预算估算</h2>
+    <div class="section-body">
+      <div class="summary-row"><span>🚃 交通</span><span>₩231,800 ≈ ¥1,206</span></div>
+      <div class="summary-row"><span>🍽️ 餐饮（5 日）</span><span>₩210,000 ≈ ¥1,092</span></div>
+      <div class="summary-row"><span>杂费</span><span>₩30,000 ≈ ¥156</span></div>
+      <div class="summary-row"><strong>合计</strong><strong>约 ¥2,454</strong></div>
+      <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--text-muted);">不含机票、住宿和购物。</p>
+    </div>
+  </section>
+
+  <section id="weather">
+    <h2>⛅ 八、天气预报与穿衣建议</h2>
+    <div class="section-body">
+      <div class="weather-actions">
+        <a class="weather-btn" href="https://weather.naver.com/today/09140128" target="_blank" rel="noopener noreferrer">首尔天气</a>
+        <a class="weather-btn secondary" href="https://weather.naver.com/today/26440101" target="_blank" rel="noopener noreferrer">釜山天气</a>
+      </div>
+      <p><strong>首尔（4月上旬）</strong>：白天约 11–18°C，早晚约 5–9°C，昼夜温差明显。</p>
+      <p><strong>釜山（4月上旬）</strong>：白天约 13–19°C，海边有风，体感会比气温更低。</p>
+      <p><strong>降雨概率</strong>：春季可能有短时阵雨，建议随身带折叠伞或轻薄防水外套。</p>
+      <p><strong>临行查看</strong>：建议出发前 7 天重点看逐小时天气；出发前 24 小时再确认 Day2（天空胶囊）和 Day4（迎月路）风力与降雨。</p>
+      <div class="tip">👕 穿搭建议：短袖打底 + 薄卫衣/针织 + 防风外套；海边晨跑可加一件轻薄防风层。</div>
+    </div>
+  </section>
+
+  <section id="tips">
+    <h2>💡 九、实用贴士</h2>
+    <div class="section-body">
+      <p><strong>📱 行前：</strong>T-Money 卡（机场便利店）、Naver Map/KakaoMap、韩国 SIM/eSIM、Korail 官网或 APP 提前订 KTX。</p>
+      <p><strong>🛒 免税店：</strong>官网/APP 先看价格与库存；到店办金卡，韩国品牌约 8.5–9 折；LV 等无额外折扣但免税额约比国内低 15–25%。</p>
+      <p><strong>👕 穿衣：</strong>4 月初白天 12–18°C，夜间 5–8°C，洋葱式穿搭+防风外套；赏樱穿舒适运动鞋。</p>
+      <p><strong>🌸 镇海：</strong>人潮拥挤，尽量 08:30 前出发；自备水与零食、充电宝。</p>
+      <p><strong>🆘 紧急：</strong><span class="focus">报警 112，急救 119</span>，中国驻韩使馆领事保护 02-755-0572。</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    行程规划由 AI 根据 2026 年信息编制，价格与时刻表仅供参考，以实际预订为准。祝旅途愉快！
+  </footer>
+
+  <div class="emergency-bar" aria-label="紧急联系">
+    <span>🆘 报警 <a href="tel:112">112</a></span>
+    <span>急救 <a href="tel:119">119</a></span>
+    <span>使馆 <a href="tel:027550572">02-755-0572</a></span>
+  </div>
+
+  <button type="button" class="back-top" id="backTop" aria-label="回到顶部">↑</button>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('mainNav');
+      var links = nav.querySelectorAll('a[data-section]');
+      var sections = {};
+      links.forEach(function (a) {
+        var id = a.getAttribute('data-section');
+        var el = document.getElementById(id);
+        if (el) sections[id] = { link: a, el: el };
+      });
+      function setActive(id) {
+        links.forEach(function (a) { a.classList.remove('active'); });
+        if (sections[id]) sections[id].link.classList.add('active');
+        var activeLink = nav.querySelector('a.active');
+        if (activeLink) {
+          var navRect = nav.getBoundingClientRect();
+          var linkRect = activeLink.getBoundingClientRect();
+          var scrollLeft = nav.scrollLeft + (linkRect.left - navRect.left) - (navRect.width / 2) + (linkRect.width / 2);
+          nav.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
+        }
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var id = entry.target.id;
+          if (sections[id]) setActive(id);
+        });
+      }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+      Object.keys(sections).forEach(function (id) { observer.observe(sections[id].el); });
+      links.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          setActive(a.getAttribute('data-section'));
+        });
+      });
+      var firstId = Object.keys(sections)[0];
+      if (firstId) setActive(firstId);
+
+      var backTop = document.getElementById('backTop');
+      if (backTop) {
+        function onScroll() {
+          backTop.classList.toggle('visible', window.scrollY > 400);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        backTop.addEventListener('click', function () {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
