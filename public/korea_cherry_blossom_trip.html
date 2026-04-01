@@ -73,14 +73,14 @@
       background: rgba(255, 250, 251, 0.85);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      padding: 1.25rem 1.25rem 1rem;
-      padding-top: max(1.25rem, env(safe-area-inset-top));
-      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 0.85rem 0.65rem;
+      padding-top: max(0.75rem, env(safe-area-inset-top));
+      border-bottom: none;
     }
 
     .header h1 {
       font-family: var(--font-head);
-      font-size: 1.5rem;
+      font-size: 1.28rem;
       font-weight: 600;
       color: var(--ink);
       letter-spacing: 0.02em;
@@ -98,8 +98,8 @@
       background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding: 0.5rem 1rem;
-      border-bottom: 1px solid var(--border);
+      padding: 0.4rem 0.75rem;
+      border-bottom: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -130,12 +130,12 @@
       background: rgba(255, 252, 253, 0.88);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+      border-bottom: none;
+      box-shadow: 0 1px 0 rgba(44, 37, 40, 0.06);
     }
 
     nav {
-      padding: 0.5rem 0.75rem;
+      padding: 0.4rem 0.5rem;
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
@@ -183,15 +183,13 @@
     section {
       position: relative;
       z-index: 1;
-      margin: 0 .5rem 1.25rem;
+      margin: 0 0.3rem 0.75rem;
       scroll-margin-top: var(--nav-height);
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background: rgba(255, 252, 253, 0.92);
+      border-radius: 10px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      border: none;
+      box-shadow: none;
       opacity: 0;
       transform: translateY(8px);
       animation: sectionReveal 0.5s ease forwards;
@@ -245,6 +243,14 @@
       animation-delay: 0.33s;
     }
 
+    section:nth-child(16) {
+      animation-delay: 0.36s;
+    }
+
+    section:nth-child(17) {
+      animation-delay: 0.39s;
+    }
+
     @keyframes sectionReveal {
       to {
         opacity: 1;
@@ -254,25 +260,25 @@
 
     section h2 {
       font-family: var(--font-head);
-      font-size: 1rem;
+      font-size: 0.92rem;
       font-weight: 600;
-      padding: 0.75rem 1rem;
-      background: linear-gradient(135deg, rgba(184, 77, 109, 0.08) 0%, rgba(184, 77, 109, 0.03) 100%);
+      padding: 0.5rem 0.65rem;
+      background: linear-gradient(135deg, rgba(184, 77, 109, 0.1) 0%, rgba(184, 77, 109, 0.04) 100%);
       color: var(--ink);
-      border-bottom: 1px solid var(--border);
+      border-bottom: none;
     }
 
     .section-body {
-      padding: 1rem .5rem;
-      background: var(--card-solid);
+      padding: 0.55rem 0.5rem 0.65rem;
+      background: transparent;
     }
 
     .section-summary {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--ink-light);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px dashed var(--border);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: none;
     }
 
     table {
@@ -283,10 +289,11 @@
 
     th,
     td {
-      padding: 0.5rem 0.6rem;
+      padding: 0.35rem 0.4rem;
       text-align: left;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
+      font-size: 0.82rem;
     }
 
     th {
@@ -317,6 +324,24 @@
       border-radius: 4px;
     }
 
+    a.uni-link {
+      color: #4a74b8;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(74, 116, 184, 0.35);
+    }
+
+    a.uni-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    a.uni-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
     ul,
     ol {
       padding-left: 1.2rem;
@@ -329,11 +354,11 @@
 
     .tip {
       background: rgba(74, 139, 122, 0.08);
-      border-left: 3px solid var(--mint);
-      padding: 0.6rem 0.9rem;
-      margin: 0.75rem 0;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.9rem;
+      border-left: 2px solid var(--mint);
+      padding: 0.5rem 0.65rem;
+      margin: 0.55rem 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.86rem;
     }
 
     .weather-actions {
@@ -367,51 +392,158 @@
       outline-offset: 2px;
     }
 
+    .station-hint {
+      font-size: 0.82rem;
+      color: var(--ink-light);
+      line-height: 1.55;
+      margin-bottom: 0.65rem;
+    }
+
+    .station-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0.4rem 0 0.6rem;
+    }
+
+    .station-table {
+      width: 100%;
+      min-width: 17rem;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    .station-table th,
+    .station-table td {
+      padding: 0.35rem 0.3rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .station-table th {
+      font-weight: 600;
+      color: var(--ink);
+      text-align: left;
+      background: rgba(184, 77, 109, 0.06);
+      white-space: nowrap;
+    }
+
+    .station-table .ko,
+    .station-table .ko-cell {
+      font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      font-weight: 600;
+      color: var(--ink);
+      word-break: keep-all;
+    }
+
+    .station-table .speak-cell {
+      white-space: nowrap;
+    }
+
+    .speak-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      min-height: 2.25rem;
+      margin: 0 0.15rem 0.15rem 0;
+      padding: 0.2rem 0.45rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #6b5b95 0%, #554878 100%);
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(85, 72, 120, 0.25);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .speak-btn.secondary {
+      background: linear-gradient(135deg, #4a8b7a 0%, #3b7466 100%);
+      box-shadow: 0 1px 4px rgba(59, 116, 102, 0.2);
+    }
+
+    .speak-btn:active {
+      transform: scale(0.96);
+    }
+
+    .speak-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .station-note {
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+
     .timeline {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 0 0 0 0.4rem;
+      border-left: 2px solid rgba(184, 77, 109, 0.22);
     }
 
     .timeline li {
-      display: flex;
-      gap: 0.75rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
+      display: block;
+      position: relative;
+      padding: 0 0 0.7rem 0.85rem;
       margin: 0;
-      align-items: flex-start;
-    }
-
-    .timeline li:last-child {
       border-bottom: none;
     }
 
+    .timeline li:last-child {
+      padding-bottom: 0.2rem;
+    }
+
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      left: -5px;
+      top: 0.38rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 2px rgba(255, 252, 253, 0.95);
+    }
+
     .timeline .time-pill {
-      flex-shrink: 0;
+      display: block;
       font-size: 0.8rem;
       font-variant-numeric: tabular-nums;
-      color: var(--ink-light);
-      background: var(--accent-soft);
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-      min-width: 4.2em;
-      text-align: center;
+      font-weight: 600;
+      color: var(--accent);
+      background: none;
+      padding: 0;
+      margin: 0 0 0.12rem 0;
+      border-radius: 0;
+      min-width: 0;
+      text-align: left;
+      letter-spacing: 0.02em;
     }
 
     .timeline .desc {
-      flex: 1;
+      display: block;
+      width: 100%;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--ink);
     }
 
     .timeline .desc .cost {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
 
     .day-card {
-      margin-bottom: 1rem;
-      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
+      box-shadow: none;
+      border: none;
+      background: rgba(255, 255, 255, 0.55);
     }
 
     .day-card:last-child {
@@ -420,15 +552,15 @@
 
     .day-title {
       font-family: var(--font-head);
-      padding: 0.65rem 1rem;
+      padding: 0.42rem 0.65rem;
       background: linear-gradient(90deg, var(--accent) 0%, #9e4058 100%);
       color: #fff;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.86rem;
     }
 
     .day-body {
-      padding: 0.85rem 1rem;
+      padding: 0.45rem 0.4rem 0.5rem;
     }
 
     .spot-list {
@@ -437,9 +569,11 @@
     }
 
     .spot-list li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
+      padding: 0.32rem 0;
+      border-bottom: none;
       margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
     }
 
     .spot-list li:last-child {
@@ -454,8 +588,9 @@
     .summary-row {
       display: flex;
       justify-content: space-between;
-      padding: 0.45rem 0;
-      border-bottom: 1px dashed var(--border);
+      padding: 0.32rem 0;
+      border-bottom: none;
+      font-size: 0.88rem;
     }
 
     .summary-row:last-child {
@@ -546,6 +681,149 @@
         margin: 0 auto;
       }
 
+      .header {
+        padding: 1.25rem 1.25rem 1rem;
+        padding-top: max(1.25rem, env(safe-area-inset-top));
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .quick-bar {
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-wrap {
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+      }
+
+      nav {
+        padding: 0.5rem 0.75rem;
+      }
+
+      section {
+        margin: 0 0.5rem 1.25rem;
+        background: var(--card);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+      }
+
+      section h2 {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-body {
+        padding: 1rem 0.5rem;
+        background: var(--card-solid);
+      }
+
+      .section-summary {
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px dashed var(--border);
+        font-size: 0.88rem;
+      }
+
+      th,
+      td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.9rem;
+      }
+
+      .timeline {
+        margin: 0;
+        border-left: none;
+      }
+
+      .timeline li {
+        display: flex;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+        align-items: flex-start;
+      }
+
+      .timeline li::before {
+        display: none;
+      }
+
+      .timeline li:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .timeline .time-pill {
+        flex-shrink: 0;
+        display: inline-block;
+        width: auto;
+        font-weight: 500;
+        font-size: 0.8rem;
+        color: var(--ink-light);
+        background: var(--accent-soft);
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        min-width: 3.2em;
+        text-align: center;
+        margin: 0;
+      }
+
+      .timeline .desc {
+        flex: 1;
+        width: auto;
+        font-size: inherit;
+        line-height: inherit;
+      }
+
+      .day-card {
+        margin-bottom: 1rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        background: transparent;
+      }
+
+      .day-title {
+        padding: 0.65rem 1rem;
+        font-size: 0.95rem;
+      }
+
+      .day-body {
+        padding: 0.85rem 1rem;
+      }
+
+      .spot-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: inherit;
+      }
+
+      .spot-list li:last-child {
+        border-bottom: none;
+      }
+
+      .summary-row {
+        padding: 0.45rem 0;
+        border-bottom: 1px dashed var(--border);
+        font-size: inherit;
+      }
+
+      .tip {
+        padding: 0.6rem 0.9rem;
+        margin: 0.75rem 0;
+        border-left-width: 3px;
+        border-radius: 0 8px 8px 0;
+        font-size: 0.9rem;
+      }
+
       .back-top {
         right: calc(50% - 270px + 1rem);
       }
@@ -577,6 +855,7 @@
         <a href="#schools" data-section="schools">🏫 三校</a>
         <a href="#spots" data-section="spots">🌸 赏樱</a>
         <a href="#traffic" data-section="traffic">🚃 交通</a>
+        <a href="#stations" data-section="stations">🚇 站点</a>
         <a href="#budget" data-section="budget">💰 预算</a>
         <a href="#weather" data-section="weather">⛅ 天气</a>
         <a href="#tips" data-section="tips">💡 贴士</a>
@@ -653,17 +932,17 @@
   <section id="day1">
     <h2>✈️ Day 1 · 4月3日 周五</h2>
     <div class="section-body">
-      <p class="section-summary">抵达首尔，入住弘大。航班 17:15 降落，预留约 1–1.5 小时入境取行李。</p>
+      <p class="section-summary">抵达首尔，入住弘大。航班 17:15 降落，预留约 1–1.5 小时入境取行李。AREX/地铁<strong>韩文站名、英文与韩语报站试听</strong>见导航 <a href="#stations" class="uni-link">🚇 站点</a>。</p>
       <div class="day-card">
         <div class="day-title">当日行程</div>
         <div class="day-body">
           <ul class="timeline">
             <li><span class="time-pill">17:15</span><span class="desc">抵达仁川机场</span></li>
-            <li><span class="time-pill">17:15–18:30</span><span class="desc">入境、取行李</span></li>
-            <li><span class="time-pill">18:30–19:25</span><span class="desc">仁川→弘大入口 AREX 普通 <span
+            <li><span class="time-pill">17:15</span><span class="desc">入境、取行李</span></li>
+            <li><span class="time-pill">18:30</span><span class="desc">仁川→弘大入口 AREX 普通 <span
                   class="cost">₩4,950</span></span></li>
-            <li><span class="time-pill">19:25–19:40</span><span class="desc">9号出口步行约 2 分钟到美居酒店</span></li>
-            <li><span class="time-pill">19:40–22:00</span><span class="desc">入住、晚餐 & 弘大商圈初探 <span
+            <li><span class="time-pill">19:25</span><span class="desc">9号出口步行约 2 分钟到美居酒店</span></li>
+            <li><span class="time-pill">19:40</span><span class="desc">入住、晚餐 & 弘大商圈初探 <span
                   class="cost">₩20,000</span></span></li>
             <li><span class="time-pill">22:00</span><span class="desc">休息（次日需早起）</span></li>
           </ul>
@@ -681,29 +960,30 @@
         <div class="day-title">当日行程</div>
         <div class="day-body">
           <ul class="timeline">
-            <li><span class="time-pill">07:15–07:45</span><span class="desc">早餐 & 退房寄存行李 <span
+            <li><span class="time-pill">07:15</span><span class="desc">早餐 & 退房寄存行李 <span
                   class="cost">₩8,000</span></span></li>
-            <li><span class="time-pill">08:00–08:40</span><span class="desc">弘大→回基站 地铁 <span
+            <li><span class="time-pill">08:00</span><span class="desc">弘大→回基站 地铁 <span
                   class="cost">₩1,350</span></span></li>
-            <li><span class="time-pill">08:45–09:00</span><span class="desc">回基→庆熙正门 东大门01小巴 <span
+            <li><span class="time-pill">08:45</span><span class="desc">回基→庆熙正门 东大门01小巴 <span
                   class="cost">₩900</span></span></li>
-            <li><span class="time-pill">09:00–10:00</span><span class="desc">庆熙大学参观（和平殿堂、本馆、图书馆、樱花隧道）</span></li>
-            <li><span class="time-pill">10:00–10:30</span><span class="desc">庆熙→回基→明洞 地铁 <span
+            <li><span class="time-pill">09:00</span><span class="desc">庆熙大学参观（和平殿堂、本馆、图书馆、樱花隧道）</span></li>
+            <li><span class="time-pill">10:00</span><span class="desc">庆熙→回基→明洞 地铁 <span
                   class="cost">₩1,250</span></span></li>
-            <li><span class="time-pill">10:30–12:00</span><span class="desc">乐天免税店 9–12 楼（10:30 开门）</span></li>
-            <li><span class="time-pill">12:00–12:30</span><span class="desc">午餐明洞 <span
+            <li><span class="time-pill">10:30</span><span class="desc">乐天免税店 9–12 楼（10:30 开门），可顺路前往同栋 <strong>乐天百货本店</strong> 寻找 Miu Miu 柜台</span></li>
+            <li><span class="time-pill">12:00</span><span class="desc">午餐明洞 <span
                   class="cost">₩12,000</span></span></li>
-            <li><span class="time-pill">12:30–13:40</span><span class="desc">取行李→首尔站，提前候车</span></li>
-            <li><span class="time-pill">14:15–16:44</span><span class="desc">首尔→釜山 KTX <span
+            <li><span class="time-pill">12:30</span><span class="desc">取行李→首尔站，提前候车</span></li>
+            <li><span class="time-pill">14:15</span><span class="desc">首尔→釜山 KTX <span
                   class="cost">₩59,800</span></span></li>
-            <li><span class="time-pill">16:44–17:20</span><span class="desc">釜山站→L7海云台 Uber 直达（节省时间）<span
+            <li><span class="time-pill">16:44</span><span class="desc">釜山站→L7海云台 Uber 直达（节省时间）<span
                   class="cost">约₩25,000</span></span></li>
-            <li><span class="time-pill">17:20–17:45</span><span class="desc">酒店快速办理入住、放行李</span></li>
-            <li><span class="time-pill">18:00–18:30</span><span class="desc"><span class="focus">天空胶囊（已预订固定时段）</span></span></li>
-            <li><span class="time-pill">19:00–20:30</span><span class="desc">晚餐 & 海云台海滩夜景 <span
+            <li><span class="time-pill">17:20</span><span class="desc">酒店快速办理入住、放行李</span></li>
+            <li><span class="time-pill">18:00</span><span class="desc"><span class="focus">天空胶囊（已预订固定时段）</span></span></li>
+            <li><span class="time-pill">19:00</span><span class="desc">晚餐 & 海云台海滩夜景 <span
                   class="cost">₩25,000</span></span></li>
           </ul>
-          <p style="margin-top:0.75rem;"><strong>🏛️ 庆熙看点：</strong>和平殿堂、本馆、中央图书馆、樱花隧道。回基站 1 号出口右侧东大门01小巴终点即庆熙。</p>
+          <p style="margin-top:0.75rem;"><strong>🏛️ 庆熙看点：</strong>和平殿堂、本馆、中央图书馆、樱花隧道。回基站 1 号出口右侧东大门01小巴终点即庆熙。 · <a class="uni-link" href="https://www.khu.ac.kr/" target="_blank" rel="noopener noreferrer">庆熙大学官网（韩文）</a></p>
+          <p><strong>👜 Miu Miu（首尔）：</strong>乐天免税店在乐天百货本店 9–12 楼，同栋低楼层通常有 Miu Miu 专柜，可在 10:30–12:00 间下楼快速逛一圈，或向服务台询问「Miu Miu 在几楼」。</p>
           <p><strong>🛒 免税店：</strong><span class="focus">最晚购买截止 4/6 18:30</span>，4/4 上午购物无风险；提货单建议拍照备份。</p>
           <p><strong>🍽️ 海云台晚餐：</strong>密阳血肠猪肉汤饭、百年食堂、高饭食堂。</p>
         </div>
@@ -719,21 +999,21 @@
         <div class="day-title">当日行程</div>
         <div class="day-body">
           <ul class="timeline">
-            <li><span class="time-pill">07:30–08:00</span><span class="desc">早餐 <span class="cost">₩10,000</span>（推荐 EGG
+            <li><span class="time-pill">07:30</span><span class="desc">早餐 <span class="cost">₩10,000</span>（推荐 EGG
                 DROP）</span></li>
-            <li><span class="time-pill">08:30–09:00</span><span class="desc">海云台站附近集合出发</span></li>
-            <li><span class="time-pill">09:00–10:30</span><span class="desc">前往镇海 约 1.5 小时</span></li>
-            <li><span class="time-pill">10:30–12:00</span><span class="desc">余佐川樱花道（1.5km 樱花溪流，镇海最美）</span></li>
-            <li><span class="time-pill">12:00–13:00</span><span class="desc">午餐镇海当地 <span
+            <li><span class="time-pill">08:30</span><span class="desc">海云台站附近集合出发</span></li>
+            <li><span class="time-pill">09:00</span><span class="desc">前往镇海 约 1.5 小时</span></li>
+            <li><span class="time-pill">10:30</span><span class="desc">余佐川樱花道（1.5km 樱花溪流，镇海最美）</span></li>
+            <li><span class="time-pill">12:00</span><span class="desc">午餐镇海当地 <span
                   class="cost">₩12,000</span></span></li>
-            <li><span class="time-pill">13:00–14:30</span><span class="desc">庆和火车站（800m 樱花铁路，火车穿越）</span></li>
-            <li><span class="time-pill">14:30–16:00</span><span class="desc">帝皇山/长福山雕刻公园</span></li>
-            <li><span class="time-pill">16:00–17:30</span><span class="desc">返回海云台</span></li>
-            <li><span class="time-pill">17:30–19:00</span><span class="desc">海云台迎月路赏樱预览 出租车 <span
+            <li><span class="time-pill">13:00</span><span class="desc">庆和火车站（800m 樱花铁路，火车穿越）</span></li>
+            <li><span class="time-pill">14:30</span><span class="desc">帝皇山/长福山雕刻公园</span></li>
+            <li><span class="time-pill">16:00</span><span class="desc">返回海云台</span></li>
+            <li><span class="time-pill">17:30</span><span class="desc">海云台迎月路赏樱预览 出租车 <span
                   class="cost">₩5,000</span></span></li>
-            <li><span class="time-pill">19:00–20:30</span><span class="desc">晚餐海云台市场 <span
+            <li><span class="time-pill">19:00</span><span class="desc">晚餐海云台市场 <span
                   class="cost">₩20,000</span></span></li>
-            <li><span class="time-pill">20:30–21:30</span><span class="desc">L7 顶楼泳池/酒吧 <span
+            <li><span class="time-pill">20:30</span><span class="desc">可选：前往新世界百货 Centum City 逛 Miu Miu 或在 L7 顶楼泳池/酒吧放松 <span
                   class="cost">₩15,000</span></span></li>
           </ul>
           <p style="margin-top:0.75rem;">🎫 一日游可在 Klook/KKday/Creatrip 搜「釜山出发 镇海军港节一日游」，约
@@ -753,31 +1033,31 @@
         <div class="day-body">
           <ul class="timeline">
             <li><span class="time-pill">06:00</span><span class="desc">起床</span></li>
-            <li><span class="time-pill">06:15–07:15</span><span class="desc"><strong>海边跑步约 5km</strong> · 海云台海水浴场沿岸，享受清晨空气与海景</span></li>
-            <li><span class="time-pill">07:15–08:00</span><span class="desc">回 L7 酒店洗澡、更衣</span></li>
-            <li><span class="time-pill">08:00–08:30</span><span class="desc">早餐、退房寄存 <span
+            <li><span class="time-pill">06:15</span><span class="desc"><strong>海边跑步约 5km</strong> · 海云台海水浴场沿岸，享受清晨空气与海景</span></li>
+            <li><span class="time-pill">07:15</span><span class="desc">回 L7 酒店洗澡、更衣</span></li>
+            <li><span class="time-pill">08:00</span><span class="desc">早餐、退房寄存 <span
                   class="cost">₩10,000</span></span></li>
-            <li><span class="time-pill">08:30–10:30</span><span class="desc">海云台迎月路赏樱 出租车 <span
+            <li><span class="time-pill">08:30</span><span class="desc">海云台迎月路赏樱 出租车 <span
                   class="cost">₩5,000</span>（2 小时核心段）</span></li>
-            <li><span class="time-pill">10:30–11:00</span><span class="desc">回酒店取行李 出租车 <span
+            <li><span class="time-pill">10:30</span><span class="desc">回酒店取行李 出租车 <span
                   class="cost">₩5,000</span></span></li>
-            <li><span class="time-pill">11:00–12:10</span><span class="desc">L7→釜山站 地铁 <span
+            <li><span class="time-pill">11:00</span><span class="desc">L7→釜山站 地铁 <span
                   class="cost">₩1,650</span></span></li>
-            <li><span class="time-pill">13:03–15:48</span><span class="desc">釜山→首尔 KTX <span
+            <li><span class="time-pill">13:03</span><span class="desc">釜山→首尔 KTX <span
                   class="cost">₩59,800</span></span></li>
-            <li><span class="time-pill">15:48–16:25</span><span class="desc">首尔站→弘大→RYSE 入住放行李</span></li>
-            <li><span class="time-pill">16:25–16:35</span><span class="desc">弘大→新村站 地铁 1 站 <span
+            <li><span class="time-pill">15:48</span><span class="desc">首尔站→弘大→RYSE 入住放行李</span></li>
+            <li><span class="time-pill">16:25</span><span class="desc">弘大→新村站 地铁 1 站 <span
                   class="cost">₩1,250</span></span></li>
-            <li><span class="time-pill">16:35–17:20</span><span class="desc">延世大学参观（新村站 2 号出口步行 10 分钟）</span></li>
-            <li><span class="time-pill">17:20–17:35</span><span class="desc">延世→梨大 步行约 10 分钟</span></li>
-            <li><span class="time-pill">17:35–18:20</span><span class="desc">梨花女子大学（ECC、梨花教堂）</span></li>
-            <li><span class="time-pill">18:30–20:00</span><span class="desc">晚餐新村/梨大商圈 <span
+            <li><span class="time-pill">16:35</span><span class="desc">延世大学参观（新村站 2 号出口步行 10 分钟）</span></li>
+            <li><span class="time-pill">17:20</span><span class="desc">延世→梨大 步行约 10 分钟</span></li>
+            <li><span class="time-pill">17:35</span><span class="desc">梨花女子大学（ECC、梨花教堂）</span></li>
+            <li><span class="time-pill">18:30</span><span class="desc">晚餐新村/梨大商圈 <span
                   class="cost">₩20,000</span>（春川辣炒鸡排）</span></li>
-            <li><span class="time-pill">20:00–</span><span class="desc">弘大商圈自由活动</span></li>
+            <li><span class="time-pill">20:00</span><span class="desc">弘大商圈自由活动</span></li>
           </ul>
           <p style="margin-top:0.75rem;"><strong>🌸 迎月路：</strong>海水浴场翻越卧牛山至松亭，核心赏樱段约 4.5km，大韩八景之一。</p>
-          <p><strong>🏛️ 延世：</strong>灰色花岗岩欧式建筑、本馆前广场、校园樱花。</p>
-          <p><strong>🏛️ 梨大：</strong>ECC 下沉式建筑、梨花教堂、欧式庭园。</p>
+          <p><strong>🏛️ 延世：</strong>灰色花岗岩欧式建筑、本馆前广场、校园樱花。 · <a class="uni-link" href="https://www.yonsei.ac.kr/" target="_blank" rel="noopener noreferrer">延世大学官网（韩文）</a></p>
+          <p><strong>🏛️ 梨大：</strong>ECC 下沉式建筑、梨花教堂、欧式庭园。 · <a class="uni-link" href="https://www.ewha.ac.kr/" target="_blank" rel="noopener noreferrer">梨花女子大学官网（韩文）</a></p>
         </div>
       </div>
     </div>
@@ -791,13 +1071,13 @@
         <div class="day-title">当日行程</div>
         <div class="day-body">
           <ul class="timeline">
-            <li><span class="time-pill">09:00–09:40</span><span class="desc">起床、早餐、整理行李</span></li>
-            <li><span class="time-pill">10:00–11:20</span><span class="desc">弘大商圈自由活动 / 早午餐</span></li>
-            <li><span class="time-pill">11:20–11:40</span><span class="desc">回酒店退房取行李</span></li>
-            <li><span class="time-pill">12:00–12:55</span><span class="desc">弘大入口→仁川 T1 AREX <span
+            <li><span class="time-pill">09:00</span><span class="desc">起床、早餐、整理行李</span></li>
+            <li><span class="time-pill">10:00</span><span class="desc">弘大商圈自由活动 / 早午餐</span></li>
+            <li><span class="time-pill">11:20</span><span class="desc">回酒店退房取行李</span></li>
+            <li><span class="time-pill">12:00</span><span class="desc">弘大入口→仁川 T1 AREX <span
                   class="cost">₩4,950</span></span></li>
-            <li><span class="time-pill">12:55–13:45</span><span class="desc">值机、托运、安检</span></li>
-            <li><span class="time-pill">13:45–14:25</span><span class="desc">免税品提货（T1 安检后 26/28 号登机口附近）</span></li>
+            <li><span class="time-pill">12:55</span><span class="desc">值机、托运、安检</span></li>
+            <li><span class="time-pill">13:45</span><span class="desc">免税品提货（T1 安检后 26/28 号登机口附近）</span></li>
             <li><span class="time-pill">15:15</span><span class="desc">起飞，约 18:10 抵广州</span></li>
           </ul>
           <div class="tip">⚠️ 免税品只能手提上机，不能托运；单件超 ¥5000 需申报。</div>
@@ -813,25 +1093,29 @@
         <tr>
           <th>日期</th>
           <th>大学</th>
-          <th>时间</th>
+          <th>官网</th>
+          <th>开始</th>
           <th>看点</th>
         </tr>
         <tr>
           <td>4/4</td>
           <td>庆熙大学</td>
-          <td>09:00–10:00</td>
+          <td><a class="uni-link" href="https://www.khu.ac.kr/" target="_blank" rel="noopener noreferrer">www.khu.ac.kr</a></td>
+          <td>09:00</td>
           <td>和平殿堂、本馆、樱花隧道</td>
         </tr>
         <tr>
           <td>4/6</td>
           <td>延世大学</td>
-          <td>16:35–17:20</td>
+          <td><a class="uni-link" href="https://www.yonsei.ac.kr/" target="_blank" rel="noopener noreferrer">www.yonsei.ac.kr</a></td>
+          <td>16:35</td>
           <td>灰色花岗岩欧式建筑、本馆广场</td>
         </tr>
         <tr>
           <td>4/6</td>
           <td>梨花女子大学</td>
-          <td>17:35–18:20</td>
+          <td><a class="uni-link" href="https://www.ewha.ac.kr/" target="_blank" rel="noopener noreferrer">www.ewha.ac.kr</a></td>
+          <td>17:35</td>
           <td>ECC 下沉式建筑、梨花教堂</td>
         </tr>
       </table>
@@ -842,11 +1126,11 @@
     <h2>🌸 五、赏樱景点总览</h2>
     <div class="section-body">
       <ul class="spot-list">
-        <li><span class="spot-name">庆熙大学</span> 4/4 · 校园樱花初开 · 哥特式建筑+初绽樱花</li>
+        <li><span class="spot-name">庆熙大学</span> <a class="uni-link" href="https://www.khu.ac.kr/" target="_blank" rel="noopener noreferrer">官网</a> · 4/4 · 校园樱花初开 · 哥特式建筑+初绽樱花</li>
         <li><span class="spot-name">余佐川樱花道</span> 4/5 · 1.5km 溪流樱花 · 韩剧取景地</li>
         <li><span class="spot-name">庆和火车站</span> 4/5 · 800m 铁路樱花 · 火车穿越花海</li>
         <li><span class="spot-name">海云台迎月路</span> 4/5 预览 / 4/6 深度 · 大韩八景，海与樱花</li>
-        <li><span class="spot-name">延世/梨大</span> 4/6 · 校园樱花初开 · 欧式建筑+初绽樱花</li>
+        <li><span class="spot-name">延世/梨大</span> <a class="uni-link" href="https://www.yonsei.ac.kr/" target="_blank" rel="noopener noreferrer">延世官网</a> · <a class="uni-link" href="https://www.ewha.ac.kr/" target="_blank" rel="noopener noreferrer">梨大官网</a> · 4/6 · 校园樱花初开 · 欧式建筑+初绽樱花</li>
       </ul>
     </div>
   </section>
@@ -893,6 +1177,155 @@
       </table>
       <p style="margin-top:0.75rem;"><strong>💰 交通总计：</strong><span class="focus">约 ₩231,800（约 ¥1,206）</span></p>
       <p>💡 KR PASS 自选 2 日券 ₩121,000 可覆盖 KTX 往返，若在釜山还乘其他 Korail 更划算。</p>
+    </div>
+  </section>
+
+  <section id="stations">
+    <h2>🚇 地铁·铁路站点对照（中韩英 + 韩语试听）</h2>
+    <div class="section-body">
+      <p class="station-hint"><strong>怎么看：</strong>站台屏、车门上方常写韩文站名（多带「역」字，即「站」）。<strong>怎么听：</strong>快到站时会播「다음 역은 ○○역입니다」（下一站是○○站）或「이번 역은 ○○역입니다」（本站是○○）。下面「站名」只念站名，「预报」模拟快到该站时的句式（手机系统 TTS，与车厢真人播报会有差别，多听几次熟悉韩文发音即可）。</p>
+      <h3 style="font-size:0.88rem;margin:0.6rem 0 0.35rem;color:var(--ink);font-weight:600;">AREX 机场铁路 · 仁川↔弘大</h3>
+      <div class="station-wrap">
+        <table class="station-table">
+          <tr>
+            <th>中文</th>
+            <th>English</th>
+            <th>韩文</th>
+            <th>试听</th>
+          </tr>
+          <tr>
+            <td>仁川机场 1 航站楼</td>
+            <td>Incheon Airport T1</td>
+            <td class="ko-cell" lang="ko">인천공항1터미널역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="인천공항1터미널" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="이번 역은 인천공항1터미널역입니다" title="本站播报">本站</button>
+            </td>
+          </tr>
+          <tr>
+            <td>金浦机场（经停·勿与仁川混淆）</td>
+            <td>Gimpo Airport</td>
+            <td class="ko-cell" lang="ko">김포공항역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="김포공항" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 김포공항역입니다" title="下一站播报">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>弘大入口（本行程下车点）</td>
+            <td>Hongik Univ.</td>
+            <td class="ko-cell" lang="ko">홍대입구역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="홍대입구" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 홍대입구역입니다" title="下一站播报">预报</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <h3 style="font-size:0.88rem;margin:0.75rem 0 0.35rem;color:var(--ink);font-weight:600;">首尔地铁（本行程）</h3>
+      <div class="station-wrap">
+        <table class="station-table">
+          <tr>
+            <th>中文</th>
+            <th>English</th>
+            <th>韩文</th>
+            <th>试听</th>
+          </tr>
+          <tr>
+            <td>弘大入口</td>
+            <td>Hongik Univ.</td>
+            <td class="ko-cell" lang="ko">홍대입구역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="홍대입구" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 홍대입구역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>回基（庆熙小巴）</td>
+            <td>Hoegi</td>
+            <td class="ko-cell" lang="ko">회기역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="회기" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 회기역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>乙支路入口（乐天免税店近）</td>
+            <td>Euljiro 1(il)-ga</td>
+            <td class="ko-cell" lang="ko">을지로입구역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="을지로입구" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 을지로입구역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>明洞</td>
+            <td>Myeongdong</td>
+            <td class="ko-cell" lang="ko">명동역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="명동" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 명동역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>首尔站（KTX）</td>
+            <td>Seoul Station</td>
+            <td class="ko-cell" lang="ko">서울역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="서울역" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 서울역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>新村（延世）</td>
+            <td>Sinchon</td>
+            <td class="ko-cell" lang="ko">신촌역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="신촌" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 신촌역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>梨大</td>
+            <td>Ewha Womans Univ.</td>
+            <td class="ko-cell" lang="ko">이대역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="이대" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 이대역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <h3 style="font-size:0.88rem;margin:0.75rem 0 0.35rem;color:var(--ink);font-weight:600;">釜山地铁 · KTX</h3>
+      <div class="station-wrap">
+        <table class="station-table">
+          <tr>
+            <th>中文</th>
+            <th>English</th>
+            <th>韩文</th>
+            <th>试听</th>
+          </tr>
+          <tr>
+            <td>釜山站（KTX·1 号线）</td>
+            <td>Busan Station</td>
+            <td class="ko-cell" lang="ko">부산역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="부산역" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 부산역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+          <tr>
+            <td>海云台（L7 一带）</td>
+            <td>Haeundae</td>
+            <td class="ko-cell" lang="ko">해운대역</td>
+            <td class="speak-cell">
+              <button type="button" class="speak-btn" data-ko="해운대" title="站名">站名</button>
+              <button type="button" class="speak-btn secondary" data-ko="다음 역은 해운대역입니다" title="下一站">预报</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-top:0.65rem;">📱 若点击无声音：请确认手机未静音、调高媒体音量；iPhone 需在「设置 → 辅助功能 → 朗读内容」中开启相关选项后，Safari 内点击按钮重试。本页已尽量选用韩语女声（如系统里的 Yuna）、并略提高音调；若仍偏沉，可到「设置 → 辅助功能 → 朗读内容 → 声音」里试听并指定韩语语音。韩语由系统合成朗读，仅作认站辅助。</div>
     </div>
   </section>
 
@@ -992,6 +1425,67 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
+
+      function scoreKoVoice(v) {
+        var n = (v.name || '').toLowerCase();
+        var lang = (v.lang || '').toLowerCase();
+        var s = 0;
+        if (lang === 'ko-kr' || lang.indexOf('ko-kr') === 0) s += 25;
+        else if (lang.indexOf('ko') === 0) s += 10;
+        else if (lang.indexOf('ko') !== -1) s += 5;
+        else return -999;
+        if (n.indexOf('yuna') !== -1) s += 120;
+        if (n.indexOf('seoyeon') !== -1 || n.indexOf('seo-yeon') !== -1) s += 120;
+        if (n.indexOf('female') !== -1 || n.indexOf('여성') !== -1) s += 80;
+        if (n.indexOf('enhanced') !== -1 || n.indexOf('premium') !== -1) s += 15;
+        if (/\beddy\b/.test(n) || /\bmale\b/.test(n) || n.indexOf('남성') !== -1) s -= 100;
+        return s;
+      }
+
+      function pickKoVoice() {
+        var synth = window.speechSynthesis;
+        if (!synth) return null;
+        var voices = synth.getVoices();
+        if (!voices || !voices.length) return null;
+        var i, v, best = null, bestScore = -1e9, sc;
+        for (i = 0; i < voices.length; i++) {
+          v = voices[i];
+          sc = scoreKoVoice(v);
+          if (sc < -100) continue;
+          if (sc > bestScore) {
+            bestScore = sc;
+            best = v;
+          }
+        }
+        return best;
+      }
+
+      function speakKo(text) {
+        if (!window.speechSynthesis || !text) return;
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ko-KR';
+        u.volume = 1;
+        u.rate = 0.88;
+        u.pitch = 1.18;
+        var voice = pickKoVoice();
+        if (voice) u.voice = voice;
+        window.speechSynthesis.speak(u);
+      }
+
+      if (window.speechSynthesis) {
+        window.speechSynthesis.addEventListener('voiceschanged', function () {
+          try {
+            window.speechSynthesis.getVoices();
+          } catch (e) { }
+        });
+      }
+
+      document.querySelectorAll('.speak-btn[data-ko]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          speakKo(btn.getAttribute('data-ko'));
+        });
+      });
     })();
   </script>
 </body>
